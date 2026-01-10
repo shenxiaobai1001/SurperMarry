@@ -46,7 +46,7 @@ public class Box : MonoBehaviour
             }
         }
 
-        if(videos.options[videos.value].text != "空")
+        if (videos.options[videos.value].text != "空")
         {
             string boxPath = $"Box/{videos.options[videos.value].text}";
             yield return barrageConfig.PlayBoxVideoAndWait(boxPath, 2, false, null);
@@ -159,7 +159,7 @@ public class Box : MonoBehaviour
     public void JoinCall(GameObject call)
     {
         GameObject obj = Instantiate(callObj, calls);
-        if(obj != null)
+        if (obj != null)
         {
             string name = call.transform.GetChild(0).GetComponent<Text>().text;
             barrageConfig.barrageBoxSetting[transform.GetSiblingIndex()].Calls.Add(name);
@@ -275,14 +275,23 @@ public class Box : MonoBehaviour
 
     private IEnumerator TestCallRoutine()
     {
-        // 调用控制器的播放逻辑
-        yield return PlayVideoAndWait();
+        // 按“开盒循环”执行：每次先播视频，再随机抽一个功能只执行一次
+        int boxIndex = transform.GetSiblingIndex();
+        var settings = BarrageController.Instance.barrageBoxSetting[boxIndex];
+        int cycles = Mathf.Max(1, settings.Count);
+        for (int i = 0; i < cycles; i++)
+        {
+            yield return PlayVideoAndWait();
 
-        int index = UnityEngine.Random.Range(0, BarrageController.Instance.barrageBoxSetting[transform.GetSiblingIndex()].Calls.Count);
-        string callName = BarrageController.Instance.barrageBoxSetting[transform.GetSiblingIndex()].Calls[index];
-        int times = BarrageController.Instance.barrageBoxSetting[transform.GetSiblingIndex()].Count;
-        float delay = BarrageController.Instance.barrageBoxSetting[transform.GetSiblingIndex()].Delay;
+            int index = UnityEngine.Random.Range(0, settings.Calls.Count);
+            string callName = settings.Calls[index];
+            float delay = settings.Delay;
+            BarrageController.Instance.EnqueueAction("测试用户", "", callName, 1, 1, delay);
 
-        BarrageController.Instance.EnqueueAction("测试用户", "", callName, 1, times, delay);
+            if (settings.Delay > 0f && i < cycles - 1)
+            {
+                yield return new WaitForSeconds(settings.Delay);
+            }
+        }
     }
 }

@@ -159,11 +159,11 @@ public class Special : MonoBehaviour
     public void JoinCall(GameObject call)
     {
         GameObject obj = Instantiate(callObj, calls);
-        if(obj != null)
+        if (obj != null)
         {
             string name = call.transform.GetChild(0).GetComponent<Text>().text;
             barrageConfig.barrageSpecialBoxSetting[transform.GetSiblingIndex()].Calls.Add(name);
-                
+
             obj.transform.GetChild(0).GetChild(0).GetComponent<Text>().text = name;
             InputField inputField = obj.transform.GetChild(1).GetComponent<InputField>();
             if (inputField != null)
@@ -276,17 +276,25 @@ public class Special : MonoBehaviour
 
     private IEnumerator TestCallRoutine()
     {
-        // 调用控制器的播放逻辑
-        yield return PlayVideoAndWait();
+        int boxIndex = transform.GetSiblingIndex();
+        var settings = BarrageController.Instance.barrageSpecialBoxSetting[boxIndex];
 
-        foreach(var callName in BarrageController.Instance.barrageSpecialBoxSetting[transform.GetSiblingIndex()].Calls)
+        // 先按倍率播放多次视频
+        int cycles = Mathf.Max(1, settings.Count);
+        for (int i = 0; i < cycles; i++)
         {
-            int index = UnityEngine.Random.Range(0, BarrageController.Instance.barrageSpecialBoxSetting[transform.GetSiblingIndex()].Calls.Count);
-            int times = BarrageController.Instance.barrageSpecialBoxSetting[transform.GetSiblingIndex()].Count;
-            float delay = BarrageController.Instance.barrageSpecialBoxSetting[transform.GetSiblingIndex()].Delay;
+            yield return PlayVideoAndWait();
 
-            BarrageController.Instance.EnqueueAction("测试用户", "", callName, 1, times, delay);
+            foreach (var callName in settings.Calls)
+            {
+                float delay = settings.Delay;
+                BarrageController.Instance.EnqueueAction("测试用户", "", callName, 1, 1, delay);
+            }
+
+            if (settings.Delay > 0f && i < cycles - 1)
+            {
+                yield return new WaitForSeconds(settings.Delay);
+            }
         }
     }
 }
-        

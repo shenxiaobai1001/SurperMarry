@@ -1,8 +1,6 @@
 ﻿using System.Collections;
 using SystemScripts;
 using UnityEngine;
-using UnityEngine.SceneManagement;
-using static UnityEditor.IMGUI.Controls.PrimitiveBoundsHandle;
 
 namespace PlayerScripts
 {

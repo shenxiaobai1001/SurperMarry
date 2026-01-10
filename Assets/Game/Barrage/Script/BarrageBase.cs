@@ -240,21 +240,32 @@ public class BarrageBase : MonoBehaviour
         if (box == null)
             yield break;
 
-        if (!string.IsNullOrEmpty(box.videoName) && box.videoName != "空")
-        {
-            string path = $"Box/{box.videoName}";
-            yield return controller.PlayBoxVideoAndWait(path, 2, false, null);
-        }
-
         if (box.Calls == null || box.Calls.Count == 0)
         {
             Debug.LogWarning($"盲盒 '{box.BoxName}' 未配置任何功能 Calls");
             yield break;
         }
 
-        int index = UnityEngine.Random.Range(0, box.Calls.Count);
-        string callName = box.Calls[index];
-        controller.EnqueueAction(user, avatar, callName, Mathf.Max(1, giftCount), box.Count, box.Delay, true);
+        int cycles = Mathf.Max(1, giftCount) * Mathf.Max(1, box.Count);
+        for (int i = 0; i < cycles; i++)
+        {
+            if (!string.IsNullOrEmpty(box.videoName) && box.videoName != "空")
+            {
+                string path = $"Box/{box.videoName}";
+                yield return controller.PlayBoxVideoAndWait(path, 2, false, null);
+            }
+
+            int index = UnityEngine.Random.Range(0, box.Calls.Count);
+            string callName = box.Calls[index];
+            // 每次播放完动画后，只执行一次随机抽中的功能
+            controller.EnqueueAction(user, avatar, callName, 1, 1, box.Delay, true);
+
+            // 播放视频与下一轮之间的间隔
+            if (box.Delay > 0f && i < cycles - 1)
+            {
+                yield return new WaitForSeconds(box.Delay);
+            }
+        }
     }
 
     // 多特效播放视频后再执行功能：如果配置了视频名则先播完再触发
@@ -263,21 +274,34 @@ public class BarrageBase : MonoBehaviour
         if (box == null)
             yield break;
 
-        if (!string.IsNullOrEmpty(box.videoName) && box.videoName != "空")
-        {
-            string path = $"Box/{box.videoName}";
-            yield return controller.PlayBoxVideoAndWait(path, 2, false, null);
-        }   
-
         if (box.Calls == null || box.Calls.Count == 0)
         {
             Debug.LogWarning($"盲盒 '{box.BoxName}' 未配置任何功能 Calls");
             yield break;
         }
 
-        foreach (var callName in box.Calls)
+        // 每轮：播放视频 -> 执行所有功能 -> 等待间隔
+        int cycles = Mathf.Max(1, giftCount) * Mathf.Max(1, box.Count);
+        for (int i = 0; i < cycles; i++)
         {
-            controller.CallFunction(user, avatar, callName, Mathf.Max(1, giftCount), box.Count, box.Delay);
+            if (!string.IsNullOrEmpty(box.videoName) && box.videoName != "空")
+            {
+                string path = $"Box/{box.videoName}";
+                yield return controller.PlayBoxVideoAndWait(path, 2, false, null);
+            }
+
+            if (box.Calls != null)
+            {
+                foreach (var callName in box.Calls)
+                {
+                    controller.EnqueueAction(user, avatar, callName, 1, 1, box.Delay, true);
+                }
+            }
+
+            if (box.Delay > 0f && i < cycles - 1)
+            {
+                yield return new WaitForSeconds(box.Delay);
+            }
         }
     }
 }
