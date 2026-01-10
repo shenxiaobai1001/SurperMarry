@@ -57,7 +57,7 @@
             "Delay": 1.0
         },
         {
-            "CallName": "滚刺",
+            "CallName": "麒麟臂",
             "Type": "礼物",
             "Message": "",
             "Tip": "",
@@ -65,7 +65,7 @@
             "Delay": 0.0
         },
         {
-            "CallName": "砖块+10",
+            "CallName": "天残脚",
             "Type": "礼物",
             "Message": "",
             "Tip": "",
