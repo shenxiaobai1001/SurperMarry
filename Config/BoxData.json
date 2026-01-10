@@ -1,0 +1,27 @@
+{
+    "BoxConfigs": [
+        {
+            "BoxName": "123",
+            "Type": "礼物",
+            "Message": "小心心",
+            "Tip": "",
+            "Count": 1,
+            "Delay": 0.0,
+            "videoName": "关注盲盒",
+            "Calls": [
+                "乌龟一只",
+                "生命+1"
+            ]
+        },
+        {
+            "BoxName": "",
+            "Type": "",
+            "Message": "",
+            "Tip": "",
+            "Count": 1,
+            "Delay": 0.0,
+            "videoName": "",
+            "Calls": []
+        }
+    ]
+}

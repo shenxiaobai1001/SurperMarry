@@ -1,0 +1,27 @@
+{
+    "SpecialConfigs": [
+        {
+            "BoxName": "",
+            "Type": "礼物",
+            "Message": "",
+            "Tip": "",
+            "Count": 1,
+            "Delay": 0.0,
+            "videoName": "火力全开",
+            "Calls": [
+                "乌龟一只",
+                "飞鱼十只"
+            ]
+        },
+        {
+            "BoxName": "",
+            "Type": "",
+            "Message": "",
+            "Tip": "",
+            "Count": 1,
+            "Delay": 0.0,
+            "videoName": "",
+            "Calls": []
+        }
+    ]
+}
