@@ -3,11 +3,13 @@ using System.Collections;
 using System.Collections.Generic;
 using SystemScripts;
 using UnityEngine;
+using UnityEngine.WSA;
 
 public class Axesystem : MonoBehaviour
 {
     public ChainBridge bridge;
     bool check = true;
+    public GameObject Collder;
     // Start is called before the first frame update
     void Start()
     {
@@ -20,6 +22,7 @@ public class Axesystem : MonoBehaviour
 
         if (collision.tag.Contains("Player")&& check)
         {
+          if(Collder) Collder.SetActive(false);
             Sound.PauseOrPlayVolumeMusic(true);
             Config.isLoading = true;
             ModController.Instance.OnModPause();
@@ -40,6 +43,7 @@ public class Axesystem : MonoBehaviour
     private static IEnumerator NextLevel()
     {
         yield return new WaitForSeconds(5);
+        GameStatusController.IsBossBattle = false;
         PlayerController.Instance.OnToFindNpc();
         yield return new WaitForSeconds(3);
         Config.passIndex++;

@@ -45,7 +45,7 @@ namespace SystemScripts
                transform.position,
                !GameStatusController.IsBossBattle
                 ? new Vector3(player.transform.position.x, y, -10)
-                : new Vector3(285, y, -10),
+                : new Vector3(PlayerController.Instance.bossPkPos.x, 5, -10),
                30 * Time.deltaTime
            );
         }

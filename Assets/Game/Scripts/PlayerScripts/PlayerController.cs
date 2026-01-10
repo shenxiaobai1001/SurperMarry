@@ -342,7 +342,12 @@ namespace PlayerScripts
 
         private void OnCollisionEnter2D(Collision2D other)
         {
-            if (other.gameObject.CompareTag("Arrow"))
+            if (other.gameObject.CompareTag("EnemyBody"))
+            {
+                OnDieNFunc();
+                return;
+            }
+            else  if (other.gameObject.CompareTag("Arrow"))
             {
                 isSpecialDie = true;
                 OnDieNFunc();
@@ -482,6 +487,7 @@ namespace PlayerScripts
                 }
                 else
                 {
+                    if(GetComponent<Collider2D>()&& smallPlayerCollider.GetComponent<Collider2D>())
                     Physics2D.IgnoreCollision(GetComponent<Collider2D>(), smallPlayerCollider.GetComponent<Collider2D>());
                 }
             }
@@ -508,6 +514,7 @@ namespace PlayerScripts
                 _isEatable = true;
             }
         }
+        public Vector3 bossPkPos;
         public bool isHidden = false;
         private void OnTriggerEnter2D(Collider2D other)
         {
@@ -517,7 +524,11 @@ namespace PlayerScripts
                 GameStatusController.IsShowMessage = true;
                 _playerAnim.SetFloat(SpeedF, 0);
             }
-
+            if (other.gameObject.CompareTag("BoosPK"))
+            {
+                bossPkPos= other.transform.position;
+                GameStatusController.IsBossBattle = true;
+            }
             if (other.gameObject.CompareTag("Axe"))
             {
                 _playerAudio.PlayOneShot(endGameSound);
