@@ -3,7 +3,6 @@ using System.Collections;
 using System.Collections.Generic;
 using SystemScripts;
 using UnityEngine;
-using UnityEngine.WSA;
 
 public class Axesystem : MonoBehaviour
 {
