@@ -867,6 +867,12 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 22024975}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &22024977 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 989915472356077630, guid: b3b9e95405e9d4d49afedb650a265da5,
+    type: 3}
+  m_PrefabInstance: {fileID: 22024975}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &22756265
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -7152,6 +7158,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: CoinBrick
+      objectReference: {fileID: 0}
+    - target: {fileID: 6002575483965112678, guid: aa87f4e7d800e41b0997fe2120683d68,
+        type: 3}
+      propertyPath: m_TagString
+      value: PowerBrick
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -15413,6 +15424,12 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 693774308}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &693774310 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 6691854002660372949, guid: cab1bfbd4e680432da49a542c18d3043,
+    type: 3}
+  m_PrefabInstance: {fileID: 693774308}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &695055486
 GameObject:
   m_ObjectHideFlags: 0
@@ -19755,6 +19772,12 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 875497448}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &875497450 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 989915472356077630, guid: b3b9e95405e9d4d49afedb650a265da5,
+    type: 3}
+  m_PrefabInstance: {fileID: 875497448}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &876731959
 GameObject:
   m_ObjectHideFlags: 0
@@ -23592,6 +23615,12 @@ PrefabInstance:
 --- !u!4 &1062908999 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 6691854002660372948, guid: cab1bfbd4e680432da49a542c18d3043,
+    type: 3}
+  m_PrefabInstance: {fileID: 1062908998}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &1062909000 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 6691854002660372949, guid: cab1bfbd4e680432da49a542c18d3043,
     type: 3}
   m_PrefabInstance: {fileID: 1062908998}
   m_PrefabAsset: {fileID: 0}
@@ -37536,6 +37565,12 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 1697444916}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &1697444918 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 6691854002660372949, guid: cab1bfbd4e680432da49a542c18d3043,
+    type: 3}
+  m_PrefabInstance: {fileID: 1697444916}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1702176442
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -43153,6 +43188,18 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 1989723284}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &1989723286 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 4392269553133641865, guid: c8142232694ad4220ae54ca4bbc27a64,
+    type: 3}
+  m_PrefabInstance: {fileID: 1989723284}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9d70aef29bf8b4fc69dd91cb13bb48d9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &2013192186
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -43750,6 +43797,18 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 2041266930}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &2041266932 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 4392269553133641865, guid: c8142232694ad4220ae54ca4bbc27a64,
+    type: 3}
+  m_PrefabInstance: {fileID: 2041266930}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9d70aef29bf8b4fc69dd91cb13bb48d9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &2051790114
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -45481,12 +45540,12 @@ PrefabInstance:
     - target: {fileID: 1085805703535972922, guid: 30b8eaf80aaac480cb910e5791aecc4e,
         type: 3}
       propertyPath: enemyControllers.Array.size
-      value: 0
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 1085805703535972922, guid: 30b8eaf80aaac480cb910e5791aecc4e,
         type: 3}
       propertyPath: enemyGameObjects.Array.size
-      value: 0
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 1085805703535972922, guid: 30b8eaf80aaac480cb910e5791aecc4e,
         type: 3}
@@ -45502,12 +45561,12 @@ PrefabInstance:
         type: 3}
       propertyPath: enemyControllers.Array.data[0]
       value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 2041266932}
     - target: {fileID: 1085805703535972922, guid: 30b8eaf80aaac480cb910e5791aecc4e,
         type: 3}
       propertyPath: enemyControllers.Array.data[1]
       value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 1989723286}
     - target: {fileID: 1085805703535972922, guid: 30b8eaf80aaac480cb910e5791aecc4e,
         type: 3}
       propertyPath: enemyControllers.Array.data[2]
@@ -45552,27 +45611,27 @@ PrefabInstance:
         type: 3}
       propertyPath: enemyGameObjects.Array.data[0]
       value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 1062909000}
     - target: {fileID: 1085805703535972922, guid: 30b8eaf80aaac480cb910e5791aecc4e,
         type: 3}
       propertyPath: enemyGameObjects.Array.data[1]
       value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 693774310}
     - target: {fileID: 1085805703535972922, guid: 30b8eaf80aaac480cb910e5791aecc4e,
         type: 3}
       propertyPath: enemyGameObjects.Array.data[2]
       value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 1697444918}
     - target: {fileID: 1085805703535972922, guid: 30b8eaf80aaac480cb910e5791aecc4e,
         type: 3}
       propertyPath: enemyGameObjects.Array.data[3]
       value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 22024977}
     - target: {fileID: 1085805703535972922, guid: 30b8eaf80aaac480cb910e5791aecc4e,
         type: 3}
       propertyPath: enemyGameObjects.Array.data[4]
       value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 875497450}
     - target: {fileID: 1085805703535972922, guid: 30b8eaf80aaac480cb910e5791aecc4e,
         type: 3}
       propertyPath: enemyGameObjects.Array.data[5]

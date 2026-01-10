@@ -25757,7 +25757,7 @@ PrefabInstance:
     - target: {fileID: 6002575483965112678, guid: 4a00bf225294742f9b824434398b9efc,
         type: 3}
       propertyPath: m_TagString
-      value: PowerBrick
+      value: Untagged
       objectReference: {fileID: 0}
     - target: {fileID: 9115763966427098048, guid: 4a00bf225294742f9b824434398b9efc,
         type: 3}
@@ -31025,7 +31025,7 @@ PrefabInstance:
     - target: {fileID: 6002575483965112678, guid: 4a00bf225294742f9b824434398b9efc,
         type: 3}
       propertyPath: m_TagString
-      value: PowerBrick
+      value: Untagged
       objectReference: {fileID: 0}
     - target: {fileID: 9115763966427098048, guid: 4a00bf225294742f9b824434398b9efc,
         type: 3}
@@ -37594,6 +37594,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: DarkBrick_0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5407727845453544337, guid: e582326e76b6e49d2bb496ca6b4fac92,
+        type: 3}
+      propertyPath: m_TagString
+      value: PowerBrick
       objectReference: {fileID: 0}
     - target: {fileID: 8768637447044340582, guid: e582326e76b6e49d2bb496ca6b4fac92,
         type: 3}
@@ -60199,6 +60204,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: DarkBrick (135)
       objectReference: {fileID: 0}
+    - target: {fileID: 5407727845453544337, guid: e582326e76b6e49d2bb496ca6b4fac92,
+        type: 3}
+      propertyPath: m_TagString
+      value: PowerBrick
+      objectReference: {fileID: 0}
     - target: {fileID: 8768637447044340582, guid: e582326e76b6e49d2bb496ca6b4fac92,
         type: 3}
       propertyPath: m_RootOrder
@@ -67435,7 +67445,7 @@ PrefabInstance:
     - target: {fileID: 6002575483965112678, guid: 4a00bf225294742f9b824434398b9efc,
         type: 3}
       propertyPath: m_TagString
-      value: PowerBrick
+      value: Untagged
       objectReference: {fileID: 0}
     - target: {fileID: 9115763966427098048, guid: 4a00bf225294742f9b824434398b9efc,
         type: 3}
@@ -68362,7 +68372,7 @@ PrefabInstance:
     - target: {fileID: 6002575483965112678, guid: 4a00bf225294742f9b824434398b9efc,
         type: 3}
       propertyPath: m_TagString
-      value: PowerBrick
+      value: Untagged
       objectReference: {fileID: 0}
     - target: {fileID: 9115763966427098048, guid: 4a00bf225294742f9b824434398b9efc,
         type: 3}
@@ -84040,7 +84050,7 @@ PrefabInstance:
     - target: {fileID: 6002575483965112678, guid: 4a00bf225294742f9b824434398b9efc,
         type: 3}
       propertyPath: m_TagString
-      value: PowerBrick
+      value: Untagged
       objectReference: {fileID: 0}
     - target: {fileID: 9115763966427098048, guid: 4a00bf225294742f9b824434398b9efc,
         type: 3}
@@ -84343,7 +84353,7 @@ PrefabInstance:
     - target: {fileID: 6002575483965112678, guid: 4a00bf225294742f9b824434398b9efc,
         type: 3}
       propertyPath: m_TagString
-      value: PowerBrick
+      value: Untagged
       objectReference: {fileID: 0}
     - target: {fileID: 9115763966427098048, guid: 4a00bf225294742f9b824434398b9efc,
         type: 3}

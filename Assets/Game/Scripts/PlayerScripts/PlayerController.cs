@@ -431,6 +431,7 @@ namespace PlayerScripts
             if (other.gameObject.CompareTag("FireFlower") && (CompareTag("Player") || CompareTag("UltimatePlayer")) &&
                 _isEatable)
             {
+           
                 _playerAudio.PlayOneShot(turnBigSound);
                 TurnIntoBigPlayer();
                 _isEatable = false;
@@ -440,6 +441,7 @@ namespace PlayerScripts
                 _isEatable)
             {
                 _playerAudio.PlayOneShot(turnBigSound);
+                TurnIntoBigPlayer();
                 GameStatusController.IsFirePlayer = true;
                 _isEatable = false;
             }
@@ -551,6 +553,7 @@ namespace PlayerScripts
 
         private void TurnIntoBigPlayer()
         {
+            PFunc.Log("碰见大花", gameObject.tag);
             if (CompareTag("Player"))
             {
                 GameStatusController.PlayerTag = "BigPlayer";

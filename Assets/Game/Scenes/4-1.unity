@@ -1642,13 +1642,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8941480b47a90d143b8b3324f6ba3613, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  prefabToSpawn: {fileID: 6073388769841339297, guid: 78c70aba9532a4855a7866462b833e72,
-    type: 3}
-  spawnCount: 1
-  spawnDirection: {x: 1, y: 0, z: 0}
-  spacing: 1
-  generateObjects: 0
-  clearObjects: 0
 --- !u!1001 &56845068
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2623,13 +2616,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8941480b47a90d143b8b3324f6ba3613, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  prefabToSpawn: {fileID: 5407727845453544337, guid: e582326e76b6e49d2bb496ca6b4fac92,
-    type: 3}
-  spawnCount: 2
-  spawnDirection: {x: 0, y: -1, z: 0}
-  spacing: 1
-  generateObjects: 0
-  clearObjects: 0
 --- !u!1001 &84508378
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2751,13 +2737,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8941480b47a90d143b8b3324f6ba3613, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  prefabToSpawn: {fileID: 4547701488745971710, guid: 9030e25e755c142408e03e496714f7ba,
-    type: 3}
-  spawnCount: 3
-  spawnDirection: {x: 1, y: 0, z: 0}
-  spacing: 1
-  generateObjects: 0
-  clearObjects: 0
 --- !u!1001 &93525878
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -3026,13 +3005,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8941480b47a90d143b8b3324f6ba3613, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  prefabToSpawn: {fileID: 6073388769841339297, guid: 78c70aba9532a4855a7866462b833e72,
-    type: 3}
-  spawnCount: 2
-  spawnDirection: {x: 1, y: 0, z: 0}
-  spacing: 1
-  generateObjects: 0
-  clearObjects: 0
 --- !u!1001 &97519324
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -5503,13 +5475,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8941480b47a90d143b8b3324f6ba3613, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  prefabToSpawn: {fileID: 6073388769841339297, guid: 78c70aba9532a4855a7866462b833e72,
-    type: 3}
-  spawnCount: 6
-  spawnDirection: {x: 1, y: 0, z: 0}
-  spacing: 1
-  generateObjects: 0
-  clearObjects: 0
 --- !u!1001 &169515250
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -6967,13 +6932,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8941480b47a90d143b8b3324f6ba3613, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  prefabToSpawn: {fileID: 4547701488745971710, guid: 9030e25e755c142408e03e496714f7ba,
-    type: 3}
-  spawnCount: 42
-  spawnDirection: {x: 1, y: 0, z: 0}
-  spacing: 1
-  generateObjects: 0
-  clearObjects: 0
 --- !u!1001 &224486423
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -9473,6 +9431,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: CoinBrick
       objectReference: {fileID: 0}
+    - target: {fileID: 6002575483965112678, guid: aa87f4e7d800e41b0997fe2120683d68,
+        type: 3}
+      propertyPath: m_TagString
+      value: PowerBrick
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -9535,13 +9498,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8941480b47a90d143b8b3324f6ba3613, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  prefabToSpawn: {fileID: 6073388769841339297, guid: 78c70aba9532a4855a7866462b833e72,
-    type: 3}
-  spawnCount: 7
-  spawnDirection: {x: 1, y: 0, z: 0}
-  spacing: 1
-  generateObjects: 0
-  clearObjects: 0
 --- !u!1001 &311226059
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -9922,13 +9878,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8941480b47a90d143b8b3324f6ba3613, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  prefabToSpawn: {fileID: 5899664295857340554, guid: cc3994a548ea6f240a2865dd589083a9,
-    type: 3}
-  spawnCount: 40
-  spawnDirection: {x: 1, y: 0, z: 0}
-  spacing: 1
-  generateObjects: 0
-  clearObjects: 0
 --- !u!1001 &319808438
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -10135,13 +10084,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8941480b47a90d143b8b3324f6ba3613, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  prefabToSpawn: {fileID: 2710483173341656725, guid: 205d76d4c46dd450ab8771f655aef867,
-    type: 3}
-  spawnCount: 9
-  spawnDirection: {x: 1, y: 0, z: 0}
-  spacing: 1
-  generateObjects: 0
-  clearObjects: 0
 --- !u!1001 &323712747
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -10335,13 +10277,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8941480b47a90d143b8b3324f6ba3613, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  prefabToSpawn: {fileID: 6073388769841339297, guid: 78c70aba9532a4855a7866462b833e72,
-    type: 3}
-  spawnCount: 1
-  spawnDirection: {x: 1, y: 0, z: 0}
-  spacing: 1
-  generateObjects: 0
-  clearObjects: 0
 --- !u!1 &331680740
 GameObject:
   m_ObjectHideFlags: 0
@@ -13029,13 +12964,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8941480b47a90d143b8b3324f6ba3613, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  prefabToSpawn: {fileID: 6073388769841339297, guid: 78c70aba9532a4855a7866462b833e72,
-    type: 3}
-  spawnCount: 9
-  spawnDirection: {x: 1, y: 0, z: 0}
-  spacing: 1
-  generateObjects: 0
-  clearObjects: 0
 --- !u!1001 &436263360
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -13932,13 +13860,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8941480b47a90d143b8b3324f6ba3613, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  prefabToSpawn: {fileID: 4547701488745971710, guid: 9030e25e755c142408e03e496714f7ba,
-    type: 3}
-  spawnCount: 38
-  spawnDirection: {x: 1, y: 0, z: 0}
-  spacing: 1
-  generateObjects: 0
-  clearObjects: 0
 --- !u!1001 &464117935
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -17961,13 +17882,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8941480b47a90d143b8b3324f6ba3613, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  prefabToSpawn: {fileID: 6073388769841339297, guid: 78c70aba9532a4855a7866462b833e72,
-    type: 3}
-  spawnCount: 1
-  spawnDirection: {x: 1, y: 0, z: 0}
-  spacing: 1
-  generateObjects: 0
-  clearObjects: 0
 --- !u!1001 &585188351
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -21732,13 +21646,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8941480b47a90d143b8b3324f6ba3613, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  prefabToSpawn: {fileID: 5899664295857340554, guid: cc3994a548ea6f240a2865dd589083a9,
-    type: 3}
-  spawnCount: 40
-  spawnDirection: {x: 1, y: 0, z: 0}
-  spacing: 1
-  generateObjects: 0
-  clearObjects: 0
 --- !u!1001 &732707304
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -24561,13 +24468,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8941480b47a90d143b8b3324f6ba3613, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  prefabToSpawn: {fileID: 4547701488745971710, guid: 9030e25e755c142408e03e496714f7ba,
-    type: 3}
-  spawnCount: 42
-  spawnDirection: {x: 1, y: 0, z: 0}
-  spacing: 1
-  generateObjects: 0
-  clearObjects: 0
 --- !u!1001 &831265925
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -26947,13 +26847,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8941480b47a90d143b8b3324f6ba3613, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  prefabToSpawn: {fileID: 4547701488745971710, guid: 9030e25e755c142408e03e496714f7ba,
-    type: 3}
-  spawnCount: 9
-  spawnDirection: {x: 1, y: 0, z: 0}
-  spacing: 1
-  generateObjects: 0
-  clearObjects: 0
 --- !u!1 &948143979
 GameObject:
   m_ObjectHideFlags: 0
@@ -26999,13 +26892,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8941480b47a90d143b8b3324f6ba3613, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  prefabToSpawn: {fileID: 6073388769841339297, guid: 78c70aba9532a4855a7866462b833e72,
-    type: 3}
-  spawnCount: 1
-  spawnDirection: {x: 1, y: 0, z: 0}
-  spacing: 1
-  generateObjects: 0
-  clearObjects: 0
 --- !u!1001 &949298246
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -27774,6 +27660,21 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1641936762}
     m_Modifications:
+    - target: {fileID: 921850221052654941, guid: 26e19250452ab584e8c804edfddb8cbd,
+        type: 3}
+      propertyPath: chaseSpeed
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 921850221052654941, guid: 26e19250452ab584e8c804edfddb8cbd,
+        type: 3}
+      propertyPath: normalSpeed
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 921850221052654941, guid: 26e19250452ab584e8c804edfddb8cbd,
+        type: 3}
+      propertyPath: chaseDistance
+      value: 3
+      objectReference: {fileID: 0}
     - target: {fileID: 3082628321958290244, guid: 26e19250452ab584e8c804edfddb8cbd,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -28185,13 +28086,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8941480b47a90d143b8b3324f6ba3613, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  prefabToSpawn: {fileID: 4547701488745971710, guid: 9030e25e755c142408e03e496714f7ba,
-    type: 3}
-  spawnCount: 88
-  spawnDirection: {x: 1, y: 0, z: 0}
-  spacing: 1
-  generateObjects: 0
-  clearObjects: 0
 --- !u!1001 &979046541
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -29222,13 +29116,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8941480b47a90d143b8b3324f6ba3613, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  prefabToSpawn: {fileID: 5407727845453544337, guid: e582326e76b6e49d2bb496ca6b4fac92,
-    type: 3}
-  spawnCount: 2
-  spawnDirection: {x: 0, y: -1, z: 0}
-  spacing: 1
-  generateObjects: 0
-  clearObjects: 0
 --- !u!1001 &1008471488
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -33039,13 +32926,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8941480b47a90d143b8b3324f6ba3613, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  prefabToSpawn: {fileID: 6073388769841339297, guid: 78c70aba9532a4855a7866462b833e72,
-    type: 3}
-  spawnCount: 1
-  spawnDirection: {x: 1, y: 0, z: 0}
-  spacing: 1
-  generateObjects: 0
-  clearObjects: 0
 --- !u!1001 &1119861933
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -33169,13 +33049,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8941480b47a90d143b8b3324f6ba3613, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  prefabToSpawn: {fileID: 6073388769841339297, guid: 78c70aba9532a4855a7866462b833e72,
-    type: 3}
-  spawnCount: 5
-  spawnDirection: {x: 1, y: 0, z: 0}
-  spacing: 1
-  generateObjects: 0
-  clearObjects: 0
 --- !u!1001 &1135505216
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -39743,13 +39616,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8941480b47a90d143b8b3324f6ba3613, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  prefabToSpawn: {fileID: 6073388769841339297, guid: 78c70aba9532a4855a7866462b833e72,
-    type: 3}
-  spawnCount: 4
-  spawnDirection: {x: 1, y: 0, z: 0}
-  spacing: 1
-  generateObjects: 0
-  clearObjects: 0
 --- !u!1001 &1351953612
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -40962,13 +40828,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8941480b47a90d143b8b3324f6ba3613, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  prefabToSpawn: {fileID: 4547701488745971710, guid: 9030e25e755c142408e03e496714f7ba,
-    type: 3}
-  spawnCount: 60
-  spawnDirection: {x: 1, y: 0, z: 0}
-  spacing: 1
-  generateObjects: 0
-  clearObjects: 0
 --- !u!1 &1402694920
 GameObject:
   m_ObjectHideFlags: 0
@@ -41016,13 +40875,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8941480b47a90d143b8b3324f6ba3613, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  prefabToSpawn: {fileID: 6073388769841339297, guid: 78c70aba9532a4855a7866462b833e72,
-    type: 3}
-  spawnCount: 3
-  spawnDirection: {x: 1, y: 0, z: 0}
-  spacing: 1
-  generateObjects: 0
-  clearObjects: 0
 --- !u!1001 &1409019686
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -45374,13 +45226,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8941480b47a90d143b8b3324f6ba3613, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  prefabToSpawn: {fileID: 4547701488745971710, guid: 9030e25e755c142408e03e496714f7ba,
-    type: 3}
-  spawnCount: 88
-  spawnDirection: {x: 1, y: 0, z: 0}
-  spacing: 1
-  generateObjects: 0
-  clearObjects: 0
 --- !u!1001 &1567708297
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -46135,13 +45980,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8941480b47a90d143b8b3324f6ba3613, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  prefabToSpawn: {fileID: 6073388769841339297, guid: 78c70aba9532a4855a7866462b833e72,
-    type: 3}
-  spawnCount: 1
-  spawnDirection: {x: 1, y: 0, z: 0}
-  spacing: 1
-  generateObjects: 0
-  clearObjects: 0
 --- !u!1001 &1600104715
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -46349,13 +46187,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8941480b47a90d143b8b3324f6ba3613, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  prefabToSpawn: {fileID: 5407727845453544337, guid: e582326e76b6e49d2bb496ca6b4fac92,
-    type: 3}
-  spawnCount: 15
-  spawnDirection: {x: 0, y: 1, z: 0}
-  spacing: 1
-  generateObjects: 0
-  clearObjects: 0
 --- !u!1001 &1605829731
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -49052,13 +48883,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8941480b47a90d143b8b3324f6ba3613, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  prefabToSpawn: {fileID: 2710483173341656725, guid: 205d76d4c46dd450ab8771f655aef867,
-    type: 3}
-  spawnCount: 11
-  spawnDirection: {x: 1, y: 0, z: 0}
-  spacing: 1
-  generateObjects: 0
-  clearObjects: 0
 --- !u!1001 &1706757478
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -50128,13 +49952,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8941480b47a90d143b8b3324f6ba3613, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  prefabToSpawn: {fileID: 4547701488745971710, guid: 9030e25e755c142408e03e496714f7ba,
-    type: 3}
-  spawnCount: 3
-  spawnDirection: {x: 1, y: 0, z: 0}
-  spacing: 1
-  generateObjects: 0
-  clearObjects: 0
 --- !u!1001 &1752493692
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -50262,13 +50079,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8941480b47a90d143b8b3324f6ba3613, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  prefabToSpawn: {fileID: 4547701488745971710, guid: 9030e25e755c142408e03e496714f7ba,
-    type: 3}
-  spawnCount: 9
-  spawnDirection: {x: 1, y: 0, z: 0}
-  spacing: 1
-  generateObjects: 0
-  clearObjects: 0
 --- !u!1001 &1754785462
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -52429,13 +52239,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8941480b47a90d143b8b3324f6ba3613, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  prefabToSpawn: {fileID: 4547701488745971710, guid: 9030e25e755c142408e03e496714f7ba,
-    type: 3}
-  spawnCount: 60
-  spawnDirection: {x: 1, y: 0, z: 0}
-  spacing: 1
-  generateObjects: 0
-  clearObjects: 0
 --- !u!1001 &1845354387
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -53753,13 +53556,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8941480b47a90d143b8b3324f6ba3613, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  prefabToSpawn: {fileID: 5407727845453544337, guid: e582326e76b6e49d2bb496ca6b4fac92,
-    type: 3}
-  spawnCount: 9
-  spawnDirection: {x: 1, y: 0, z: 0}
-  spacing: 1
-  generateObjects: 0
-  clearObjects: 0
 --- !u!1001 &1895456323
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -54730,13 +54526,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8941480b47a90d143b8b3324f6ba3613, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  prefabToSpawn: {fileID: 4547701488745971710, guid: 9030e25e755c142408e03e496714f7ba,
-    type: 3}
-  spawnCount: 38
-  spawnDirection: {x: 1, y: 0, z: 0}
-  spacing: 1
-  generateObjects: 0
-  clearObjects: 0
 --- !u!1001 &1923482841
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -59033,13 +58822,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8941480b47a90d143b8b3324f6ba3613, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  prefabToSpawn: {fileID: 5407727845453544337, guid: e582326e76b6e49d2bb496ca6b4fac92,
-    type: 3}
-  spawnCount: 13
-  spawnDirection: {x: 1, y: 0, z: 0}
-  spacing: 1
-  generateObjects: 0
-  clearObjects: 0
 --- !u!1001 &2082243957
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -60011,13 +59793,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8941480b47a90d143b8b3324f6ba3613, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  prefabToSpawn: {fileID: 6073388769841339297, guid: 78c70aba9532a4855a7866462b833e72,
-    type: 3}
-  spawnCount: 8
-  spawnDirection: {x: 1, y: 0, z: 0}
-  spacing: 1
-  generateObjects: 0
-  clearObjects: 0
 --- !u!1001 &2122112815
 PrefabInstance:
   m_ObjectHideFlags: 0

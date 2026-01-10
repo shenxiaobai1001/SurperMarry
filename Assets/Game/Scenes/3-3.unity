@@ -6232,6 +6232,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: CoinBrick
       objectReference: {fileID: 0}
+    - target: {fileID: 6002575483965112678, guid: aa87f4e7d800e41b0997fe2120683d68,
+        type: 3}
+      propertyPath: m_TagString
+      value: PowerBrick
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []

@@ -5878,6 +5878,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: CoinBrick
       objectReference: {fileID: 0}
+    - target: {fileID: 6002575483965112678, guid: aa87f4e7d800e41b0997fe2120683d68,
+        type: 3}
+      propertyPath: m_TagString
+      value: PowerBrick
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -9231,6 +9236,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: BrownBrick_1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5407727845453544337, guid: 5f184558bafb449e99502833c7812681,
+        type: 3}
+      propertyPath: m_TagString
+      value: PowerBrick
       objectReference: {fileID: 0}
     - target: {fileID: 8768637447044340582, guid: 5f184558bafb449e99502833c7812681,
         type: 3}
@@ -27246,6 +27256,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: BrownBrick_0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5407727845453544337, guid: 5f184558bafb449e99502833c7812681,
+        type: 3}
+      propertyPath: m_TagString
+      value: PowerBrick
       objectReference: {fileID: 0}
     - target: {fileID: 8768637447044340582, guid: 5f184558bafb449e99502833c7812681,
         type: 3}

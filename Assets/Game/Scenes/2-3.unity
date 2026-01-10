@@ -55951,6 +55951,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: DarkCoinBrick
       objectReference: {fileID: 0}
+    - target: {fileID: 6002575483965112678, guid: 4a00bf225294742f9b824434398b9efc,
+        type: 3}
+      propertyPath: m_TagString
+      value: PowerBrick
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []

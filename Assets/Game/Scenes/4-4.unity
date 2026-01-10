@@ -87522,12 +87522,12 @@ PrefabInstance:
     - target: {fileID: 1085805703535972922, guid: 30b8eaf80aaac480cb910e5791aecc4e,
         type: 3}
       propertyPath: enemyControllers.Array.size
-      value: 16
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1085805703535972922, guid: 30b8eaf80aaac480cb910e5791aecc4e,
         type: 3}
       propertyPath: enemyGameObjects.Array.size
-      value: 15
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1085805703535972922, guid: 30b8eaf80aaac480cb910e5791aecc4e,
         type: 3}
