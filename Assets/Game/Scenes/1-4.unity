@@ -68011,11 +68011,6 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 2110012994}
     m_Modifications:
-    - target: {fileID: 4761662090755540524, guid: 9cad1b6d25f9a86408811ade790b6066,
-        type: 3}
-      propertyPath: m_Size.x
-      value: 0.6
-      objectReference: {fileID: 0}
     - target: {fileID: 5334604319445180886, guid: 9cad1b6d25f9a86408811ade790b6066,
         type: 3}
       propertyPath: bridge
