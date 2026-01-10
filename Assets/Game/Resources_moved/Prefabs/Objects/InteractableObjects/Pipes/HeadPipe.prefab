@@ -11,7 +11,6 @@ GameObject:
   - component: {fileID: 695903924604861589}
   - component: {fileID: 5578647079594099521}
   - component: {fileID: 6086991823278391109}
-  - component: {fileID: 3824178179232710714}
   m_Layer: 0
   m_Name: HeadPipe
   m_TagString: Pipe
@@ -133,25 +132,6 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 1.7749779, y: 0.0028214455}
   m_EdgeRadius: 0
---- !u!114 &3824178179232710714
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7890863942301686107}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e644f1d1f68a1184ea0d2ce75e65fd80, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  moveDirection: 3
-  moveDistance: 2
-  moveSpeed: 3
-  enableSpikes: 0
-  isPingPong: 1
-  spikeObject: {fileID: 0}
-  easeType: 1
 --- !u!1 &9200019970694255923
 GameObject:
   m_ObjectHideFlags: 0
