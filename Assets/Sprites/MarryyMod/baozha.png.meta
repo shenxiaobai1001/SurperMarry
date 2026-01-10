@@ -1,0 +1,1152 @@
+fileFormatVersion: 2
+guid: 0fb70d7988b8a0741b0852d3f6a6adf2
+TextureImporter:
+  internalIDToNameTable: []
+  externalObjects: {}
+  serializedVersion: 13
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+    flipGreenChannel: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMipmapLimit: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 0
+    aniso: 1
+    mipBias: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 40
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 0
+  swizzle: 50462976
+  cookieLightType: 0
+  platformSettings:
+  - serializedVersion: 3
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 3
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 3
+    buildTarget: iPhone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 3
+    buildTarget: Android
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: baozha_0
+      rect:
+        serializedVersion: 2
+        x: 45
+        y: 106.666664
+        width: 15
+        height: 13.333333
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: bf4fa6779f57ea046b24e74d263c2566
+      internalID: 2053608762
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: baozha_1
+      rect:
+        serializedVersion: 2
+        x: 60
+        y: 106.666664
+        width: 15
+        height: 13.333333
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 85f93587920540141b8bfd02f248fb13
+      internalID: -371807213
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: baozha_2
+      rect:
+        serializedVersion: 2
+        x: 75
+        y: 106.666664
+        width: 15
+        height: 13.333333
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 2b2f8f4ec6c798547bc5cd8f7441c88a
+      internalID: 100218114
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: baozha_3
+      rect:
+        serializedVersion: 2
+        x: 30
+        y: 93.666664
+        width: 15
+        height: 13.333333
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 0c0bab0a338a5dc40a99c55c4c0b4281
+      internalID: 1887470671
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: baozha_4
+      rect:
+        serializedVersion: 2
+        x: 45
+        y: 93.666664
+        width: 15
+        height: 13.333333
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 1416d194b6f0d2c4585e57cd3812427b
+      internalID: 747538412
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: baozha_5
+      rect:
+        serializedVersion: 2
+        x: 60
+        y: 93.666664
+        width: 15
+        height: 13.333333
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: c64f0cd9ae241d64293ce04f85175be0
+      internalID: -413193788
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: baozha_6
+      rect:
+        serializedVersion: 2
+        x: 75
+        y: 93.666664
+        width: 15
+        height: 13.333333
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 47125225a7c9e464c904123c0ef6deb1
+      internalID: 1017189426
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: baozha_7
+      rect:
+        serializedVersion: 2
+        x: 90
+        y: 93.666664
+        width: 15
+        height: 13.333333
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: ec7b7e6cf63cb694f92f0b441cc58253
+      internalID: -150045613
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: baozha_8
+      rect:
+        serializedVersion: 2
+        x: 15
+        y: 80.666664
+        width: 15
+        height: 13.333333
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 57e9e0d6bb1030c469ef54d4bc34c758
+      internalID: -1359128049
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: baozha_9
+      rect:
+        serializedVersion: 2
+        x: 30
+        y: 80.666664
+        width: 15
+        height: 13.333333
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 3c1db4ec4502c9e4ba00e22148690941
+      internalID: -359538936
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: baozha_10
+      rect:
+        serializedVersion: 2
+        x: 45
+        y: 80.666664
+        width: 15
+        height: 13.333333
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 560071315219a2a4fa068f63bda83102
+      internalID: -947933180
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: baozha_11
+      rect:
+        serializedVersion: 2
+        x: 60
+        y: 80.666664
+        width: 15
+        height: 13.333333
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 70d7a036af55bdc4c96be70508fb1a66
+      internalID: -867167491
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: baozha_12
+      rect:
+        serializedVersion: 2
+        x: 75
+        y: 80.666664
+        width: 15
+        height: 13.333333
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: c4cc025818eafc648bd3f5922a56a203
+      internalID: -125563985
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: baozha_13
+      rect:
+        serializedVersion: 2
+        x: 90
+        y: 80.666664
+        width: 15
+        height: 13.333333
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 353a35e92471b3e4986e56c8bfa6fc46
+      internalID: 700819939
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: baozha_14
+      rect:
+        serializedVersion: 2
+        x: 15
+        y: 67.666664
+        width: 15
+        height: 13.333333
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: c37ce258fb994304499ca77abd7898ca
+      internalID: -2130258820
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: baozha_15
+      rect:
+        serializedVersion: 2
+        x: 30
+        y: 67.666664
+        width: 15
+        height: 13.333333
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: f1560af160f21fa47ab98dfeeacfbf6b
+      internalID: 1398353936
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: baozha_16
+      rect:
+        serializedVersion: 2
+        x: 45
+        y: 67.666664
+        width: 15
+        height: 13.333333
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 6a5a26c37511ac34e868bf2e06b82bb0
+      internalID: 994249231
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: baozha_17
+      rect:
+        serializedVersion: 2
+        x: 60
+        y: 67.666664
+        width: 15
+        height: 13.333333
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: f5d0aea085db32e43b84063e237b9a28
+      internalID: -1954629954
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: baozha_18
+      rect:
+        serializedVersion: 2
+        x: 75
+        y: 67.666664
+        width: 15
+        height: 13.333333
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 737c53b6b46081f4f805f7cc1b3d999e
+      internalID: 910483570
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: baozha_19
+      rect:
+        serializedVersion: 2
+        x: 90
+        y: 67.666664
+        width: 15
+        height: 13.333333
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 55f1bfdb7f594a54dbc487fb4f4dac17
+      internalID: 1240538435
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: baozha_20
+      rect:
+        serializedVersion: 2
+        x: 15
+        y: 54.666668
+        width: 15
+        height: 13.333333
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: deba468d8f023ea46bb73f93de12c8c7
+      internalID: 1276316770
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: baozha_21
+      rect:
+        serializedVersion: 2
+        x: 30
+        y: 54.666668
+        width: 15
+        height: 13.333333
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 650384db2904d3946ba31d92cc5b6609
+      internalID: 1028743214
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: baozha_22
+      rect:
+        serializedVersion: 2
+        x: 45
+        y: 54.666668
+        width: 15
+        height: 13.333333
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 8773ef32175abee479d8ca7902178fd4
+      internalID: 1921357946
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: baozha_23
+      rect:
+        serializedVersion: 2
+        x: 60
+        y: 54.666668
+        width: 15
+        height: 13.333333
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 67daef1221641b3448a75e32cdb3acb3
+      internalID: 1332935108
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: baozha_24
+      rect:
+        serializedVersion: 2
+        x: 75
+        y: 54.666668
+        width: 15
+        height: 13.333333
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 3759fc237d4a7614aaef3786b50e71f8
+      internalID: -2069834631
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: baozha_25
+      rect:
+        serializedVersion: 2
+        x: 90
+        y: 54.666668
+        width: 15
+        height: 13.333333
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: e39086446a6e31448b545fd91ae02943
+      internalID: -703758215
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: baozha_26
+      rect:
+        serializedVersion: 2
+        x: 15
+        y: 41.666668
+        width: 15
+        height: 13.333333
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 9448b754f1c74bf46b1324be2430d6dc
+      internalID: 573862854
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: baozha_27
+      rect:
+        serializedVersion: 2
+        x: 30
+        y: 41.666668
+        width: 15
+        height: 13.333333
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 8115aae88331d4340873cbe2841e917d
+      internalID: 133302728
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: baozha_28
+      rect:
+        serializedVersion: 2
+        x: 45
+        y: 41.666668
+        width: 15
+        height: 13.333333
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 00a47b9cae652f843a9a1916fd051c76
+      internalID: -1840828654
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: baozha_29
+      rect:
+        serializedVersion: 2
+        x: 60
+        y: 41.666668
+        width: 15
+        height: 13.333333
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 0df1a6694a64dba488e7bd28f3631bdb
+      internalID: 1930829571
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: baozha_30
+      rect:
+        serializedVersion: 2
+        x: 75
+        y: 41.666668
+        width: 15
+        height: 13.333333
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: e1225f19a93650e4b934837ad7d5e091
+      internalID: -1224148618
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: baozha_31
+      rect:
+        serializedVersion: 2
+        x: 90
+        y: 41.666668
+        width: 15
+        height: 13.333333
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: bd4fbb1af7014d645ac3a691bd5f8917
+      internalID: -1290967462
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: baozha_32
+      rect:
+        serializedVersion: 2
+        x: 15
+        y: 28.666668
+        width: 15
+        height: 13.333333
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 52276e24823838245adea95432300520
+      internalID: 304367731
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: baozha_33
+      rect:
+        serializedVersion: 2
+        x: 30
+        y: 28.666668
+        width: 15
+        height: 13.333333
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: c7d24d496824d5544ae6061385038e0c
+      internalID: -78470410
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: baozha_34
+      rect:
+        serializedVersion: 2
+        x: 45
+        y: 28.666668
+        width: 15
+        height: 13.333333
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: a4d50fa78fe75ba45a6c7e8898a7b488
+      internalID: 153057378
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: baozha_35
+      rect:
+        serializedVersion: 2
+        x: 60
+        y: 28.666668
+        width: 15
+        height: 13.333333
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: bf8c8268b696971439af0b7abd5abebd
+      internalID: -142881616
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: baozha_36
+      rect:
+        serializedVersion: 2
+        x: 75
+        y: 28.666668
+        width: 15
+        height: 13.333333
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 72f313bc30d014a4d84e26bef3ea5bc7
+      internalID: 128375086
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: baozha_37
+      rect:
+        serializedVersion: 2
+        x: 90
+        y: 28.666668
+        width: 15
+        height: 13.333333
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 247dfd6a3bfa6b14691e9b2ee7abb3db
+      internalID: -673432039
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: baozha_38
+      rect:
+        serializedVersion: 2
+        x: 30
+        y: 15.666667
+        width: 15
+        height: 13.333333
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: bd2988afe145b714b968103ee912e4d1
+      internalID: -1302436352
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: baozha_39
+      rect:
+        serializedVersion: 2
+        x: 45
+        y: 15.666667
+        width: 15
+        height: 13.333333
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: f86f54d7e7c9d2a48841d10507fc6ce9
+      internalID: -1067095123
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: baozha_40
+      rect:
+        serializedVersion: 2
+        x: 60
+        y: 15.666667
+        width: 15
+        height: 13.333333
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: f23fbeceacfee494dba9bd105e6e45f9
+      internalID: -1078605331
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: baozha_41
+      rect:
+        serializedVersion: 2
+        x: 75
+        y: 15.666667
+        width: 15
+        height: 13.333333
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 6dcbff6b4394f0d4783633819d980483
+      internalID: 2128059000
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: baozha_42
+      rect:
+        serializedVersion: 2
+        x: 30
+        y: 2.666667
+        width: 15
+        height: 13.333333
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 88f52fc5f097ce74da347ff901bc348f
+      internalID: 826560142
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: baozha_43
+      rect:
+        serializedVersion: 2
+        x: 45
+        y: 2.666667
+        width: 15
+        height: 13.333333
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: ca5aebcd627b5db478b0dafc069a6520
+      internalID: -731461199
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: baozha_44
+      rect:
+        serializedVersion: 2
+        x: 60
+        y: 2.666667
+        width: 15
+        height: 13.333333
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 6d281ce6b57c9744d943fb9d113d9e9a
+      internalID: -874433987
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: baozha_45
+      rect:
+        serializedVersion: 2
+        x: 75
+        y: 2.666667
+        width: 15
+        height: 13.333333
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 4451ae062974dda41917fe6d72f2457f
+      internalID: -396045676
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    physicsShape: []
+    bones: []
+    spriteID: 5e97eb03825dee720800000000000000
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+    nameFileIdTable:
+      baozha_0: 2053608762
+      baozha_1: -371807213
+      baozha_10: -947933180
+      baozha_11: -867167491
+      baozha_12: -125563985
+      baozha_13: 700819939
+      baozha_14: -2130258820
+      baozha_15: 1398353936
+      baozha_16: 994249231
+      baozha_17: -1954629954
+      baozha_18: 910483570
+      baozha_19: 1240538435
+      baozha_2: 100218114
+      baozha_20: 1276316770
+      baozha_21: 1028743214
+      baozha_22: 1921357946
+      baozha_23: 1332935108
+      baozha_24: -2069834631
+      baozha_25: -703758215
+      baozha_26: 573862854
+      baozha_27: 133302728
+      baozha_28: -1840828654
+      baozha_29: 1930829571
+      baozha_3: 1887470671
+      baozha_30: -1224148618
+      baozha_31: -1290967462
+      baozha_32: 304367731
+      baozha_33: -78470410
+      baozha_34: 153057378
+      baozha_35: -142881616
+      baozha_36: 128375086
+      baozha_37: -673432039
+      baozha_38: -1302436352
+      baozha_39: -1067095123
+      baozha_4: 747538412
+      baozha_40: -1078605331
+      baozha_41: 2128059000
+      baozha_42: 826560142
+      baozha_43: -731461199
+      baozha_44: -874433987
+      baozha_45: -396045676
+      baozha_5: -413193788
+      baozha_6: 1017189426
+      baozha_7: -150045613
+      baozha_8: -1359128049
+      baozha_9: -359538936
+  mipmapLimitGroupName: 
+  pSDRemoveMatte: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
