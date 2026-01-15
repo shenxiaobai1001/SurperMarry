@@ -21,6 +21,10 @@ public enum Events
     OnModVideoPlayEnd, 
     OnLazzerHit,
     NpcTalkShow,
+    ToGetPoleFlag,
+    OnFlagEnter,
+    ToGetPoleFlagPlayer,
+    OnRestBreakBrick,
 }                                                                  
 // 移动方向                                                 
 public enum MoveDirection                                

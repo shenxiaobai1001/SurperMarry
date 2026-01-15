@@ -28,7 +28,7 @@ public class TCJiao : MonoBehaviour
 
     void OnBeginCreateBoom()
     {
-        PlayerModMoveController.Instance.TriggerModMove(MoveType.MaxLeft, new Vector3(-1, -0.5f), 8, allTime, true);
+        PlayerModMoveController.Instance.TriggerModMove(MoveType.MaxLeft, new Vector3(-1, -0.5f), 10, allTime, true);
         CameraShaker.Instance.StartShake(allTime);
         StartCoroutine(OnCreateBoom());
     }

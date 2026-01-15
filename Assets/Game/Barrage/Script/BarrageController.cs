@@ -284,10 +284,10 @@ public class BarrageController : MonoBehaviour
                 ItemCreater.Instance.OnCreateTCJiao(1);
                 break;
             case "随机天火":
-                ItemCreater.Instance.OnCreateUPFire(1);
+                ItemCreater.Instance.OnCreateSingleUPFire(1);
                 break;
             case "全屏天火":
-                ItemCreater.Instance.OnCreateUPFire(66);
+                ItemCreater.Instance.OnCreateUPFire(1);
                 break;
             case "随机地火":
                 ItemCreater.Instance.OnCreateDownFire(1);
@@ -320,6 +320,12 @@ public class BarrageController : MonoBehaviour
                 GameStatusController.IsBigPlayer = true;
                 GameStatusController.IsFirePlayer = true;
                 if(PlayerController.Instance!=null) PlayerController.Instance.OnFireMario();
+                break;
+            case "上一关":
+                if (GameModController.Instance != null) GameModController.Instance.OnEnterNextPass(-1);
+                break;
+            case "下一关":
+                if (GameModController.Instance != null) GameModController.Instance.OnEnterNextPass(1);
                 break;
         }
     }

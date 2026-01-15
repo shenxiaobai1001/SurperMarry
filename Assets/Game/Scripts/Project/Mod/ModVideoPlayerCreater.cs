@@ -271,18 +271,24 @@ public class ModVideoPlayerCreater : MonoBehaviour
     {
         if (ItemCreater.Instance.isHang)
             PlayerModController.Instance.OnCancelHangSelf();
-        PlayerController.Instance.isHit= isHit;
+    
         int number = Random.Range(1, 13);
-        float scaleValue = Random.Range(0.5f, 2);
+        float scaleValue = Random.Range(0.25f, 1);
         int rotateValue= Random.Range(0, 360);
         Vector3 scale = new Vector3(scaleValue, scaleValue,1);
         Vector3 rotate = new Vector3(0, 0, rotateValue);
         OnCreateModVideoPlayer(Vector3.zero, scale, rotate, "GreenScreen/wusaqi", 2);
-        Invoke("OnTriggerDao", 0.9f);
+        if (!isHit)
+            Invoke("OnTriggerDao", 0.9f);
+        else
+            Invoke("OnTriggerHitDao", 0.9f);
     }
     public void OnPlayMenace(bool isHit = false)
     {
-        PlayerController.Instance.isHit = isHit;
+        if (isHit)
+        {
+            PlayerController.Instance.OnChanleControl(true);
+        }
         if (ItemCreater.Instance.isHang)
             PlayerModController.Instance.OnCancelHangSelf();
 
@@ -293,6 +299,20 @@ public class ModVideoPlayerCreater : MonoBehaviour
     void OnTriggerDao()
     {
         PlayerModController.Instance.OnTiggerDao();
+        Invoke("OnTriggerHit", 1.5f);
+    }
+    void OnTriggerHitDao()
+    {
+        PlayerModController.Instance.OnTiggerDao();
+        PlayerController.Instance.OnChanleControl(true);
+        PFunc.Log("OnTriggerHitDao", PlayerController.Instance.isHit);
+        Invoke("OnTriggerHit", 1.5f);
+    }
+
+    void OnTriggerHit()
+    {
+        PlayerController.Instance.OnChanleControl(false);
+        PlayerModController.Instance.OnChanleModAni();
     }
     string nullDUCK = "GreenScreen/Duck/Null";
     string getDUCK = "GreenScreen/Duck/Get";

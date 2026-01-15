@@ -183,7 +183,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   speed: 2
-  pushForce: 500
+  Patrolspeed: 2
+  pushForce: 13
   isTouchByPlayer: 0
   isPatrolling: 0
   patrolPointA: {x: 0, y: 0, z: 0}
@@ -197,10 +198,13 @@ MonoBehaviour:
   flyKoopa: {fileID: 0}
   beatles: {fileID: 0}
   flyFish: {fileID: 0}
+  koopaShell: {fileID: 0}
   bodys:
   - {fileID: 4354584424693637154}
   - {fileID: 4388187777132333211}
   canMove: 1
+  isDead: 0
+  isCreate: 1
   _moveDirection: {x: -1, y: 0, z: 0}
 --- !u!1 &4354584424693637154
 GameObject:

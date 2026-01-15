@@ -1082,10 +1082,30 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 122641591}
     m_Modifications:
+    - target: {fileID: 1265468437400621213, guid: fdf3e4fdc5f8bee47bfb2d0f059ba961,
+        type: 3}
+      propertyPath: m_Layer
+      value: 14
+      objectReference: {fileID: 0}
+    - target: {fileID: 1794520880093229640, guid: fdf3e4fdc5f8bee47bfb2d0f059ba961,
+        type: 3}
+      propertyPath: m_Layer
+      value: 14
+      objectReference: {fileID: 0}
     - target: {fileID: 2301428905543050783, guid: fdf3e4fdc5f8bee47bfb2d0f059ba961,
         type: 3}
       propertyPath: m_Name
       value: GrayFlorBrick_3
+      objectReference: {fileID: 0}
+    - target: {fileID: 2301428905543050783, guid: fdf3e4fdc5f8bee47bfb2d0f059ba961,
+        type: 3}
+      propertyPath: m_Layer
+      value: 14
+      objectReference: {fileID: 0}
+    - target: {fileID: 3202505130014918311, guid: fdf3e4fdc5f8bee47bfb2d0f059ba961,
+        type: 3}
+      propertyPath: m_Layer
+      value: 14
       objectReference: {fileID: 0}
     - target: {fileID: 4122311214280308847, guid: fdf3e4fdc5f8bee47bfb2d0f059ba961,
         type: 3}
@@ -1136,6 +1156,16 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5174131675187689938, guid: fdf3e4fdc5f8bee47bfb2d0f059ba961,
+        type: 3}
+      propertyPath: m_Layer
+      value: 14
+      objectReference: {fileID: 0}
+    - target: {fileID: 8342553742466556483, guid: fdf3e4fdc5f8bee47bfb2d0f059ba961,
+        type: 3}
+      propertyPath: m_Layer
+      value: 14
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -2118,10 +2148,30 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 233553623}
     m_Modifications:
+    - target: {fileID: 1265468437400621213, guid: fdf3e4fdc5f8bee47bfb2d0f059ba961,
+        type: 3}
+      propertyPath: m_Layer
+      value: 14
+      objectReference: {fileID: 0}
+    - target: {fileID: 1794520880093229640, guid: fdf3e4fdc5f8bee47bfb2d0f059ba961,
+        type: 3}
+      propertyPath: m_Layer
+      value: 14
+      objectReference: {fileID: 0}
     - target: {fileID: 2301428905543050783, guid: fdf3e4fdc5f8bee47bfb2d0f059ba961,
         type: 3}
       propertyPath: m_Name
       value: GrayFlorBrick_1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2301428905543050783, guid: fdf3e4fdc5f8bee47bfb2d0f059ba961,
+        type: 3}
+      propertyPath: m_Layer
+      value: 14
+      objectReference: {fileID: 0}
+    - target: {fileID: 3202505130014918311, guid: fdf3e4fdc5f8bee47bfb2d0f059ba961,
+        type: 3}
+      propertyPath: m_Layer
+      value: 14
       objectReference: {fileID: 0}
     - target: {fileID: 4122311214280308847, guid: fdf3e4fdc5f8bee47bfb2d0f059ba961,
         type: 3}
@@ -2172,6 +2222,16 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5174131675187689938, guid: fdf3e4fdc5f8bee47bfb2d0f059ba961,
+        type: 3}
+      propertyPath: m_Layer
+      value: 14
+      objectReference: {fileID: 0}
+    - target: {fileID: 8342553742466556483, guid: fdf3e4fdc5f8bee47bfb2d0f059ba961,
+        type: 3}
+      propertyPath: m_Layer
+      value: 14
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -6905,10 +6965,30 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1077988450}
     m_Modifications:
+    - target: {fileID: 1265468437400621213, guid: fdf3e4fdc5f8bee47bfb2d0f059ba961,
+        type: 3}
+      propertyPath: m_Layer
+      value: 14
+      objectReference: {fileID: 0}
+    - target: {fileID: 1794520880093229640, guid: fdf3e4fdc5f8bee47bfb2d0f059ba961,
+        type: 3}
+      propertyPath: m_Layer
+      value: 14
+      objectReference: {fileID: 0}
     - target: {fileID: 2301428905543050783, guid: fdf3e4fdc5f8bee47bfb2d0f059ba961,
         type: 3}
       propertyPath: m_Name
       value: GrayFlorBrick_0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2301428905543050783, guid: fdf3e4fdc5f8bee47bfb2d0f059ba961,
+        type: 3}
+      propertyPath: m_Layer
+      value: 14
+      objectReference: {fileID: 0}
+    - target: {fileID: 3202505130014918311, guid: fdf3e4fdc5f8bee47bfb2d0f059ba961,
+        type: 3}
+      propertyPath: m_Layer
+      value: 14
       objectReference: {fileID: 0}
     - target: {fileID: 4122311214280308847, guid: fdf3e4fdc5f8bee47bfb2d0f059ba961,
         type: 3}
@@ -6959,6 +7039,16 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5174131675187689938, guid: fdf3e4fdc5f8bee47bfb2d0f059ba961,
+        type: 3}
+      propertyPath: m_Layer
+      value: 14
+      objectReference: {fileID: 0}
+    - target: {fileID: 8342553742466556483, guid: fdf3e4fdc5f8bee47bfb2d0f059ba961,
+        type: 3}
+      propertyPath: m_Layer
+      value: 14
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -9162,6 +9252,40 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 241937034}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &243892402
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 243892403}
+  m_Layer: 0
+  m_Name: MoveStone
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &243892403
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 243892402}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 1342034321}
+  - {fileID: 407505330}
+  - {fileID: 751114702}
+  m_Father: {fileID: 840404042}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &244270464
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -11221,10 +11345,30 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 291119829}
     m_Modifications:
+    - target: {fileID: 1265468437400621213, guid: fdf3e4fdc5f8bee47bfb2d0f059ba961,
+        type: 3}
+      propertyPath: m_Layer
+      value: 14
+      objectReference: {fileID: 0}
+    - target: {fileID: 1794520880093229640, guid: fdf3e4fdc5f8bee47bfb2d0f059ba961,
+        type: 3}
+      propertyPath: m_Layer
+      value: 14
+      objectReference: {fileID: 0}
     - target: {fileID: 2301428905543050783, guid: fdf3e4fdc5f8bee47bfb2d0f059ba961,
         type: 3}
       propertyPath: m_Name
       value: GrayFlorBrick_0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2301428905543050783, guid: fdf3e4fdc5f8bee47bfb2d0f059ba961,
+        type: 3}
+      propertyPath: m_Layer
+      value: 14
+      objectReference: {fileID: 0}
+    - target: {fileID: 3202505130014918311, guid: fdf3e4fdc5f8bee47bfb2d0f059ba961,
+        type: 3}
+      propertyPath: m_Layer
+      value: 14
       objectReference: {fileID: 0}
     - target: {fileID: 4122311214280308847, guid: fdf3e4fdc5f8bee47bfb2d0f059ba961,
         type: 3}
@@ -11275,6 +11419,16 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5174131675187689938, guid: fdf3e4fdc5f8bee47bfb2d0f059ba961,
+        type: 3}
+      propertyPath: m_Layer
+      value: 14
+      objectReference: {fileID: 0}
+    - target: {fileID: 8342553742466556483, guid: fdf3e4fdc5f8bee47bfb2d0f059ba961,
+        type: 3}
+      propertyPath: m_Layer
+      value: 14
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -16616,6 +16770,80 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 4122311214280308847, guid: fdf3e4fdc5f8bee47bfb2d0f059ba961,
     type: 3}
   m_PrefabInstance: {fileID: 406724772}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1001 &407505329
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 243892403}
+    m_Modifications:
+    - target: {fileID: 6548919820128780009, guid: 7ccf3ecfa3aec0b4bbc172e3755e587d,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 8.54
+      objectReference: {fileID: 0}
+    - target: {fileID: 6548919820128780009, guid: 7ccf3ecfa3aec0b4bbc172e3755e587d,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6548919820128780009, guid: 7ccf3ecfa3aec0b4bbc172e3755e587d,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 180
+      objectReference: {fileID: 0}
+    - target: {fileID: 6548919820128780009, guid: 7ccf3ecfa3aec0b4bbc172e3755e587d,
+        type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6548919820128780009, guid: 7ccf3ecfa3aec0b4bbc172e3755e587d,
+        type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6548919820128780009, guid: 7ccf3ecfa3aec0b4bbc172e3755e587d,
+        type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6548919820128780009, guid: 7ccf3ecfa3aec0b4bbc172e3755e587d,
+        type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6548919820128780009, guid: 7ccf3ecfa3aec0b4bbc172e3755e587d,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6548919820128780009, guid: 7ccf3ecfa3aec0b4bbc172e3755e587d,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6548919820128780009, guid: 7ccf3ecfa3aec0b4bbc172e3755e587d,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6750499570873879668, guid: 7ccf3ecfa3aec0b4bbc172e3755e587d,
+        type: 3}
+      propertyPath: m_Name
+      value: PlayerStone (1)
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 7ccf3ecfa3aec0b4bbc172e3755e587d, type: 3}
+--- !u!4 &407505330 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 6548919820128780009, guid: 7ccf3ecfa3aec0b4bbc172e3755e587d,
+    type: 3}
+  m_PrefabInstance: {fileID: 407505329}
   m_PrefabAsset: {fileID: 0}
 --- !u!1001 &407773526
 PrefabInstance:
@@ -25270,10 +25498,30 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 122641591}
     m_Modifications:
+    - target: {fileID: 1265468437400621213, guid: fdf3e4fdc5f8bee47bfb2d0f059ba961,
+        type: 3}
+      propertyPath: m_Layer
+      value: 14
+      objectReference: {fileID: 0}
+    - target: {fileID: 1794520880093229640, guid: fdf3e4fdc5f8bee47bfb2d0f059ba961,
+        type: 3}
+      propertyPath: m_Layer
+      value: 14
+      objectReference: {fileID: 0}
     - target: {fileID: 2301428905543050783, guid: fdf3e4fdc5f8bee47bfb2d0f059ba961,
         type: 3}
       propertyPath: m_Name
       value: GrayFlorBrick_2
+      objectReference: {fileID: 0}
+    - target: {fileID: 2301428905543050783, guid: fdf3e4fdc5f8bee47bfb2d0f059ba961,
+        type: 3}
+      propertyPath: m_Layer
+      value: 14
+      objectReference: {fileID: 0}
+    - target: {fileID: 3202505130014918311, guid: fdf3e4fdc5f8bee47bfb2d0f059ba961,
+        type: 3}
+      propertyPath: m_Layer
+      value: 14
       objectReference: {fileID: 0}
     - target: {fileID: 4122311214280308847, guid: fdf3e4fdc5f8bee47bfb2d0f059ba961,
         type: 3}
@@ -25324,6 +25572,16 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5174131675187689938, guid: fdf3e4fdc5f8bee47bfb2d0f059ba961,
+        type: 3}
+      propertyPath: m_Layer
+      value: 14
+      objectReference: {fileID: 0}
+    - target: {fileID: 8342553742466556483, guid: fdf3e4fdc5f8bee47bfb2d0f059ba961,
+        type: 3}
+      propertyPath: m_Layer
+      value: 14
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -28661,10 +28919,30 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1077988450}
     m_Modifications:
+    - target: {fileID: 1265468437400621213, guid: fdf3e4fdc5f8bee47bfb2d0f059ba961,
+        type: 3}
+      propertyPath: m_Layer
+      value: 14
+      objectReference: {fileID: 0}
+    - target: {fileID: 1794520880093229640, guid: fdf3e4fdc5f8bee47bfb2d0f059ba961,
+        type: 3}
+      propertyPath: m_Layer
+      value: 14
+      objectReference: {fileID: 0}
     - target: {fileID: 2301428905543050783, guid: fdf3e4fdc5f8bee47bfb2d0f059ba961,
         type: 3}
       propertyPath: m_Name
       value: GrayFlorBrick_1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2301428905543050783, guid: fdf3e4fdc5f8bee47bfb2d0f059ba961,
+        type: 3}
+      propertyPath: m_Layer
+      value: 14
+      objectReference: {fileID: 0}
+    - target: {fileID: 3202505130014918311, guid: fdf3e4fdc5f8bee47bfb2d0f059ba961,
+        type: 3}
+      propertyPath: m_Layer
+      value: 14
       objectReference: {fileID: 0}
     - target: {fileID: 4122311214280308847, guid: fdf3e4fdc5f8bee47bfb2d0f059ba961,
         type: 3}
@@ -28715,6 +28993,16 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5174131675187689938, guid: fdf3e4fdc5f8bee47bfb2d0f059ba961,
+        type: 3}
+      propertyPath: m_Layer
+      value: 14
+      objectReference: {fileID: 0}
+    - target: {fileID: 8342553742466556483, guid: fdf3e4fdc5f8bee47bfb2d0f059ba961,
+        type: 3}
+      propertyPath: m_Layer
+      value: 14
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -31570,6 +31858,80 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 4122311214280308847, guid: fdf3e4fdc5f8bee47bfb2d0f059ba961,
     type: 3}
   m_PrefabInstance: {fileID: 747757348}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1001 &751114701
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 243892403}
+    m_Modifications:
+    - target: {fileID: 6548919820128780009, guid: 7ccf3ecfa3aec0b4bbc172e3755e587d,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 102.8
+      objectReference: {fileID: 0}
+    - target: {fileID: 6548919820128780009, guid: 7ccf3ecfa3aec0b4bbc172e3755e587d,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6548919820128780009, guid: 7ccf3ecfa3aec0b4bbc172e3755e587d,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 180
+      objectReference: {fileID: 0}
+    - target: {fileID: 6548919820128780009, guid: 7ccf3ecfa3aec0b4bbc172e3755e587d,
+        type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6548919820128780009, guid: 7ccf3ecfa3aec0b4bbc172e3755e587d,
+        type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6548919820128780009, guid: 7ccf3ecfa3aec0b4bbc172e3755e587d,
+        type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6548919820128780009, guid: 7ccf3ecfa3aec0b4bbc172e3755e587d,
+        type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6548919820128780009, guid: 7ccf3ecfa3aec0b4bbc172e3755e587d,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6548919820128780009, guid: 7ccf3ecfa3aec0b4bbc172e3755e587d,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6548919820128780009, guid: 7ccf3ecfa3aec0b4bbc172e3755e587d,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6750499570873879668, guid: 7ccf3ecfa3aec0b4bbc172e3755e587d,
+        type: 3}
+      propertyPath: m_Name
+      value: PlayerStone (2)
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 7ccf3ecfa3aec0b4bbc172e3755e587d, type: 3}
+--- !u!4 &751114702 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 6548919820128780009, guid: 7ccf3ecfa3aec0b4bbc172e3755e587d,
+    type: 3}
+  m_PrefabInstance: {fileID: 751114701}
   m_PrefabAsset: {fileID: 0}
 --- !u!1001 &752149006
 PrefabInstance:
@@ -34465,10 +34827,30 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 233553623}
     m_Modifications:
+    - target: {fileID: 1265468437400621213, guid: fdf3e4fdc5f8bee47bfb2d0f059ba961,
+        type: 3}
+      propertyPath: m_Layer
+      value: 14
+      objectReference: {fileID: 0}
+    - target: {fileID: 1794520880093229640, guid: fdf3e4fdc5f8bee47bfb2d0f059ba961,
+        type: 3}
+      propertyPath: m_Layer
+      value: 14
+      objectReference: {fileID: 0}
     - target: {fileID: 2301428905543050783, guid: fdf3e4fdc5f8bee47bfb2d0f059ba961,
         type: 3}
       propertyPath: m_Name
       value: GrayFlorBrick_0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2301428905543050783, guid: fdf3e4fdc5f8bee47bfb2d0f059ba961,
+        type: 3}
+      propertyPath: m_Layer
+      value: 14
+      objectReference: {fileID: 0}
+    - target: {fileID: 3202505130014918311, guid: fdf3e4fdc5f8bee47bfb2d0f059ba961,
+        type: 3}
+      propertyPath: m_Layer
+      value: 14
       objectReference: {fileID: 0}
     - target: {fileID: 4122311214280308847, guid: fdf3e4fdc5f8bee47bfb2d0f059ba961,
         type: 3}
@@ -34519,6 +34901,16 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5174131675187689938, guid: fdf3e4fdc5f8bee47bfb2d0f059ba961,
+        type: 3}
+      propertyPath: m_Layer
+      value: 14
+      objectReference: {fileID: 0}
+    - target: {fileID: 8342553742466556483, guid: fdf3e4fdc5f8bee47bfb2d0f059ba961,
+        type: 3}
+      propertyPath: m_Layer
+      value: 14
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -35823,6 +36215,7 @@ Transform:
   m_Children:
   - {fileID: 1641936762}
   - {fileID: 6986699980897585990}
+  - {fileID: 243892403}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &841794714
@@ -43128,10 +43521,30 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 122641591}
     m_Modifications:
+    - target: {fileID: 1265468437400621213, guid: fdf3e4fdc5f8bee47bfb2d0f059ba961,
+        type: 3}
+      propertyPath: m_Layer
+      value: 14
+      objectReference: {fileID: 0}
+    - target: {fileID: 1794520880093229640, guid: fdf3e4fdc5f8bee47bfb2d0f059ba961,
+        type: 3}
+      propertyPath: m_Layer
+      value: 14
+      objectReference: {fileID: 0}
     - target: {fileID: 2301428905543050783, guid: fdf3e4fdc5f8bee47bfb2d0f059ba961,
         type: 3}
       propertyPath: m_Name
       value: GrayFlorBrick_1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2301428905543050783, guid: fdf3e4fdc5f8bee47bfb2d0f059ba961,
+        type: 3}
+      propertyPath: m_Layer
+      value: 14
+      objectReference: {fileID: 0}
+    - target: {fileID: 3202505130014918311, guid: fdf3e4fdc5f8bee47bfb2d0f059ba961,
+        type: 3}
+      propertyPath: m_Layer
+      value: 14
       objectReference: {fileID: 0}
     - target: {fileID: 4122311214280308847, guid: fdf3e4fdc5f8bee47bfb2d0f059ba961,
         type: 3}
@@ -43182,6 +43595,16 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5174131675187689938, guid: fdf3e4fdc5f8bee47bfb2d0f059ba961,
+        type: 3}
+      propertyPath: m_Layer
+      value: 14
+      objectReference: {fileID: 0}
+    - target: {fileID: 8342553742466556483, guid: fdf3e4fdc5f8bee47bfb2d0f059ba961,
+        type: 3}
+      propertyPath: m_Layer
+      value: 14
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -43498,10 +43921,30 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 122641591}
     m_Modifications:
+    - target: {fileID: 1265468437400621213, guid: fdf3e4fdc5f8bee47bfb2d0f059ba961,
+        type: 3}
+      propertyPath: m_Layer
+      value: 14
+      objectReference: {fileID: 0}
+    - target: {fileID: 1794520880093229640, guid: fdf3e4fdc5f8bee47bfb2d0f059ba961,
+        type: 3}
+      propertyPath: m_Layer
+      value: 14
+      objectReference: {fileID: 0}
     - target: {fileID: 2301428905543050783, guid: fdf3e4fdc5f8bee47bfb2d0f059ba961,
         type: 3}
       propertyPath: m_Name
       value: GrayFlorBrick_0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2301428905543050783, guid: fdf3e4fdc5f8bee47bfb2d0f059ba961,
+        type: 3}
+      propertyPath: m_Layer
+      value: 14
+      objectReference: {fileID: 0}
+    - target: {fileID: 3202505130014918311, guid: fdf3e4fdc5f8bee47bfb2d0f059ba961,
+        type: 3}
+      propertyPath: m_Layer
+      value: 14
       objectReference: {fileID: 0}
     - target: {fileID: 4122311214280308847, guid: fdf3e4fdc5f8bee47bfb2d0f059ba961,
         type: 3}
@@ -43552,6 +43995,16 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5174131675187689938, guid: fdf3e4fdc5f8bee47bfb2d0f059ba961,
+        type: 3}
+      propertyPath: m_Layer
+      value: 14
+      objectReference: {fileID: 0}
+    - target: {fileID: 8342553742466556483, guid: fdf3e4fdc5f8bee47bfb2d0f059ba961,
+        type: 3}
+      propertyPath: m_Layer
+      value: 14
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -44339,10 +44792,30 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 291119829}
     m_Modifications:
+    - target: {fileID: 1265468437400621213, guid: fdf3e4fdc5f8bee47bfb2d0f059ba961,
+        type: 3}
+      propertyPath: m_Layer
+      value: 14
+      objectReference: {fileID: 0}
+    - target: {fileID: 1794520880093229640, guid: fdf3e4fdc5f8bee47bfb2d0f059ba961,
+        type: 3}
+      propertyPath: m_Layer
+      value: 14
+      objectReference: {fileID: 0}
     - target: {fileID: 2301428905543050783, guid: fdf3e4fdc5f8bee47bfb2d0f059ba961,
         type: 3}
       propertyPath: m_Name
       value: GrayFlorBrick_1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2301428905543050783, guid: fdf3e4fdc5f8bee47bfb2d0f059ba961,
+        type: 3}
+      propertyPath: m_Layer
+      value: 14
+      objectReference: {fileID: 0}
+    - target: {fileID: 3202505130014918311, guid: fdf3e4fdc5f8bee47bfb2d0f059ba961,
+        type: 3}
+      propertyPath: m_Layer
+      value: 14
       objectReference: {fileID: 0}
     - target: {fileID: 4122311214280308847, guid: fdf3e4fdc5f8bee47bfb2d0f059ba961,
         type: 3}
@@ -44393,6 +44866,16 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5174131675187689938, guid: fdf3e4fdc5f8bee47bfb2d0f059ba961,
+        type: 3}
+      propertyPath: m_Layer
+      value: 14
+      objectReference: {fileID: 0}
+    - target: {fileID: 8342553742466556483, guid: fdf3e4fdc5f8bee47bfb2d0f059ba961,
+        type: 3}
+      propertyPath: m_Layer
+      value: 14
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -54731,6 +55214,80 @@ Transform:
   - {fileID: 2122559488}
   m_Father: {fileID: 1553271123}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1001 &1342034320
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 243892403}
+    m_Modifications:
+    - target: {fileID: 6548919820128780009, guid: 7ccf3ecfa3aec0b4bbc172e3755e587d,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -4.89
+      objectReference: {fileID: 0}
+    - target: {fileID: 6548919820128780009, guid: 7ccf3ecfa3aec0b4bbc172e3755e587d,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6548919820128780009, guid: 7ccf3ecfa3aec0b4bbc172e3755e587d,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 180
+      objectReference: {fileID: 0}
+    - target: {fileID: 6548919820128780009, guid: 7ccf3ecfa3aec0b4bbc172e3755e587d,
+        type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6548919820128780009, guid: 7ccf3ecfa3aec0b4bbc172e3755e587d,
+        type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6548919820128780009, guid: 7ccf3ecfa3aec0b4bbc172e3755e587d,
+        type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6548919820128780009, guid: 7ccf3ecfa3aec0b4bbc172e3755e587d,
+        type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6548919820128780009, guid: 7ccf3ecfa3aec0b4bbc172e3755e587d,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6548919820128780009, guid: 7ccf3ecfa3aec0b4bbc172e3755e587d,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6548919820128780009, guid: 7ccf3ecfa3aec0b4bbc172e3755e587d,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6750499570873879668, guid: 7ccf3ecfa3aec0b4bbc172e3755e587d,
+        type: 3}
+      propertyPath: m_Name
+      value: PlayerStone
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 7ccf3ecfa3aec0b4bbc172e3755e587d, type: 3}
+--- !u!4 &1342034321 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 6548919820128780009, guid: 7ccf3ecfa3aec0b4bbc172e3755e587d,
+    type: 3}
+  m_PrefabInstance: {fileID: 1342034320}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1344431767
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -55989,10 +56546,30 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 233553623}
     m_Modifications:
+    - target: {fileID: 1265468437400621213, guid: fdf3e4fdc5f8bee47bfb2d0f059ba961,
+        type: 3}
+      propertyPath: m_Layer
+      value: 14
+      objectReference: {fileID: 0}
+    - target: {fileID: 1794520880093229640, guid: fdf3e4fdc5f8bee47bfb2d0f059ba961,
+        type: 3}
+      propertyPath: m_Layer
+      value: 14
+      objectReference: {fileID: 0}
     - target: {fileID: 2301428905543050783, guid: fdf3e4fdc5f8bee47bfb2d0f059ba961,
         type: 3}
       propertyPath: m_Name
       value: GrayFlorBrick_2
+      objectReference: {fileID: 0}
+    - target: {fileID: 2301428905543050783, guid: fdf3e4fdc5f8bee47bfb2d0f059ba961,
+        type: 3}
+      propertyPath: m_Layer
+      value: 14
+      objectReference: {fileID: 0}
+    - target: {fileID: 3202505130014918311, guid: fdf3e4fdc5f8bee47bfb2d0f059ba961,
+        type: 3}
+      propertyPath: m_Layer
+      value: 14
       objectReference: {fileID: 0}
     - target: {fileID: 4122311214280308847, guid: fdf3e4fdc5f8bee47bfb2d0f059ba961,
         type: 3}
@@ -56043,6 +56620,16 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5174131675187689938, guid: fdf3e4fdc5f8bee47bfb2d0f059ba961,
+        type: 3}
+      propertyPath: m_Layer
+      value: 14
+      objectReference: {fileID: 0}
+    - target: {fileID: 8342553742466556483, guid: fdf3e4fdc5f8bee47bfb2d0f059ba961,
+        type: 3}
+      propertyPath: m_Layer
+      value: 14
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -60938,10 +61525,30 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 233553623}
     m_Modifications:
+    - target: {fileID: 1265468437400621213, guid: fdf3e4fdc5f8bee47bfb2d0f059ba961,
+        type: 3}
+      propertyPath: m_Layer
+      value: 14
+      objectReference: {fileID: 0}
+    - target: {fileID: 1794520880093229640, guid: fdf3e4fdc5f8bee47bfb2d0f059ba961,
+        type: 3}
+      propertyPath: m_Layer
+      value: 14
+      objectReference: {fileID: 0}
     - target: {fileID: 2301428905543050783, guid: fdf3e4fdc5f8bee47bfb2d0f059ba961,
         type: 3}
       propertyPath: m_Name
       value: GrayFlorBrick_3
+      objectReference: {fileID: 0}
+    - target: {fileID: 2301428905543050783, guid: fdf3e4fdc5f8bee47bfb2d0f059ba961,
+        type: 3}
+      propertyPath: m_Layer
+      value: 14
+      objectReference: {fileID: 0}
+    - target: {fileID: 3202505130014918311, guid: fdf3e4fdc5f8bee47bfb2d0f059ba961,
+        type: 3}
+      propertyPath: m_Layer
+      value: 14
       objectReference: {fileID: 0}
     - target: {fileID: 4122311214280308847, guid: fdf3e4fdc5f8bee47bfb2d0f059ba961,
         type: 3}
@@ -60992,6 +61599,16 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5174131675187689938, guid: fdf3e4fdc5f8bee47bfb2d0f059ba961,
+        type: 3}
+      propertyPath: m_Layer
+      value: 14
+      objectReference: {fileID: 0}
+    - target: {fileID: 8342553742466556483, guid: fdf3e4fdc5f8bee47bfb2d0f059ba961,
+        type: 3}
+      propertyPath: m_Layer
+      value: 14
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -65012,10 +65629,30 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 349438565}
     m_Modifications:
+    - target: {fileID: 1265468437400621213, guid: fdf3e4fdc5f8bee47bfb2d0f059ba961,
+        type: 3}
+      propertyPath: m_Layer
+      value: 14
+      objectReference: {fileID: 0}
+    - target: {fileID: 1794520880093229640, guid: fdf3e4fdc5f8bee47bfb2d0f059ba961,
+        type: 3}
+      propertyPath: m_Layer
+      value: 14
+      objectReference: {fileID: 0}
     - target: {fileID: 2301428905543050783, guid: fdf3e4fdc5f8bee47bfb2d0f059ba961,
         type: 3}
       propertyPath: m_Name
       value: GrayFlorBrick_1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2301428905543050783, guid: fdf3e4fdc5f8bee47bfb2d0f059ba961,
+        type: 3}
+      propertyPath: m_Layer
+      value: 14
+      objectReference: {fileID: 0}
+    - target: {fileID: 3202505130014918311, guid: fdf3e4fdc5f8bee47bfb2d0f059ba961,
+        type: 3}
+      propertyPath: m_Layer
+      value: 14
       objectReference: {fileID: 0}
     - target: {fileID: 4122311214280308847, guid: fdf3e4fdc5f8bee47bfb2d0f059ba961,
         type: 3}
@@ -65066,6 +65703,16 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5174131675187689938, guid: fdf3e4fdc5f8bee47bfb2d0f059ba961,
+        type: 3}
+      propertyPath: m_Layer
+      value: 14
+      objectReference: {fileID: 0}
+    - target: {fileID: 8342553742466556483, guid: fdf3e4fdc5f8bee47bfb2d0f059ba961,
+        type: 3}
+      propertyPath: m_Layer
+      value: 14
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -69187,10 +69834,30 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 349438565}
     m_Modifications:
+    - target: {fileID: 1265468437400621213, guid: fdf3e4fdc5f8bee47bfb2d0f059ba961,
+        type: 3}
+      propertyPath: m_Layer
+      value: 14
+      objectReference: {fileID: 0}
+    - target: {fileID: 1794520880093229640, guid: fdf3e4fdc5f8bee47bfb2d0f059ba961,
+        type: 3}
+      propertyPath: m_Layer
+      value: 14
+      objectReference: {fileID: 0}
     - target: {fileID: 2301428905543050783, guid: fdf3e4fdc5f8bee47bfb2d0f059ba961,
         type: 3}
       propertyPath: m_Name
       value: GrayFlorBrick_3
+      objectReference: {fileID: 0}
+    - target: {fileID: 2301428905543050783, guid: fdf3e4fdc5f8bee47bfb2d0f059ba961,
+        type: 3}
+      propertyPath: m_Layer
+      value: 14
+      objectReference: {fileID: 0}
+    - target: {fileID: 3202505130014918311, guid: fdf3e4fdc5f8bee47bfb2d0f059ba961,
+        type: 3}
+      propertyPath: m_Layer
+      value: 14
       objectReference: {fileID: 0}
     - target: {fileID: 4122311214280308847, guid: fdf3e4fdc5f8bee47bfb2d0f059ba961,
         type: 3}
@@ -69241,6 +69908,16 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5174131675187689938, guid: fdf3e4fdc5f8bee47bfb2d0f059ba961,
+        type: 3}
+      propertyPath: m_Layer
+      value: 14
+      objectReference: {fileID: 0}
+    - target: {fileID: 8342553742466556483, guid: fdf3e4fdc5f8bee47bfb2d0f059ba961,
+        type: 3}
+      propertyPath: m_Layer
+      value: 14
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -76761,10 +77438,30 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 349438565}
     m_Modifications:
+    - target: {fileID: 1265468437400621213, guid: fdf3e4fdc5f8bee47bfb2d0f059ba961,
+        type: 3}
+      propertyPath: m_Layer
+      value: 14
+      objectReference: {fileID: 0}
+    - target: {fileID: 1794520880093229640, guid: fdf3e4fdc5f8bee47bfb2d0f059ba961,
+        type: 3}
+      propertyPath: m_Layer
+      value: 14
+      objectReference: {fileID: 0}
     - target: {fileID: 2301428905543050783, guid: fdf3e4fdc5f8bee47bfb2d0f059ba961,
         type: 3}
       propertyPath: m_Name
       value: GrayFlorBrick_0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2301428905543050783, guid: fdf3e4fdc5f8bee47bfb2d0f059ba961,
+        type: 3}
+      propertyPath: m_Layer
+      value: 14
+      objectReference: {fileID: 0}
+    - target: {fileID: 3202505130014918311, guid: fdf3e4fdc5f8bee47bfb2d0f059ba961,
+        type: 3}
+      propertyPath: m_Layer
+      value: 14
       objectReference: {fileID: 0}
     - target: {fileID: 4122311214280308847, guid: fdf3e4fdc5f8bee47bfb2d0f059ba961,
         type: 3}
@@ -76815,6 +77512,16 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5174131675187689938, guid: fdf3e4fdc5f8bee47bfb2d0f059ba961,
+        type: 3}
+      propertyPath: m_Layer
+      value: 14
+      objectReference: {fileID: 0}
+    - target: {fileID: 8342553742466556483, guid: fdf3e4fdc5f8bee47bfb2d0f059ba961,
+        type: 3}
+      propertyPath: m_Layer
+      value: 14
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -80230,10 +80937,30 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 349438565}
     m_Modifications:
+    - target: {fileID: 1265468437400621213, guid: fdf3e4fdc5f8bee47bfb2d0f059ba961,
+        type: 3}
+      propertyPath: m_Layer
+      value: 14
+      objectReference: {fileID: 0}
+    - target: {fileID: 1794520880093229640, guid: fdf3e4fdc5f8bee47bfb2d0f059ba961,
+        type: 3}
+      propertyPath: m_Layer
+      value: 14
+      objectReference: {fileID: 0}
     - target: {fileID: 2301428905543050783, guid: fdf3e4fdc5f8bee47bfb2d0f059ba961,
         type: 3}
       propertyPath: m_Name
       value: GrayFlorBrick_2
+      objectReference: {fileID: 0}
+    - target: {fileID: 2301428905543050783, guid: fdf3e4fdc5f8bee47bfb2d0f059ba961,
+        type: 3}
+      propertyPath: m_Layer
+      value: 14
+      objectReference: {fileID: 0}
+    - target: {fileID: 3202505130014918311, guid: fdf3e4fdc5f8bee47bfb2d0f059ba961,
+        type: 3}
+      propertyPath: m_Layer
+      value: 14
       objectReference: {fileID: 0}
     - target: {fileID: 4122311214280308847, guid: fdf3e4fdc5f8bee47bfb2d0f059ba961,
         type: 3}
@@ -80284,6 +81011,16 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5174131675187689938, guid: fdf3e4fdc5f8bee47bfb2d0f059ba961,
+        type: 3}
+      propertyPath: m_Layer
+      value: 14
+      objectReference: {fileID: 0}
+    - target: {fileID: 8342553742466556483, guid: fdf3e4fdc5f8bee47bfb2d0f059ba961,
+        type: 3}
+      propertyPath: m_Layer
+      value: 14
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -84199,10 +84936,30 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 956116903}
     m_Modifications:
+    - target: {fileID: 1265468437400621213, guid: fdf3e4fdc5f8bee47bfb2d0f059ba961,
+        type: 3}
+      propertyPath: m_Layer
+      value: 14
+      objectReference: {fileID: 0}
+    - target: {fileID: 1794520880093229640, guid: fdf3e4fdc5f8bee47bfb2d0f059ba961,
+        type: 3}
+      propertyPath: m_Layer
+      value: 14
+      objectReference: {fileID: 0}
     - target: {fileID: 2301428905543050783, guid: fdf3e4fdc5f8bee47bfb2d0f059ba961,
         type: 3}
       propertyPath: m_Name
       value: GrayFlorBrick_0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2301428905543050783, guid: fdf3e4fdc5f8bee47bfb2d0f059ba961,
+        type: 3}
+      propertyPath: m_Layer
+      value: 14
+      objectReference: {fileID: 0}
+    - target: {fileID: 3202505130014918311, guid: fdf3e4fdc5f8bee47bfb2d0f059ba961,
+        type: 3}
+      propertyPath: m_Layer
+      value: 14
       objectReference: {fileID: 0}
     - target: {fileID: 4122311214280308847, guid: fdf3e4fdc5f8bee47bfb2d0f059ba961,
         type: 3}
@@ -84253,6 +85010,16 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5174131675187689938, guid: fdf3e4fdc5f8bee47bfb2d0f059ba961,
+        type: 3}
+      propertyPath: m_Layer
+      value: 14
+      objectReference: {fileID: 0}
+    - target: {fileID: 8342553742466556483, guid: fdf3e4fdc5f8bee47bfb2d0f059ba961,
+        type: 3}
+      propertyPath: m_Layer
+      value: 14
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

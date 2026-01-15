@@ -48,7 +48,7 @@ public class PlayerModMoveController : MonoBehaviour
     [SerializeField] private float minX = -7.5f;
     [SerializeField] private float maxX = 192;
     [SerializeField] private float minY = 0;
-    [SerializeField] private float maxY = 8;
+    [SerializeField] private float maxY = 9;
 
     [Header("射线检测设置")]
     [SerializeField] private float raycastDistance = 1f;
@@ -153,8 +153,9 @@ public class PlayerModMoveController : MonoBehaviour
             PlayerModController.Instance.OnChangeState(false);
         }
 
-        PlayerController.Instance.isHit = true;
-        PlayerModController.Instance.OnToHitPos();
+        PlayerController.Instance.OnChanleControl(true);
+        if (!ItemCreater.Instance.lockPlayer)
+             PlayerModController.Instance.OnMoveShowIcon();
         // 创建移动数据
         MoveEffectData newEffect = new MoveEffectData
         {
@@ -206,7 +207,9 @@ public class PlayerModMoveController : MonoBehaviour
             }
             PlayerController.Instance.isHit = false;
             PlayerModController.Instance.OnEndHitPos();
+            PlayerModController.Instance.OnChanleModAni();
         }
+
     }
 
     private void HandleMovementPriority(MoveEffectData newEffect)
@@ -325,7 +328,10 @@ public class PlayerModMoveController : MonoBehaviour
             {
                 PlayerModController.Instance.OnChangeStateTrue();
                 if(ItemCreater.Instance != null && ItemCreater.Instance.lockPlayer)
-                PlayerModController.Instance.OnSetPlayerIns(false);
+                {
+                    PlayerModController.Instance.OnShowModAnimation(-1);
+                    PlayerModController.Instance.OnSetPlayerIns(false);
+                }
                 else
                 {
                     PlayerModController.Instance.OnSetPlayerIns(true);
@@ -341,7 +347,7 @@ public class PlayerModMoveController : MonoBehaviour
 
             if(currentMoveEffect != null)
             {
-                PlayerController.Instance.isHit = true;
+                PlayerController.Instance.OnChanleControl(true);
                 UpdateMovement();
             }
             

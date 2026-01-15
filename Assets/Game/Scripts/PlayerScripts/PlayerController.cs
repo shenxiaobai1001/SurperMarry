@@ -1,4 +1,5 @@
 ﻿using System.Collections;
+using System.Xml.Serialization;
 using SystemScripts;
 using UnityEngine;
 
@@ -86,6 +87,7 @@ namespace PlayerScripts
                 Destroy(gameObject);
                 return;
             }
+            EventManager.Instance.AddListener(Events.ToGetPoleFlagPlayer,OnGetPoleFunc);
             isSpecialDie = false;
             _isFacingRight = true;
             isInvulnerable = false;
@@ -105,9 +107,15 @@ namespace PlayerScripts
             _isFinish = false;
             _isOnGround = true;
             isInCastle = false;
-            startPos=transform.position;
+            getPole = false;
+            startPos =transform.position;
+        }
+        private void OnDestroy()
+        {
+            EventManager.Instance.RemoveListener(Events.ToGetPoleFlagPlayer, OnGetPoleFunc);
         }
 
+        bool isJumping = false;
         private void Update()
         {
             if (isHit) return;
@@ -119,12 +127,13 @@ namespace PlayerScripts
                 if (Input.GetKeyDown(KeyCode.K) && _isOnGround || Input.GetKeyDown(KeyCode.Space) && _isOnGround)
                 {
                     _playerAudio.PlayOneShot(GameStatusController.IsBigPlayer ? jumpSound : jumpBigSound);
-                    _isOnGround = false;
-                    _playerAnim.SetTrigger(JumpTrig);
-                    _playerRb.AddForce(new Vector2(0f, jumpForce));
+                    _isOnGround = false; 
+                   _playerRb.AddForce(new Vector2(0f, jumpForce));
                     _playerAnim.SetBool(IdleB, false);
                     _playerAnim.SetBool(WalkB, false);
                     _playerAnim.SetBool(RunB, false);
+                    _playerAnim.SetTrigger(JumpTrig);
+                    isJumping = true;
                 }
 
                 DenyMidAirJump();
@@ -180,14 +189,14 @@ namespace PlayerScripts
             if (Input.GetKey(KeyCode.J))
             {
                 _isSprinting = true;
-                speed = 600;
-                jumpForce = 1180;
+                speed = 310;
+               jumpForce = 720;
             }
             else if (Input.GetKeyUp(KeyCode.J))
             {
                 _isSprinting = false;
-                speed = 410;
-                jumpForce = 1050;
+                speed = 240;
+               jumpForce = 620;
             }
         }
 
@@ -231,18 +240,31 @@ namespace PlayerScripts
             }
         }
 
+        public float jumpingForce;
+
+        float jumpTime=0;
         private void FixedUpdate()
         {
-            if (isHit) return;
             if (GameStatusController.IsGameFinish)
             {
                 transform.Translate(slideDownSpeed / 1.25f * Time.deltaTime * Vector3.right);
-                //if (Input.GetKeyDown(KeyCode.Backspace))
-                //{
-                //    GameStatusController.IsGameFinish = false;
-                //    GameStatusController.IsShowMessage = false;
-                //    SceneManager.LoadScene(0);
-                //}
+            }
+            if ((Input.GetKey(KeyCode.K) && isJumping || Input.GetKey(KeyCode.Space) && isJumping) && jumpTime < 1)
+            {
+                _playerAnim.SetTrigger(JumpTrig);
+                _playerRb.AddForce(new Vector2(0f, jumpingForce), ForceMode2D.Force);
+                jumpTime += Time.deltaTime;
+            }
+            else
+            {
+                isJumping = false;
+                jumpTime = 0;
+            }
+
+            if (Input.GetKeyUp(KeyCode.K) && isJumping || Input.GetKeyUp(KeyCode.Space) && isJumping)
+            {
+                isJumping = false;
+                jumpTime = 0;
             }
 
             isDead = GameStatusController.IsDead;
@@ -270,9 +292,9 @@ namespace PlayerScripts
             }
             else if (!isDead && !_isFinish && !GameStatusController.IsGameFinish)
             {
-                _playerAnim.SetBool(BigB, GameStatusController.IsBigPlayer);
-                _playerAnim.SetBool(FireB, GameStatusController.IsFirePlayer);
-                ChangeAnim();
+                //_playerAnim.SetBool(BigB, GameStatusController.IsBigPlayer);
+                //_playerAnim.SetBool(FireB, GameStatusController.IsFirePlayer);
+                //ChangeAnim();
                 MovePlayer();
                 GetPlayerSpeed();
             }
@@ -287,6 +309,7 @@ namespace PlayerScripts
                 }
                 else
                 {
+                    if (!getFlag) return;
                     if (transform.position.x < _flagPos + 0.8f)
                     {
                         _playerAnim.SetBool(HugB, false);
@@ -306,23 +329,26 @@ namespace PlayerScripts
                 }
             }
         }
-        float hugPoleTime = 1.5f;
-        float hugTime = 0;
-
+        public void OnChanleControl(bool toHit)
+        {
+            _playerRb.velocity = Vector2.zero;
+            horizontalInput = 0;
+            isHit = toHit;
+        }
+        float horizontalInput = 0f;
         private void MovePlayer()
         {
-            if (!_isCrouching && !_isGoingDownPipeAble)
+            horizontalInput = 0;
+            if (!_isCrouching && !_isGoingDownPipeAble && !isHit)
             {
                 // 修改：使用AD键获取水平输入
-                float horizontalInput = 0f;
-                if (Input.GetKey(KeyCode.A)) horizontalInput = -1f;
-                if (Input.GetKey(KeyCode.D)) horizontalInput = 1f;
-
+                if (Input.GetKey(KeyCode.A) && !isHit) horizontalInput = -1f;
+                if (Input.GetKey(KeyCode.D) && !isHit) horizontalInput = 1f;
+                // 直接设置固定的水平速度，移除平滑效果
                 Vector2 playerVelocity = _playerRb.velocity;
-                Vector3 targetVelocity = new Vector2(horizontalInput * speed * Time.fixedDeltaTime, playerVelocity.y);
-                _playerRb.velocity = Vector3.SmoothDamp(playerVelocity, targetVelocity, ref _velocity, smoothTime);
+                playerVelocity.x = horizontalInput * speed * Time.fixedDeltaTime;
+                _playerRb.velocity = playerVelocity;
             }
-
             // 修改：使用S键下蹲
             if (_isCrouching && (CompareTag("BigPlayer") || CompareTag("UltimateBigPlayer")) && !_isAboveSpecialPipe)
             {
@@ -338,6 +364,7 @@ namespace PlayerScripts
             }
         }
 
+        bool getFlag = false;
         private void OnCollisionEnter2D(Collision2D other)
         {
             if (other.gameObject.CompareTag("EnemyBody"))
@@ -368,16 +395,7 @@ namespace PlayerScripts
 
             if (other.gameObject.CompareTag("Pole"))
             {
-                Sound.PauseOrPlayVolumeMusic(true);
-                ModController.Instance.OnModPause();
-                _playerAudio.PlayOneShot(flagPoleSound);
-                _flagPos = other.gameObject.transform.position.x;
-                _isFinish = true;
-                _playerRb.velocity = Vector2.zero;
-                _playerRb.isKinematic = true;
-                isWalkingToCastle = true;
-                isStopTime = true;
-                StartCoroutine(PlayStageClearSound());
+                OnGetPoleFunc(other.gameObject);
             }
 
             if (other.gameObject.CompareTag("Castle"))
@@ -387,17 +405,12 @@ namespace PlayerScripts
                 playerSprite.SetActive(false);
             }
 
-            //if (other.gameObject.CompareTag("DeathAbyss"))
-            //{
-            //    //_playerAudio.PlayOneShot(dieSound);
-            //    GameStatusController.Live -= 1;
-            //    GameStatusController.IsBigPlayer = false;
-            //    GameStatusController.IsFirePlayer = false;
-            //    GameStatusController.PlayerTag = "Player";
-            //    GameStatusController.IsDead = true;
-            //    _playerRb.isKinematic = true;
-            //    _playerRb.velocity = Vector2.zero;
-            //}
+            if (other.gameObject.CompareTag("DeathAbyss"))
+            {
+                //_playerAudio.PlayOneShot(dieSound);
+                OnDieNFunc();
+                return;
+            }
 
             if (other.gameObject.CompareTag("1UpMushroom") && _isEatable)
             {
@@ -408,7 +421,14 @@ namespace PlayerScripts
 
             if (other.gameObject.CompareTag("BigMushroom") && _isEatable)
             {
+                OnChanleControl(true);
+                _playerAnim.SetFloat(SpeedF, 0);
+                _playerRb.velocity = Vector2.zero;
+                _playerRb.isKinematic = true;
                 _playerAudio.PlayOneShot(turnBigSound);
+                GameStatusController.IsBigPlayer = true;
+                GameStatusController.PlayerTag = "BigPlayer";
+                tag = GameStatusController.PlayerTag;
                 TurnIntoBigPlayer();
                 _isEatable = false;
             }
@@ -434,8 +454,12 @@ namespace PlayerScripts
             if (other.gameObject.CompareTag("FireFlower") && (CompareTag("Player") || CompareTag("UltimatePlayer")) &&
                 _isEatable)
             {
-           
+                OnChanleControl(true);
+                _playerAnim.SetFloat(SpeedF, 0);
                 _playerAudio.PlayOneShot(turnBigSound);
+                _playerRb.velocity = Vector2.zero;
+                _playerRb.isKinematic = true;
+                tag = "UltimateBigPlayer";
                 TurnIntoBigPlayer();
                 _isEatable = false;
             }
@@ -443,8 +467,13 @@ namespace PlayerScripts
             if (other.gameObject.CompareTag("FireFlower") && (CompareTag("BigPlayer") || CompareTag("UltimateBigPlayer")) &&
                 _isEatable)
             {
+                OnChanleControl(true);
+                _playerAnim.SetFloat(SpeedF, 0);
                 _playerAudio.PlayOneShot(turnBigSound);
+                _playerRb.velocity = Vector2.zero;
+                _playerRb.isKinematic = true;
                 TurnIntoBigPlayer();
+                tag = "UltimateBigPlayer";
                 GameStatusController.IsFirePlayer = true;
                 _isEatable = false;
             }
@@ -469,6 +498,26 @@ namespace PlayerScripts
             }
        
         }
+        bool getPole = false;
+
+        void OnGetPoleFunc(object  msg)
+        {
+            if(msg == null|| getPole) return;
+            getPole = true;
+            GameObject other= (GameObject)msg;
+            Sound.PauseOrPlayVolumeMusic(true);
+            ModController.Instance.OnModPause();
+            _playerAudio.PlayOneShot(flagPoleSound);
+            _flagPos = other.gameObject.transform.position.x;
+            _isFinish = true;
+            _playerRb.velocity = Vector2.zero;
+            _playerRb.isKinematic = true;
+            isWalkingToCastle = true;
+            isStopTime = true;
+            EventManager.Instance.SendMessage(Events.ToGetPoleFlag);
+            StartCoroutine(PlayStageClearSound());
+        }
+
         void OnDieNFunc()
         {
             if (!GameStatusController.IsBigPlayer)
@@ -477,11 +526,7 @@ namespace PlayerScripts
                 PFunc.Log("OnCollisionEnter2D", isInvulnerable);
                 if (!isInvulnerable)
                 {
-              
-                    GameStatusController.IsDead = true;
-                    GameStatusController.Live -= 1;
-                    _playerRb.isKinematic = true;
-                    _playerRb.velocity = Vector2.zero;
+                    Die();
                 }
                 else
                 {
@@ -489,13 +534,13 @@ namespace PlayerScripts
                     Physics2D.IgnoreCollision(GetComponent<Collider2D>(), smallPlayerCollider.GetComponent<Collider2D>());
                 }
             }
-            else if (GameStatusController.IsBigPlayer)
+            else if (CompareTag("BigPlayer"))
             {
                 GameStatusController.IsBigPlayer = false;
                 GameStatusController.IsFirePlayer = false;
                 GameStatusController.PlayerTag = "Player";
                 gameObject.tag = GameStatusController.PlayerTag;
-                ChangeAnim();
+                TurnIntoBigPlayer();
                 isInvulnerable = true;
             }
         }
@@ -550,6 +595,10 @@ namespace PlayerScripts
             {
                 StartCoroutine(OutHiddenPass());
             }
+            if (other.gameObject.CompareTag("Flag"))
+            {
+                getFlag = true;
+            }
 
         }
         private void OnTriggerExit2D(Collider2D collision)
@@ -560,25 +609,50 @@ namespace PlayerScripts
             }
         }
 
-        private void TurnIntoBigPlayer()
+        public void TurnIntoBigPlayer()
         {
+            _playerAnim.SetBool(BigB, GameStatusController.IsBigPlayer);
+            _playerAnim.SetBool(FireB, GameStatusController.IsFirePlayer);
+            if (GameStatusController.IsBigPlayer)
+            {
+                bigPlayer.SetActive(GameStatusController.IsBigPlayer);
+                smallPlayer.SetActive(!GameStatusController.IsBigPlayer);
+            }
+        
+           // ChangeAnim();
             PFunc.Log("碰见大花", gameObject.tag);
             if (CompareTag("Player"))
             {
-                GameStatusController.PlayerTag = "BigPlayer";
-                tag = GameStatusController.PlayerTag;
+                isInvulnerable = true;
+                OnStartFilker();
             }
             else
-            {
-                tag = "UltimateBigPlayer";
+            {     
+                isInvulnerable = true;
+                OnStartFilker();
             }
-  
-            GameStatusController.IsBigPlayer = true;
-            PFunc.Log("TurnIntoBigPlayer", GameStatusController.IsBigPlayer);
-            ChangeAnim();
         }
+        public GameObject aniParent;
         Vector3 deadPos=Vector3.zero;
-        
+        public void OnStartFilker()
+        {
+            StartCoroutine(OnFliker());
+        }
+
+        IEnumerator OnFliker()
+        {
+            yield return new WaitForSeconds(0.7f);
+            if (!GameStatusController.IsBigPlayer)
+            {
+                bigPlayer.SetActive(GameStatusController.IsBigPlayer);
+                smallPlayer.SetActive(!GameStatusController.IsBigPlayer);
+            }
+            _playerRb.velocity = Vector2.zero;
+            _playerRb.isKinematic = false;
+            ChangeCollider();
+            OnChanleControl(false);
+        }
+
         private void Die()
         {
             //playerCol.SetActive(false);
@@ -591,11 +665,12 @@ namespace PlayerScripts
         bool isSpecialDie = false;
         void OnDieFunc()
         {
+     
             if (isSpecialDie)
             {
                 if (DieCoroutine == null)
                 {
-               
+                    Sound.PlaySound("smb_mariodie");
                     PlayerModController.Instance.OnSetPlayerIns(false);
                     PlayerModController.Instance.OnChangeState(false);
                     deadPos = isRest ? new Vector3(-2, 0) : new Vector3(transform.position.x, transform.position.y+2, transform.position.z);
@@ -606,6 +681,7 @@ namespace PlayerScripts
             {
                 if (DieCoroutine == null)
                 {
+                    Sound.PlaySound("smb_mariodie");
                     PlayerModController.Instance.OnChangeState(false);
                     deadPos = isRest ? new Vector3(-2, 4) : new Vector3(transform.position.x, transform.position.y + 2, transform.position.z);
                     DieCoroutine = StartCoroutine(NormalDie());
@@ -622,8 +698,12 @@ namespace PlayerScripts
         public void ChangeAnim()
         {
             bigPlayer.SetActive(GameStatusController.IsBigPlayer);
-            bigPlayerCollider.SetActive(GameStatusController.IsBigPlayer);
             smallPlayer.SetActive(!GameStatusController.IsBigPlayer);
+        }
+
+        public void ChangeCollider()
+        {
+            bigPlayerCollider.SetActive(GameStatusController.IsBigPlayer);
             smallPlayerCollider.SetActive(!GameStatusController.IsBigPlayer);
         }
 
@@ -670,13 +750,18 @@ namespace PlayerScripts
 
             if (ModData.mLife < 0)
             {
-                Sound.PlaySound("smb_mariodie");
                 yield return StartCoroutine(LoadingScene());
             }
             else if (isRest || GameManager.Instance.time<=0)
             {
-                string name = Config.passName[Config.passIndex];
-                GameModController.Instance.OnLoadScene(name);
+                ModController.Instance.OnModPause();
+                EventManager.Instance.SendMessage(Events.OnRestBreakBrick);
+                GameStatusController.IsDead = false;
+                ResetPlayerState(startPos);
+                isInvulnerable = true;
+                _playerAnim.SetTrigger("toDead");
+                Camera.main.transform.position = new Vector3(1.5f, 5, -10);
+                Config.isLoading = false;
             }
             else
             {
@@ -684,7 +769,6 @@ namespace PlayerScripts
                 yield return playerBreak.OnHuifuIE();
                 GameStatusController.IsDead = false;
                 ResetPlayerState(deadPos);
-                isInvincible = true;
                 isInvulnerable = true;
                 DieCoroutine = null;
             }
@@ -696,33 +780,35 @@ namespace PlayerScripts
             PFunc.Log("玩家死亡");
             playerCol.SetActive(false);
             _playerAnim.SetBool(DieB,true);
-            yield return new WaitForSeconds(0.5f);
-            while (transform.position.y>-3)
+            float y = transform.position.y + 3;
+            while (transform.position.y < y)
             {
-                transform.Translate(Vector3.down * 6 * Time.deltaTime);
+                transform.Translate(Vector3.up * 10 * Time.deltaTime);
                 yield return null;
             }
+
+            while (transform.position.y>-3)
+            {
+                transform.Translate(Vector3.down * 10 * Time.deltaTime);
+                yield return null;
+            }
+      
             ModData.mLife--;
             if (ModData.mLife < 0)
             {
-                Sound.PlaySound("smb_mariodie");
                 yield return StartCoroutine(LoadingScene());
             }
-            else if (isRest || GameManager.Instance.time <= 0)
-            {
-                string name = Config.passName[Config.passIndex];
-                GameModController.Instance.OnLoadScene(name);
-            }
-            else 
-            {
-          
+            else {
+                ModController.Instance.OnModPause();
                 GameStatusController.IsDead = false;
-                ResetPlayerState(deadPos);
-                isInvincible = true;
+                ResetPlayerState(startPos);
                 isInvulnerable=true;
+                PFunc.Log("NormalDie");
                 _playerAnim.SetTrigger("toDead");
+                Camera.main.transform.position = new Vector3(1.5f, 5, -10);
+                EventManager.Instance.SendMessage(Events.OnRestBreakBrick);
+                Config.isLoading = false;
             }
-     
             DieCoroutine = null;
         }
 
@@ -771,7 +857,7 @@ namespace PlayerScripts
         {
             yield return new WaitForSeconds(1.5f);
             _isGoingDownPipeAble = false;
-            PFunc.Log("StopGoingDownPipe", _isAboveSpecialPipe, isHidden);
+
             if (_isAboveSpecialPipe)
             {
                 _isAboveSpecialPipe = false;
@@ -877,14 +963,15 @@ namespace PlayerScripts
             isInvincible = false;
             isSpecialDie = false;
             isRest = false;
+            getFlag = false;
             // 重置输入状态变量
             _isSprinting = false;
             _isCrouching = false;
 
             // 重置速度相关变量
-            speed = 410f;
+            speed = 240;
             slideDownSpeed = 5;
-            jumpForce = 1050;
+            jumpForce = 620;
 
     
             // 确保面向右侧
@@ -953,7 +1040,7 @@ namespace PlayerScripts
             {
                 _playerAudio.Stop();
             }
-            hugTime = 0;
+
             // 10. 重置速度插值
             _velocity = Vector3.zero;
 
@@ -966,6 +1053,7 @@ namespace PlayerScripts
             GameStatusController.IsStageClear = false;
             GameStatusController.IsShowMessage = false;
             GameStatusController.IsBossBattle = false;
+            GameManager.Instance.time = 400;
 
             // 12. 设置玩家标签为初始状态
             GameStatusController.PlayerTag = "Player";

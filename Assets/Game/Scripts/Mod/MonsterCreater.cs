@@ -30,7 +30,7 @@ public class MonsterCreater : MonoBehaviour
     public GameObject flyFish;
     public GameObject Beatles;
 
-    [SerializeField] private float batchInterval = 0.1f;
+    [SerializeField] private float batchInterval = 0.05f;
 
     public int MonsterCount = 0;
     public int MaxCanCreateMonster = 250;
@@ -95,7 +95,7 @@ public class MonsterCreater : MonoBehaviour
                 if (hasCreateMonster >= MaxCanCreateMonster)
                     yield return new WaitUntil(() => hasCreateMonster < MaxCanCreateMonster);
                 Sound.PlaySound("smb_1-up");
-                Transform createPos = CreatePos1;
+                Vector3 createPos = CreatePos1.position;
                 createPos = OnGetCreatePos(data);
                 GameObject obj = InstantiateSingleMonster(monsterPrefab, createPos);
                 switch (data.type)
@@ -120,26 +120,30 @@ public class MonsterCreater : MonoBehaviour
         data.isCreating = false;
     }
 
-    Transform OnGetCreatePos(MonsterSpawnData data)
+    Vector3 OnGetCreatePos(MonsterSpawnData data)
     {
-        Transform createPos = CreatePos1;
+        Vector3 createPos = CreatePos1.position;
         switch (data.type)
         {
+            case "tortoise":
+                int value = Random.Range(0, 4);
+                createPos = new Vector3(CreatePos1.position.x-value, CreatePos1.position.y, CreatePos1.position.z) ;
+                break;
             case "FlyKoopa":
-                createPos = CreatePos1;
+                createPos = CreatePos1.position;
                 break;
             case "flyFish":
-                createPos = CreatePos2;
+                createPos = CreatePos2.position;
                 break;
         }
         return createPos;
     }
 
     /// <summary> 实例化单个怪物 </summary>
-    private GameObject InstantiateSingleMonster(GameObject prefab,Transform trans)
+    private GameObject InstantiateSingleMonster(GameObject prefab,Vector3 trans)
     {
-        PFunc.Log(trans.position);
-        GameObject obj = SimplePool.Spawn(prefab, trans.position, Quaternion.identity);
+        PFunc.Log(trans);
+        GameObject obj = SimplePool.Spawn(prefab, trans, Quaternion.identity);
         obj.transform.SetParent(modMonsterPatent);
         obj.SetActive(true);
         return obj;

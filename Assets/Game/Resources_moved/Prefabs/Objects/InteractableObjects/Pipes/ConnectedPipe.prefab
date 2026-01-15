@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1531784099648182675}
   - component: {fileID: 6919717743041281232}
-  m_Layer: 0
+  m_Layer: 15
   m_Name: ConnectPipe
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -95,7 +95,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5721480858498522954}
   - component: {fileID: 1609219355236391386}
-  m_Layer: 0
+  m_Layer: 15
   m_Name: ConnectedPipe
   m_TagString: Untagged
   m_Icon: {fileID: 0}

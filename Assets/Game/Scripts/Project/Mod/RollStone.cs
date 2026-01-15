@@ -35,10 +35,16 @@ public class RollStone : MonoBehaviour
     }
     public void OnBeginShow( )
     {
+        movePos = 0;
         isClimbing = false;
         isWaitingForClimb = false;
         transform.localPosition = new Vector3(0.5f, -0.25f);
         endPos = transform.position.x + 25;
+        if (mainMoveCoroutine != null)
+        {
+            StopAllCoroutines();
+            mainMoveCoroutine = null;
+        }
         mainMoveCoroutine= StartCoroutine(OnStartMoveStone());
     }
 
@@ -67,9 +73,7 @@ public class RollStone : MonoBehaviour
                     {
                         go.transform.position = new Vector3(go.transform.position.x, 0, 93);
                     });
-
-        
-                transform.position += new Vector3(1, -0.25f);
+                transform.position = new Vector3(transform.position.x+1, -0.25f);
             }
             yield return new WaitForSeconds(0.3f);
             // 2. 进行射线检测，判断前方是否有障碍物

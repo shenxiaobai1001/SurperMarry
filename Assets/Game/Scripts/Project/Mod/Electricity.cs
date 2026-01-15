@@ -20,13 +20,12 @@ public class Electricity : MonoBehaviour
         .OnComplete(() =>
         {
             ChainPlayer.Instance.transform.position = new Vector3(Camera.main.transform.position.x, 5, 0);
-        });
-            int value = UnityEngine.Random.Range(0, gameObjects.Count);
-            for (int i = 0; i < gameObjects.Count; i++)
-            {
-                gameObjects[i].gameObject.SetActive(value == i);
-            }
-            EventManager.Instance.SendMessage(Events.OnLazzerHit);
+        });}
+        int value = UnityEngine.Random.Range(0, gameObjects.Count);
+        for (int i = 0; i < gameObjects.Count; i++)
+        {
+            gameObjects[i].gameObject.SetActive(value == i);
         }
+        EventManager.Instance.SendMessage(Events.OnLazzerHit);
     }
 }

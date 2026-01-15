@@ -244,9 +244,9 @@ GameObject:
   - component: {fileID: 3467375366648388102}
   - component: {fileID: 809755107799885979}
   - component: {fileID: 3971739282158177114}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: flag
-  m_TagString: Untagged
+  m_TagString: Flag
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -331,6 +331,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2666de2d21b94cd4ba73e552776dbef5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  pole: {fileID: 2411123721426404529}
 --- !u!50 &809755107799885979
 Rigidbody2D:
   serializedVersion: 4

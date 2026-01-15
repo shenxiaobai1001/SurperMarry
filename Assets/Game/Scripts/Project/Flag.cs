@@ -4,11 +4,21 @@ using UnityEngine;
 
 public class Flag : MonoBehaviour
 {
+    public GameObject pole;
     // Start is called before the first frame update
     void Start()
     {
-        
+        EventManager.Instance.AddListener(Events.ToGetPoleFlag, OnGetPole);
     }
+    private void OnDestroy()
+    {
+        EventManager.Instance.RemoveListener(Events.ToGetPoleFlag, OnGetPole);
+    }
+    void OnGetPole(object msg)
+    {
+        down = true;
+    }
+
     private void Update()
     {
         if (transform.position.y >= 1.5f&& down)
@@ -23,6 +33,7 @@ public class Flag : MonoBehaviour
         if (collision == null) return;
         if (collision.gameObject.CompareTag("Player"))
         {
+            EventManager.Instance.SendMessage(Events.ToGetPoleFlagPlayer, pole);
             down = true;
         }
     }

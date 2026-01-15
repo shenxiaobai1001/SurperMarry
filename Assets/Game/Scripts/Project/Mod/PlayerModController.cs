@@ -31,12 +31,14 @@ public class PlayerModController : MonoBehaviour
     }
 
     public Animator animator;
+    public Animator modAnimator;
     public Rigidbody2D rigidbody2D;
     public GameObject spriteTrans;
     public GameObject Center;
     public List<SpriteRenderer> spriteRenderers;
     public PlayerBreak playerBreak;
     public List<GameObject> modAnimations;
+    public SpriteBlinkController spriteBlinkController;
 
     int isPassivityMove;
 
@@ -64,7 +66,9 @@ public class PlayerModController : MonoBehaviour
     }
     public void OnSetPlayerIns(bool show)
     {
-        PFunc.Log("OnSetPlayerIns");
+        if (show && ItemCreater.Instance.lockPlayer) return;
+        PFunc.Log("OnSetPlayerIns", show);
+        animator.enabled = show;
         for (int i = 0; i < spriteRenderers.Count; i++)
         {
             Color color = show ? new Color32(255, 255, 255, 255) : new Color32(255, 255, 255, 0);
@@ -78,16 +82,23 @@ public class PlayerModController : MonoBehaviour
     }
     public void OnEndHitPos()
     {
-        if (animator) animator.SetTrigger("endSwim");
+        if (GameStatusController.IsBigPlayer)
+        {
+            if (animator) animator.Play("Idle_Big");
+        }
+        else 
+        {
+            if (animator) animator.Play("Idle");
+        }
     }
     public void OnToSwim()
     {
         OnToHitPos();
         bool isRight = PlayerController.Instance._isFacingRight;
         if(isRight)
-            PlayerModMoveController.Instance.TriggerModMove(MoveType.Normal, new Vector3(1, 0.5f), 20, 0.3f, true, false, 1);
+            PlayerModMoveController.Instance.TriggerModMove(MoveType.Normal, new Vector3(1, 0.5f), 15, 0.3f, true, false, 1);
         else
-            PlayerModMoveController.Instance.TriggerModMove(MoveType.Normal, new Vector3(-1, 0.5f), 20, 0.3f, true, false, 1);
+            PlayerModMoveController.Instance.TriggerModMove(MoveType.Normal, new Vector3(-1, 0.5f), 15, 0.3f, true, false, 1);
     }
 
     public void OnAddFourePlayer(Vector3 vector)
@@ -107,6 +118,7 @@ public class PlayerModController : MonoBehaviour
         if (collision.gameObject.CompareTag("Banana"))
         {
             PFunc.Log("碰到香蕉");
+            Sound.PlaySound("Mod/banana");
             OnToSwim();
         }
     }
@@ -115,14 +127,14 @@ public class PlayerModController : MonoBehaviour
        OnChangeState(false);
 
         if (PlayerController.Instance != null)
-            PlayerController.Instance.isHit = true;
+            PlayerController.Instance.OnChanleControl(true);
         OnSetPlayerIns(false);
         isPassivityMove++;
     }
 
     public void OnCancelHangSelf()
     {
-        spriteTrans.gameObject.SetActive(true);
+        animator.gameObject.SetActive(true);
         isPassivityMove--;
         if (isPassivityMove <= 0)
         {
@@ -140,7 +152,6 @@ public class PlayerModController : MonoBehaviour
             HangSelf.Instance.OnBreakeHang();
         }
         OnSetPlayerIns(true);
-
     }
 
     public void OnTriggerModAnimator(string riggerName)
@@ -198,18 +209,54 @@ public class PlayerModController : MonoBehaviour
 
     public void OnChanleModAni()
     {
-        OnShowModAnimation(5);
+        OnShowModAnimation(-1);
         OnSetPlayerIns(true);
 
         animator.SetTrigger("endMenace");
+        if (GameStatusController.IsFirePlayer && GameStatusController.IsBigPlayer)
+        {
+            animator.Play("PlayerFireBigIdle");
+        }
+        else if (!GameStatusController.IsFirePlayer && GameStatusController.IsBigPlayer)
+        {
+            animator.Play("Idle_Big");
+        }
+        else
+        {
+            animator.Play("Idle");
+        }
     }
 
-    void OnShowModAnimation(int index)
+    public void OnShowModAnimation(int index)
     {
         OnSetPlayerIns(false);
         for (int i = 0; i < modAnimations.Count; i++) {
             modAnimations[i].gameObject.SetActive(i==index);
         }
+    }
+
+    public void OnMoveShowIcon()
+    {
+        OnSetPlayerIns(false);
+        if (ItemCreater.Instance.lockPlayer) return;
+        if (GameStatusController.IsFirePlayer && GameStatusController.IsBigPlayer)
+        {
+            OnShowModAnimation(6);
+        }
+        else if (!GameStatusController.IsFirePlayer && GameStatusController.IsBigPlayer)
+        {
+            OnShowModAnimation(5);
+        }
+        else
+        {
+            OnShowModAnimation(4);
+        }
+    }
+
+    public void OnFiler()
+    {
+         if(modAnimator) modAnimator.Play("Filer");
+       // if (spriteBlinkController) spriteBlinkController.StartBlink();
     }
 
     private void OnDestroy()

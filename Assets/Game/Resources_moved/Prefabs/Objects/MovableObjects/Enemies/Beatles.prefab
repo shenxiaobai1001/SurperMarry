@@ -100,7 +100,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   speed: 2
   Patrolspeed: 12
-  pushForce: 500
+  pushForce: 10
   isTouchByPlayer: 0
   isPatrolling: 0
   patrolPointA: {x: 1, y: 0.27, z: 0}
@@ -114,9 +114,12 @@ MonoBehaviour:
   flyKoopa: {fileID: 0}
   beatles: {fileID: 2088060397419985216}
   flyFish: {fileID: 0}
+  koopaShell: {fileID: 0}
   bodys:
   - {fileID: 2971768902574384257}
   canMove: 0
+  isDead: 0
+  isCreate: 1
   _moveDirection: {x: -1, y: 0, z: 0}
 --- !u!114 &2088060397419985216
 MonoBehaviour:

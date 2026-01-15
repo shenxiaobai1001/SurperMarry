@@ -32,14 +32,20 @@ public class ChainPlayer : MonoBehaviour
         PlayerController.Instance.transform.position = new Vector3(animator.transform.position.x, animator.transform.position.y, animator.transform.position.z);
         if (GameStatusController.IsFirePlayer && GameStatusController.IsBigPlayer)
         {
+            animator.transform.GetChild(0).gameObject.SetActive(false);
+            animator.transform.GetChild(1).gameObject.SetActive(true);
             animator.SetTrigger("redLock");
         }
         else if (!GameStatusController.IsFirePlayer && GameStatusController.IsBigPlayer)
         {
+            animator.transform.GetChild(0).gameObject.SetActive(false);
+            animator.transform.GetChild(1).gameObject.SetActive(true);
             animator.SetTrigger("bigLock");
         }
         else
         {
+            animator.transform.GetChild(0).gameObject.SetActive(true);
+            animator.transform.GetChild(1).gameObject.SetActive(false);
             animator.SetTrigger("smallLock");
         }
     }

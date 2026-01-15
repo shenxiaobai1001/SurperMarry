@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1035378194393138430}
   - component: {fileID: 3402178270708513562}
-  m_Layer: 0
+  m_Layer: 15
   m_Name: ConnectPipe
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -95,7 +95,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8754532382206154255}
   - component: {fileID: 2491532321169327522}
-  m_Layer: 0
+  m_Layer: 15
   m_Name: Hidden
   m_TagString: Hidden
   m_Icon: {fileID: 0}
@@ -172,7 +172,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2730873134554242830}
   - component: {fileID: 5781242422484534737}
-  m_Layer: 0
+  m_Layer: 15
   m_Name: ConnectedPipeHidden
   m_TagString: Untagged
   m_Icon: {fileID: 0}

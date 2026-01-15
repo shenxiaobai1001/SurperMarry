@@ -1,47 +1,23 @@
 {
     "NormalConfigs": [
         {
-            "CallName": "乌龟十只",
-            "Type": "礼物",
-            "Message": "",
-            "Tip": "",
-            "Count": 1,
-            "Delay": 0.0
-        },
-        {
-            "CallName": "火焰马里奥",
-            "Type": "礼物",
-            "Message": "",
-            "Tip": "",
-            "Count": 1,
-            "Delay": 0.0
-        },
-        {
-            "CallName": "一库",
-            "Type": "礼物",
-            "Message": "",
-            "Tip": "",
-            "Count": 10,
-            "Delay": 0.30000001192092898
-        },
-        {
             "CallName": "雷电",
             "Type": "礼物",
             "Message": "",
             "Tip": "",
-            "Count": 10,
-            "Delay": 0.30000001192092898
+            "Count": 1,
+            "Delay": 1.0
         },
         {
             "CallName": "铁链",
             "Type": "礼物",
             "Message": "",
             "Tip": "",
-            "Count": 0,
-            "Delay": 1.0
+            "Count": 1,
+            "Delay": 0.0
         },
         {
-            "CallName": "甲壳虫一百只",
+            "CallName": "随机天火",
             "Type": "礼物",
             "Message": "",
             "Tip": "",
@@ -49,7 +25,15 @@
             "Delay": 0.0
         },
         {
-            "CallName": "陨石",
+            "CallName": "全屏天火",
+            "Type": "礼物",
+            "Message": "",
+            "Tip": "",
+            "Count": 1,
+            "Delay": 0.0
+        },
+        {
+            "CallName": "随机地火",
             "Type": "礼物",
             "Message": "",
             "Tip": "",

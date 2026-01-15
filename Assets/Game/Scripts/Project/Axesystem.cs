@@ -25,7 +25,7 @@ public class Axesystem : MonoBehaviour
             Sound.PauseOrPlayVolumeMusic(true);
             Config.isLoading = true;
             ModController.Instance.OnModPause();
-            PlayerController.Instance.isHit = true;
+            PlayerController.Instance.OnChanleControl(true);
             check = false;
             bridge.OnMinBrige();
             PlayerController.Instance._playerRb.velocity = Vector2.zero;

@@ -45,6 +45,7 @@ TagManager:
   - Arrow
   - FlyFish
   - BoosPK
+  - Flag
   layers:
   - Default
   - TransparentFX
@@ -59,9 +60,9 @@ TagManager:
   - PowerUps
   - ModItem
   - Koopa
-  - 
-  - 
-  - 
+  - KoopaShell
+  - ModWall
+  - Pipeline
   - 
   - 
   - 

@@ -12,15 +12,24 @@ public class Meteorite : MonoBehaviour
     {
         moveCount = 0;
         moveSpeed = Random.Range(15, 25);
-        int index= Random.Range(0, gameObjects.Count);
-        for (int i = 0; i < gameObjects.Count; i++) {
-            gameObjects[i].gameObject.SetActive(index==i);
+        int index = Random.Range(0, gameObjects.Count);
+        for (int i = 0; i < gameObjects.Count; i++)
+        {
+            gameObjects[i].gameObject.SetActive(index == i);
         }
-        // 让物体的正右方（X轴正方向）指向玩家
-        Vector2 direction = PlayerController.Instance.transform.position - transform.position;
-        // 计算角度（从右侧开始，所以要减去90度）
-        float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
-        transform.rotation = Quaternion.Euler(0, 0, angle );
+
+        // 获取玩家位置
+        Vector2 targetPos = PlayerController.Instance.transform.position;
+
+        // 方法1：在计算的角度上直接添加随机偏移
+        Vector2 direction = targetPos - (Vector2)transform.position;
+        float baseAngle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
+
+        // 添加随机偏移（-5到+5度）
+        float randomOffset = Random.Range(-30f, 30f);
+        float finalAngle = baseAngle + randomOffset;
+
+        transform.rotation = Quaternion.Euler(0, 0, finalAngle);
 
         mainMoveCoroutine = StartCoroutine(OnMove());
     }

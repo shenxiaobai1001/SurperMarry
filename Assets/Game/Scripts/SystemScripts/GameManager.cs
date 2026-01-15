@@ -141,24 +141,25 @@ namespace SystemScripts
                     GameStatusController.IsDead = true;
                 }
             }
-            else if (player.isInCastle)
+            else if (player.isInCastle&& checkLevel)
             {
+                checkLevel = false;
                 ModController.Instance.statusController.SetTime(time -= Time.deltaTime * 60);
-
-                if (time < 0&& checkLevel)
-                {
-                    checkLevel = false;
-                    time = 0;
-                    StartCoroutine(NextLevel());
-                }
-                else
-                {
-                    if (finalTime - time >= 1f)
-                    {
-                        GameStatusController.Score += 50;
-                        finalTime = time;
-                    }
-                }
+                StartCoroutine(NextLevel());
+                //if (time < 0&& checkLevel)
+                //{
+                //    checkLevel = false;
+                //    time = 0;
+                   
+                //}
+                //else
+                //{
+                //    if (finalTime - time >= 1f)
+                //    {
+                //        GameStatusController.Score += 50;
+                //        finalTime = time;
+                //    }
+                //}
             }
         }
 

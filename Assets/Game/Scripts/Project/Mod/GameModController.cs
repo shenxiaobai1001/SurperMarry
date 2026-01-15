@@ -36,25 +36,26 @@ public class GameModController : MonoBehaviour
     void OnInitDistance()
     {
         if(passDistance==null) passDistance = new Dictionary<string, float>();
-        passDistance.Add("1-1",191);
+        passDistance.Add("1-1",192.5f);
         passDistance.Add("1-2", 155);
-        passDistance.Add("1-3", 142);
+        passDistance.Add("1-3", 151.2f);
         passDistance.Add("1-4", 122);
-        passDistance.Add("2-1", 123);
-        passDistance.Add("2-2", 261);
+        passDistance.Add("2-1", 132.7f);
+        passDistance.Add("2-2", 271.2f);
         passDistance.Add("2-3", 127);
-        passDistance.Add("3-1", 160);
-        passDistance.Add("3-2", 184);
-        passDistance.Add("3-3", 125);
+        passDistance.Add("3-1", 169.8f);
+        passDistance.Add("3-2", 193.7f);
+        passDistance.Add("3-3", 147.7f);
         passDistance.Add("3-4", 132);
-        passDistance.Add("4-1", 213);
+        passDistance.Add("4-1", 223);
         passDistance.Add("4-2", 151); 
-        passDistance.Add("4-3", 138);
+        passDistance.Add("4-3", 143.2f);
         passDistance.Add("4-4", 163);
     }
 
     public void OnRandromPlayerPos()
     {
+        Sound.PlaySound("smb_1-up");
         float x = passDistance[nowPos];
         float randX= UnityEngine.Random.Range(2,x);
         float randY = UnityEngine.Random.Range(0, 6);
@@ -63,10 +64,32 @@ public class GameModController : MonoBehaviour
     private Coroutine mainMoveCoroutine;
     public void OnRandromPass()
     {
+        Sound.PlaySound("smb_1-up");
         int value =UnityEngine.Random.Range(0, Config.passName.Length);
 
         string name = Config.passName[value];
         if (mainMoveCoroutine==null)
+        {
+            ModController.Instance.OnModPause();
+            Config.passIndex = value;
+            mainMoveCoroutine = StartCoroutine(OnLoadScence(name));
+        }
+    }
+    public void OnEnterNextPass(int value)
+    {
+        Config.passIndex += value;
+        if (Config.passIndex < 0)
+        {
+            Config.passIndex = 0;
+            return;
+        }
+        else if (Config.passIndex >= Config.passName.Length)
+        {
+            Config.passIndex = Config.passName.Length-1;
+            return;
+        }
+        string name = Config.passName[value];
+        if (mainMoveCoroutine == null)
         {
             ModController.Instance.OnModPause();
             Config.passIndex = value;

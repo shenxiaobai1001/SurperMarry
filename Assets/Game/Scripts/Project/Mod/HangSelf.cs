@@ -64,7 +64,7 @@ public class HangSelf : MonoBehaviour
     {
         if (ItemCreater.Instance.isHang)
         {
-            PlayerController.Instance.isHit = false;
+            PlayerController.Instance.OnChanleControl(false);
             ItemCreater.Instance.isHang = false;
             OnBreakeHang();
             PlayerModController.Instance.OnCancelHangSelf();

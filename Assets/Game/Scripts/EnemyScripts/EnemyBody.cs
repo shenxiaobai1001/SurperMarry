@@ -71,9 +71,8 @@ namespace EnemyScripts
                 GameStatusController.IsFirePlayer = false;
                 GameStatusController.PlayerTag = "Player";
                 playerController.gameObject.tag = GameStatusController.PlayerTag;
-                playerController.ChangeAnim();
                 playerController.isInvulnerable = true;
-                // StartCoroutine(Die(other.gameObject));
+                PlayerController.Instance.TurnIntoBigPlayer();
             }
         }
 

@@ -8,17 +8,17 @@ public class BreakBrickController : MonoBehaviour
     public List<CanBreakBrick> canBreakBrick;
     public BoxCollider2D collider2D;
     [HideInInspector]public bool toPool = false;
+    bool isBreak = false;
 
+    private void Start()
+    {
+        EventManager.Instance.AddListener(Events.OnRestBreakBrick, OnRestBreak);
+    }
     private void OnEnable()
     {
         if (toPool)
         {
-            breakCount = 0;
-            for (int i = 0; i < canBreakBrick.Count; i++)
-            {
-                canBreakBrick[i].ResetBrick();
-            }
-            collider2D.enabled = true;
+            OnRest();
         }
     }
 
@@ -34,6 +34,7 @@ public class BreakBrickController : MonoBehaviour
 
     void OnChangeAllBox(bool show)
     {
+        isBreak = true;
         for (int i = 0; i < boxCollider2Ds.Count; i++)
         {
             boxCollider2Ds[i].enabled = show;
@@ -47,5 +48,24 @@ public class BreakBrickController : MonoBehaviour
         {
             SimplePool.Despawn(gameObject);
         }
+    }
+    public void OnRest()
+    {
+        breakCount = 0;
+        for (int i = 0; i < canBreakBrick.Count; i++)
+        {
+            canBreakBrick[i].ResetBrick();
+        }
+        collider2D.enabled = true;
+        isBreak = false;
+    }
+    void OnRestBreak(object msg)
+    {
+        if (!isBreak) return;
+        OnRest();
+    }
+    private void OnDestroy()
+    {
+        EventManager.Instance.RemoveListener(Events.OnRestBreakBrick, OnRestBreak);
     }
 }

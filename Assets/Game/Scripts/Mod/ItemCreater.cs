@@ -36,7 +36,8 @@ public class ItemCreater : MonoBehaviour
     public GameObject Meteorite;
     public GameObject QiLinBi;
     public GameObject TCJiao;
-    public GameObject UPFire;
+    public GameObject UPFire; 
+    public GameObject singleUPFire;
     public GameObject downFire;
     public GameObject chainPlayer;
     public GameObject Electricity;
@@ -69,6 +70,7 @@ public class ItemCreater : MonoBehaviour
     /// <summary>统一生成怪物方法 </summary>
     public void CreateItem(GameObject itemPrefab, int count, string type, int batchSize, float batchInterval=0.1f, Action<object> endAction = null)
     {
+        PFunc.Log("等待加载全屏天火2");
         if (!spawnDataDict.ContainsKey(itemPrefab))
         {
             spawnDataDict[itemPrefab] = new ItemSpawnData(type, batchSize, batchInterval, endAction);
@@ -79,6 +81,7 @@ public class ItemCreater : MonoBehaviour
         data.count += count;
         if (!data.isCreating)
         {
+            PFunc.Log("等待加载全屏天火3");
             data.isCreating = true;
             StartCoroutine(CreateItemBatch(itemPrefab));
         }
@@ -88,19 +91,33 @@ public class ItemCreater : MonoBehaviour
     /// <summary> 批量生成协程</summary>
     private IEnumerator CreateItemBatch(GameObject monsterPrefab)
     {
+        PFunc.Log("等待加载全屏天火4");
         ItemSpawnData data = spawnDataDict[monsterPrefab];
         while (data.count > 0)
         {
+            PFunc.Log("等待加载全屏天火5");
             if (Config.isLoading)
             {
+                PFunc.Log("等待加载");
                 yield return new WaitUntil(() => !Config.isLoading);
+            }
+            if (GameStatusController.isDead)
+            {
+                PFunc.Log("等待死亡");
+                yield return new WaitUntil(() => !GameStatusController.isDead);
             }
             int spawnCount = Mathf.Min(data.batchSize, data.count);
             for (int i = 0; i < spawnCount; i++)
             {
                 if (Config.isLoading)
                 {
+                    PFunc.Log("等待加载");
                     yield return new WaitUntil(() => !Config.isLoading);
+                }
+                if (GameStatusController.isDead)
+                {
+                    PFunc.Log("等待死亡");
+                    yield return new WaitUntil(() => !GameStatusController.isDead);
                 }
                 Vector3 createPos = CreatePos1.position;
                 createPos = OnGetCreatePos(data);
@@ -151,7 +168,7 @@ public class ItemCreater : MonoBehaviour
                 createPos = new Vector3(x, 0, valueZ);
                 break;
             case "Meteorite":
-                value = UnityEngine.Random.Range(-7, 7);
+                value = UnityEngine.Random.Range(-8, 8);
                 createPos = new Vector3(createPos.x + value, createPos.y, valueZ);
                 break;
             case "QiLinBi":
@@ -163,8 +180,11 @@ public class ItemCreater : MonoBehaviour
                 createPos = vector;
                 break;
             case "UPFire":
-                value = UnityEngine.Random.Range(-7, 7);
-                createPos = new Vector3(createPos.x + value, createPos.y, valueZ);
+                createPos = new Vector3(Camera.main.transform.position.x, createPos.y, valueZ);
+                break;
+            case "singleUPFire":
+                value = UnityEngine.Random.Range(-5, 5);
+                createPos = new Vector3(createPos.x+ value, createPos.y, valueZ);
                 break;
             case "DownFire":
                 value = UnityEngine.Random.Range(-7, 7);
@@ -185,7 +205,7 @@ public class ItemCreater : MonoBehaviour
         switch (data.type)
         {
             case "banana":
-                Sound.PlaySound("Mod/banana");
+                Sound.PlaySound("smb_1-up");
                 break;
             case "duck":
                 Sound.PlaySound("Mod/Duck");
@@ -219,11 +239,22 @@ public class ItemCreater : MonoBehaviour
                 tcCount--;
                 break;
             case "UPFire":
+                Sound.PlaySound("smb_1-up");
+                Sound.PlaySound("smb_bowserfire");
                 UpFire upFire = obj.GetComponent<UpFire>();
                 upFire.OnStarMove();
                 break;
+            case "singleUPFire":
+                Sound.PlaySound("smb_1-up");
+                Sound.PlaySound("smb_bowserfire");
+                SingleUpFire upFire1 = obj.GetComponent<SingleUpFire>();
+                upFire1.OnStarMove();
+                break;
+            case "DownFire":
+                Sound.PlaySound("smb_1-up");
+                break;
             case "chainPlayer":
-                Config.chainCount += 5;
+                Config.chainCount += 20;
                 break;
             case "Electricity":
                 Electricity electricity = obj.GetComponent<Electricity>();
@@ -292,7 +323,9 @@ public class ItemCreater : MonoBehaviour
         tcCount += count;
         CreateItem(TCJiao, count, "TCJiao", 1);
     }
+    
     public void OnCreateUPFire(int count) => CreateItem(UPFire, count, "UPFire", 1);
+    public void OnCreateSingleUPFire(int count) => CreateItem(singleUPFire, count, "singleUPFire", 1);
     public void OnCreateDownFire(int count) => CreateItem(downFire, count, "DownFire", 1);
     public bool lockPlayer = false;
     public void OnCreateChainPlayer(int count) {

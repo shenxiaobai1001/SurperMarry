@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 using SystemScripts;
 using UnityEngine;
 using UnityEngine.TextCore;
@@ -34,6 +35,8 @@ namespace EnemyScripts
 
         public bool isDead = false;
 
+        public bool isCreate = true;
+
         private Animator _enemyAnim;
         private Vector3 _currentPatrolTarget;  // 当前巡逻目标点
         public Vector3 _moveDirection = Vector3.left;  // 移动方向
@@ -56,6 +59,8 @@ namespace EnemyScripts
 
         public void OnBeginMove()
         {
+            dieByShell = false;
+            if(koopaShell) koopaShell.gameObject.layer = LayerMask.NameToLayer("Koopa");
             if (CompareTag("KoopaShell"))
             {
                 gameObject.tag = "Koopa";
@@ -69,6 +74,7 @@ namespace EnemyScripts
                 }
             }
             rigidbody2D.isKinematic = isPatrolling;
+            rigidbody2D.constraints = RigidbodyConstraints2D.FreezeRotation;
             if (isPatrolling)
             {
                 _currentPatrolTarget = patrolPointB;  // 直接使用世界坐标
@@ -103,8 +109,11 @@ namespace EnemyScripts
             if (transform.position.y<-5)
             {
                 Die();
-                if(destoryObj==null)
-                    destoryObj=StartCoroutine(Destroy());
+                if (destoryObj == null)
+                {
+                    destoryObj = StartCoroutine(Destroy());
+                }
+           
             }
             if (transform.position.y < -0.1f && destoryObj== null&&CompareTag("FlyFish"))
             {
@@ -130,20 +139,13 @@ namespace EnemyScripts
             }
             else
             {
+                //PFunc.Log("碰撞时转向", _moveDirection);
                 // 原模式：向左移动，碰撞时转向
                 transform.Translate(speed * Time.deltaTime * _moveDirection);
             }   // 更新精灵朝向
             if (spriteTrans != null)
             {
                 spriteTrans.flipX = _moveDirection.x > 0;
-            }
-        }
-
-        void OnChekYpos()
-        {
-            if (isDead)
-            {
-                return;
             }
         }
 
@@ -182,6 +184,7 @@ namespace EnemyScripts
             }
             rigidbody2D.isKinematic = false;
             isPatrolling = false;
+
             canMove = false;
             isDead = true;
             if (flyKoopa) flyKoopa.StopFlying();
@@ -194,7 +197,7 @@ namespace EnemyScripts
                     destoryObj = StartCoroutine(Destroy());
             }
         }
-
+        bool dieByShell = false;
         private void OnCollisionEnter2D(Collision2D other)
         {
             // 巡逻模式下不通过碰撞改变方向
@@ -221,10 +224,15 @@ namespace EnemyScripts
             // 被火球或龟壳击中
             if (other.gameObject.CompareTag("KoopaShell") || other.gameObject.CompareTag("Fireball"))
             {
+                dieByShell = true;
                 GameStatusController.Score += 200;
                 GameStatusController.IsEnemyDieOrCoinEat = true;
                 if (destoryObj == null)
+                {
+                    _enemyAnim.SetBool(DieB, true);
                     destoryObj = StartCoroutine(Destroy());
+                }
+                 
             }
         }
 
@@ -273,15 +281,33 @@ namespace EnemyScripts
                     bodys[i].SetActive(false);
                 }
             }
-            spriteTrans.flipY = true;
-            Vector3 dropDir = _moveDirection == Vector3.left ? new Vector3(5, 1, 0) : new Vector3(-5, 1, 0);
-            rigidbody2D.AddForce(dropDir,ForceMode2D.Impulse);
+
+            if (CompareTag("Goomba" )&& !dieByShell)
+            {
+                rigidbody2D.isKinematic = true;
+                rigidbody2D.constraints = RigidbodyConstraints2D.FreezeAll;
+            }
+            else
+            {
+                rigidbody2D.constraints = RigidbodyConstraints2D.FreezeRotation;
+               // rigidbody2D.isKinematic = true;
+                spriteTrans.flipY = true;
+                Vector3 dropDir = _moveDirection == Vector3.left ? new Vector3(5, 5, 0) : new Vector3(-5, 5, 0);
+                rigidbody2D.AddForce(dropDir,ForceMode2D.Impulse);
+            }
+
             yield return new WaitForSeconds(0.6f);
-            rigidbody2D.isKinematic = true;
-            yield return new WaitForSeconds(0.6f);
-            MonsterCreater.Instance.hasCreateMonster--;
-            SimplePool.Despawn(gameObject);
-            destoryObj = null;
+
+            if (isCreate)
+            {
+                MonsterCreater.Instance.hasCreateMonster--;
+                SimplePool.Despawn(gameObject);
+            }
+            else
+            {
+                Destroy(gameObject);
+            }
+             destoryObj = null;
         }
     }
 }

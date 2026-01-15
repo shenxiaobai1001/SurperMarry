@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 695903924604861589}
   - component: {fileID: 5578647079594099521}
   - component: {fileID: 6086991823278391109}
-  m_Layer: 0
+  m_Layer: 15
   m_Name: HeadCastlePipe
   m_TagString: Pipe
   m_Icon: {fileID: 0}

@@ -71,16 +71,20 @@ public class NetManager : Singleton<NetManager>
                 MonsterCreater.Instance.OnCreateBeatles(100);
                 break;
             case "游戏时间+10s":
+                Sound.PlaySound("smb_1-up");
                 GameManager.Instance.time += 10;
                 break;
             case "游戏时间-10s":
+                Sound.PlaySound("smb_1-up");
                 GameManager.Instance.time -= 10;
                 break;
             case "生命+10%":
+                Sound.PlaySound("smb_1-up");
                 ModData.mLife += (int)(ModData.mLife * 0.1f);
                 EventManager.Instance.SendMessage(Events.OnChangeLife);
                 break;
             case "生命-10%":
+                Sound.PlaySound("smb_1-up");
                 ModData.mLife -= (int)(ModData.mLife * 0.1f);
                 EventManager.Instance.SendMessage(Events.OnChangeLife);
                 break;

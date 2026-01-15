@@ -372,6 +372,8 @@ MonoBehaviour:
   - "\u77F3\u5934+10"
   - "\u7F8E\u5973\u76F2\u76D2"
   - "\u706B\u7130\u9A6C\u91CC\u5965"
+  - "\u4E0A\u4E00\u5173"
+  - "\u4E0B\u4E00\u5173"
   prankType: 0
   content: {fileID: 7068550229684085340}
   item: {fileID: 8778753865026988281, guid: efca32274d0dcbf48802281ecb1b1840, type: 3}
@@ -2279,6 +2281,8 @@ MonoBehaviour:
   QiLinBi: {fileID: 7625033529183878725, guid: ed1a07f4e1ef5bd4c90f3c27fa44bfef, type: 3}
   TCJiao: {fileID: 2283161054305521035, guid: 93fbf9a8c0ab8204ab460f6a4ed93715, type: 3}
   UPFire: {fileID: 4398471140792375794, guid: 54ba41bdc1b15854eafcaba9c249c7f8, type: 3}
+  singleUPFire: {fileID: 7478282715392834567, guid: b01a293257e3e844b96760928f8a2069,
+    type: 3}
   downFire: {fileID: 5485295492095514164, guid: b7f6cf3bf8ccd42d58edd471e5b1641f,
     type: 3}
   chainPlayer: {fileID: 4593812283945754808, guid: e60c1aa5eeac6514cbfb2832b4067c4e,
@@ -3049,17 +3053,17 @@ PrefabInstance:
     - target: {fileID: 532175528953818023, guid: 9b0d90a8e7c362e429e7a445924404bb,
         type: 3}
       propertyPath: m_text
-      value: "\u200B"
+      value: "<u>shang'yi'guan</u>\u200B"
       objectReference: {fileID: 0}
     - target: {fileID: 920324185916922161, guid: 9b0d90a8e7c362e429e7a445924404bb,
         type: 3}
       propertyPath: m_Enabled
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1278979839690703874, guid: 9b0d90a8e7c362e429e7a445924404bb,
         type: 3}
       propertyPath: m_text
-      value: "\u200B"
+      value: "<u>shang'yi'guan</u>\u200B"
       objectReference: {fileID: 0}
     - target: {fileID: 1406380330315213615, guid: 9b0d90a8e7c362e429e7a445924404bb,
         type: 3}
@@ -3089,12 +3093,12 @@ PrefabInstance:
     - target: {fileID: 3392585727808407445, guid: 9b0d90a8e7c362e429e7a445924404bb,
         type: 3}
       propertyPath: m_text
-      value: "\u200B"
+      value: "<u>shang'yi'guan</u>\u200B"
       objectReference: {fileID: 0}
     - target: {fileID: 3717761707292314813, guid: 9b0d90a8e7c362e429e7a445924404bb,
         type: 3}
       propertyPath: m_Enabled
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3781858810901413296, guid: 9b0d90a8e7c362e429e7a445924404bb,
         type: 3}
@@ -3104,7 +3108,7 @@ PrefabInstance:
     - target: {fileID: 4865752315637268967, guid: 9b0d90a8e7c362e429e7a445924404bb,
         type: 3}
       propertyPath: m_Enabled
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5012353635077272420, guid: 9b0d90a8e7c362e429e7a445924404bb,
         type: 3}

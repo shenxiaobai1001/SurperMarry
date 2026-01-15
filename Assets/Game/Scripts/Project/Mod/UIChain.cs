@@ -65,10 +65,8 @@ public class UIChain : MonoBehaviour
         SimplePool.Despawn(ChainPlayer.Instance.gameObject);
         PlayerModController.Instance.OnSetPlayerIns(true);
         PlayerModController.Instance.OnChangeState(true);
-
         PlayerModController.Instance.OnEndHitPos();
-
-
+        PlayerModController.Instance.OnChanleModAni();
     }
 
     public void OnRande()

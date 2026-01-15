@@ -65,6 +65,7 @@ namespace EnemyScripts
                     controller.canMove = true;
                     controller.speed = speed;
                     _isPlayerKillable = true;
+                    gameObject.layer = LayerMask.NameToLayer("KoopaShell");
                 }
             }
             else
@@ -92,8 +93,8 @@ namespace EnemyScripts
                     GameStatusController.IsFirePlayer = false;
                     GameStatusController.PlayerTag = "Player";
                     playerController.gameObject.tag = GameStatusController.PlayerTag;
-                    playerController.ChangeAnim();
                     playerController.isInvulnerable = true;
+                    PlayerController.Instance.TurnIntoBigPlayer();
                     // StartCoroutine(Die(other.gameObject));
                 }
             }

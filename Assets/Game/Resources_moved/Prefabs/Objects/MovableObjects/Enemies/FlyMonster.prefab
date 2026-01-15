@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 746484297075501137}
   - component: {fileID: 2523202963345802929}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Square
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -97,7 +97,7 @@ GameObject:
   - component: {fileID: 921850221052654941}
   - component: {fileID: 5094868538139126688}
   - component: {fileID: 4974468053571802679}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: FlyMonster
   m_TagString: EnemyBody
   m_Icon: {fileID: 0}

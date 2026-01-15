@@ -29,7 +29,7 @@ public class QLBI : MonoBehaviour
 
     void OnBeginCreateBoom()
     {
-        PlayerModMoveController.Instance.TriggerModMove(MoveType.MaxRight,new Vector3(1,0.5f), 25, allTime, true);
+        PlayerModMoveController.Instance.TriggerModMove(MoveType.MaxRight,new Vector3(1,0.5f), 10, allTime, true);
         CameraShaker.Instance.StartShake(allTime);
         StartCoroutine(OnCreateBoom());
     }

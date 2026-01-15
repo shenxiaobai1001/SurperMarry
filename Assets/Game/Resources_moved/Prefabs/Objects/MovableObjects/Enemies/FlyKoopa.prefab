@@ -101,7 +101,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   speed: 2
   Patrolspeed: 2
-  pushForce: 500
+  pushForce: 13
   isTouchByPlayer: 0
   isPatrolling: 0
   patrolPointA: {x: 1, y: 0.27, z: 0}
@@ -122,6 +122,8 @@ MonoBehaviour:
   - {fileID: 4068150850828265334}
   - {fileID: 7314573248974223861}
   canMove: 1
+  isDead: 0
+  isCreate: 1
   _moveDirection: {x: -1, y: 0, z: 0}
 --- !u!114 &6077219469532273819
 MonoBehaviour:
@@ -243,7 +245,7 @@ GameObject:
   - component: {fileID: 6507596425401009552}
   - component: {fileID: 6177244884091426208}
   - component: {fileID: 8734012824783512912}
-  m_Layer: 9
+  m_Layer: 12
   m_Name: Body Collider
   m_TagString: EnemyBody
   m_Icon: {fileID: 0}
@@ -434,7 +436,7 @@ GameObject:
   - component: {fileID: 5490619106631131614}
   - component: {fileID: 1993568166117235759}
   - component: {fileID: 1214943537956171041}
-  m_Layer: 9
+  m_Layer: 12
   m_Name: ShellCollider
   m_TagString: KoopaShell
   m_Icon: {fileID: 0}
