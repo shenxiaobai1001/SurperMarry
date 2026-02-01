@@ -26,14 +26,21 @@ public class UIChain : MonoBehaviour
         }
         center.SetActive(false);
     }
-
+    private void OnEnable()
+    {
+        
+    }
     public void OnStartMove()
     {
+
+        Config.EnemyStop = false;
         for (int i = 0; i < gameObjects.Count; i++)
         {
             gameObjects[i].gameObject.SetActive(false);
         }
         center.SetActive(true);
+        PlayerModController.Instance.isDance = false;
+      Sound.PauseOrPlayVolumeMusic(true);
     }
     // Update is called once per frame
     void Update()
@@ -59,6 +66,9 @@ public class UIChain : MonoBehaviour
 
    public void OnChekcMinZero()
     {
+        Sound.PlayMusic("background");
+        Sound.PauseOrPlayVolumeMusic(false);
+        PlayerModController.Instance.OnSetModAniIns(true);
         ItemCreater.Instance.lockPlayer = false;
         center.SetActive(false);
         PlayerController.Instance.isHit = false;

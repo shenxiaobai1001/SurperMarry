@@ -358,6 +358,12 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 137011887}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &137011889 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 7340962947593672709, guid: c03d41fde8a0e48bca68e174a1e5b2c0,
+    type: 3}
+  m_PrefabInstance: {fileID: 137011887}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &225534560 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 3559392791402541225, guid: 7ad26848515804357bc78ba9a525a87e,
@@ -1322,6 +1328,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: BrownFlag
       objectReference: {fileID: 0}
+    - target: {fileID: 3467375366648388102, guid: 012acff2acce64f3ab681cd10c8042eb,
+        type: 3}
+      propertyPath: endPos
+      value: 
+      objectReference: {fileID: 137011889}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []

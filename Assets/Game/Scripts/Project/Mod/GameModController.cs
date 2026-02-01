@@ -6,6 +6,7 @@ using System.Linq;
 using SystemScripts;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using static UnityEngine.Rendering.DebugUI;
 
 public class GameModController : MonoBehaviour
 {
@@ -36,23 +37,32 @@ public class GameModController : MonoBehaviour
     void OnInitDistance()
     {
         if(passDistance==null) passDistance = new Dictionary<string, float>();
-        passDistance.Add("1-1",192.5f);
-        passDistance.Add("1-2", 155);
-        passDistance.Add("1-3", 151.2f);
-        passDistance.Add("1-4", 122);
-        passDistance.Add("2-1", 132.7f);
-        passDistance.Add("2-2", 271.2f);
-        passDistance.Add("2-3", 127);
-        passDistance.Add("3-1", 169.8f);
-        passDistance.Add("3-2", 193.7f);
-        passDistance.Add("3-3", 147.7f);
-        passDistance.Add("3-4", 132);
-        passDistance.Add("4-1", 223);
-        passDistance.Add("4-2", 151); 
-        passDistance.Add("4-3", 143.2f);
-        passDistance.Add("4-4", 163);
+        passDistance.Add("1-1", 206);
+        passDistance.Add("1-2", 160);
+        passDistance.Add("1-3", 167);
+        passDistance.Add("1-4", 139);
+        passDistance.Add("2-1", 149);
+        passDistance.Add("2-2", 294);
+        passDistance.Add("2-3", 144);
+        passDistance.Add("3-1", 185);
+        passDistance.Add("3-2", 208);
+        passDistance.Add("3-3", 165);
+        passDistance.Add("3-4", 149.5f);
+        passDistance.Add("4-1", 238.5f);
+        passDistance.Add("4-2", 163); 
+        passDistance.Add("4-3", 161.5f);
+        passDistance.Add("4-4", 186);
     }
-
+    public float OnGetLevelEndPos()
+    {
+        if(passDistance.ContainsKey(nowPos))
+        return passDistance[nowPos]-8.5f;
+        return 0f;
+    }
+    public bool  OnCheckBoosLevel()
+    {
+        return nowPos=="1-4" || nowPos == "2-3" || nowPos == "3-4" || nowPos == "4-4";
+    }
     public void OnRandromPlayerPos()
     {
         Sound.PlaySound("smb_1-up");
@@ -77,22 +87,25 @@ public class GameModController : MonoBehaviour
     }
     public void OnEnterNextPass(int value)
     {
-        Config.passIndex += value;
-        if (Config.passIndex < 0)
-        {
-            Config.passIndex = 0;
-            return;
-        }
-        else if (Config.passIndex >= Config.passName.Length)
-        {
-            Config.passIndex = Config.passName.Length-1;
-            return;
-        }
-        string name = Config.passName[value];
+        if (Config.passIndex <=0&& value==-1) return;
+        if (Config.passIndex >= Config.passName.Length && value == 1) return;
+
         if (mainMoveCoroutine == null)
         {
+            Sound.PlaySound("smb_1-up");
+            PFunc.Log("1OnEnterNextPass", Config.passIndex, value);
+            Config.passIndex += value;
+            PFunc.Log("2OnEnterNextPass",Config.passIndex);
+            if (Config.passIndex < 0)
+            {
+                Config.passIndex = 0;
+            }
+            else if (Config.passIndex >= Config.passName.Length)
+            {
+                Config.passIndex = Config.passName.Length - 1;
+            }
+            string name = Config.passName[Config.passIndex];
             ModController.Instance.OnModPause();
-            Config.passIndex = value;
             mainMoveCoroutine = StartCoroutine(OnLoadScence(name));
         }
     }
@@ -129,7 +142,6 @@ public class GameModController : MonoBehaviour
         Sound.PauseOrPlayVolumeMusic(true);
         yield return Loaded.OnLoadScence(name);
         yield return new WaitForSeconds(1);
-        mainMoveCoroutine = null;
         nowPos = name;
         //PlayerController.Instance.transform.position = new Vector3(-2, 0);
         Camera.main.transform.position = new Vector3(1.5f, 5,-10);
@@ -148,6 +160,6 @@ public class GameModController : MonoBehaviour
             gameStatus.LiveStart.SetActive(false);
             OnLoadScene("1-1");
         }
-   
+        mainMoveCoroutine = null;
     }
 }

@@ -46,6 +46,8 @@ TagManager:
   - FlyFish
   - BoosPK
   - Flag
+  - PlayerMod
+  - ModCollider
   layers:
   - Default
   - TransparentFX
@@ -63,12 +65,12 @@ TagManager:
   - KoopaShell
   - ModWall
   - Pipeline
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
+  - PlayerStone
+  - Fish
+  - Gooma
+  - Beatles
+  - KoopaShellHead
+  - EnemyHead
   - 
   - 
   - 

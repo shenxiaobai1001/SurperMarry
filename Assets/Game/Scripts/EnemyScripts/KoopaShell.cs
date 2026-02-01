@@ -13,7 +13,7 @@ namespace EnemyScripts
         public bool _isPlayerKillable;
         public float speed;
 
-        private AudioSource _enemyAudio;
+        [HideInInspector]public AudioSource _enemyAudio;
 
         public AudioClip hitPlayerSound;
         public AudioClip kickSound;
@@ -36,44 +36,17 @@ namespace EnemyScripts
             {
                 if (other.gameObject.CompareTag("Player") || other.gameObject.CompareTag("BigPlayer") || other.gameObject.CompareTag("UltimateBigPlayer"))
                 {
-                    koopa.tag = "KoopaShell";
-                    Vector3 relative = transform.InverseTransformPoint(other.transform.position);
-                    float angle = Mathf.Atan2(relative.x, relative.y) * Mathf.Rad2Deg;
-               
-                    if (other.gameObject.CompareTag("Player"))
-                    {
-                        if (angle > 0)
-                        {
-                            controller._moveDirection = Vector3.left;
-                        }
-                        else
-                        {
-                            controller._moveDirection = Vector3.right;
-                        }
-                    }
-                    else if (other.gameObject.CompareTag("BigPlayer") || other.gameObject.CompareTag("UltimateBigPlayer"))
-                    {
-                        if (angle < 0)
-                        {
-                            controller._moveDirection = Vector3.left;
-                        }
-                        else
-                        {
-                            controller._moveDirection = Vector3.right;
-                        }
-                    }
-                    controller.canMove = true;
-                    controller.speed = speed;
-                    _isPlayerKillable = true;
-                    gameObject.layer = LayerMask.NameToLayer("KoopaShell");
+
+                    OnHitByPlayer(other);
                 }
             }
             else
             {
+           
                 PlayerController playerController = other.gameObject.GetComponent<PlayerController>();
                 if (other.gameObject.CompareTag("Player"))
                 {
-                    speed = 0;
+                    //speed = 0;
                     // StartCoroutine(Die(other.gameObject));
                     if (!playerController.isInvulnerable)
                     {
@@ -98,6 +71,49 @@ namespace EnemyScripts
                     // StartCoroutine(Die(other.gameObject));
                 }
             }
+        }
+        public void OnHitByPlayer(Collision2D other)
+        {
+            Vector3 relative = transform.InverseTransformPoint(other.transform.position);
+            float angle = Mathf.Atan2(relative.x, relative.y) * Mathf.Rad2Deg;
+
+            if (other.gameObject.CompareTag("Player"))
+            {
+                if (angle > 0)
+                {
+                    controller._moveDirection = Vector3.left;
+                }
+                else
+                {
+                    controller._moveDirection = Vector3.right;
+                }
+            }
+            else if (other.gameObject.CompareTag("BigPlayer") || other.gameObject.CompareTag("UltimateBigPlayer"))
+            {
+                if (angle < 0)
+                {
+                    controller._moveDirection = Vector3.left;
+                }
+                else
+                {
+                    controller._moveDirection = Vector3.right;
+                }
+            }
+            if (other.rigidbody != null)
+            {
+                other.rigidbody.velocity = new Vector2(0, 0);
+                other.rigidbody.AddForce(new Vector2(0f, controller.pushForce), ForceMode2D.Impulse);
+            }
+            controller.canMove = true;
+            controller.speed = speed;
+  
+            gameObject.layer = LayerMask.NameToLayer("KoopaShell");
+            koopa.tag = "KoopaShell";
+            Invoke("OnCanHitPlayer",0.1f);
+        }
+        void OnCanHitPlayer()
+        {
+            _isPlayerKillable = true;
         }
     }
 }

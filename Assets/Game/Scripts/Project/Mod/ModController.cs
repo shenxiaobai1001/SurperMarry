@@ -32,11 +32,13 @@ public class ModController : MonoBehaviour
         DontDestroyOnLoad(gameObject);
         BarrageController.Instance.LoadDataFromJson();
     }
+    bool systemShow = false;
     void Update()
     {
         if (Input.GetKeyDown(KeyCode.Escape))
         {
-            uISystem.center.SetActive(true);
+            systemShow = !systemShow;
+            uISystem.center.SetActive(systemShow);
         }
 
         if (Input.GetKeyDown(KeyCode.Tab))
@@ -52,6 +54,7 @@ public class ModController : MonoBehaviour
                 GameObject GO = MonsterParent.GetChild(i).gameObject;
                 if (GO.activeSelf)
                 {
+                    MonsterCreater.Instance.OnMinCreates();
                     SimplePool.Despawn(GO);
                 }
                 yield return null;

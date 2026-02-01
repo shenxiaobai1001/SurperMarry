@@ -27,16 +27,16 @@ namespace EnemyScripts
         }
         private void OnEnable()
         {
-            GetComponent<BoxCollider2D>().offset = new Vector2(0, -0.11f);
-            GetComponent<BoxCollider2D>().size = new Vector2(1, 0.75f);
+            //GetComponent<BoxCollider2D>().offset = new Vector2(0, -0.11f);
+            //GetComponent<BoxCollider2D>().size = new Vector2(0.7f, 0.75f);
         }
 
         private void Update()
         {
             if (_enemyController != null && _enemyController.isTouchByPlayer)
             {
-                GetComponent<BoxCollider2D>().offset = Vector2.zero;
-                GetComponent<BoxCollider2D>().size = new Vector2(1, 0.01f);
+                //GetComponent<BoxCollider2D>().offset = Vector2.zero;
+                //GetComponent<BoxCollider2D>().size = new Vector2(0.7f, 0.01f);
             }
         }
 

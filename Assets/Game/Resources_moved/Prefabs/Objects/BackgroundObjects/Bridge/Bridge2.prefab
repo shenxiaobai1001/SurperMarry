@@ -109,7 +109,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 0
+  m_SortingOrder: -1
   m_Sprite: {fileID: -1554250882, guid: a3ed0e83c01212d469538b9414faa12e, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -257,7 +257,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 0
+  m_SortingOrder: -1
   m_Sprite: {fileID: 1874289901, guid: a3ed0e83c01212d469538b9414faa12e, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -405,7 +405,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 0
+  m_SortingOrder: -1
   m_Sprite: {fileID: -1765174375, guid: a3ed0e83c01212d469538b9414faa12e, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -530,7 +530,11 @@ MonoBehaviour:
   - {fileID: 3555167085743036228}
   - {fileID: 4817703902670086593}
   - {fileID: 3575022895980847388}
-  canBreakBrick: []
+  canBreakBrick:
+  - {fileID: 6049437377030881248}
+  - {fileID: 621877028246369588}
+  - {fileID: 8325439127660599513}
+  - {fileID: 2120099046800021445}
   collider2D: {fileID: 1760647194938935716}
   toPool: 0
 --- !u!61 &1760647194938935716
@@ -652,7 +656,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 0
+  m_SortingOrder: -1
   m_Sprite: {fileID: -1468766208, guid: a3ed0e83c01212d469538b9414faa12e, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0

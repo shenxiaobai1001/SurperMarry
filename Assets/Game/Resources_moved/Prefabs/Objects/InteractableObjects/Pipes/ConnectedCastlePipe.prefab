@@ -70,8 +70,8 @@ SpriteRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
+  m_SortingLayerID: -1174619263
+  m_SortingLayer: 6
   m_SortingOrder: 0
   m_Sprite: {fileID: -2790570264986560226, guid: f03ebb725c6ba4cc8864aaf424ef8727,
     type: 3}
@@ -97,7 +97,7 @@ GameObject:
   - component: {fileID: 1609219355236391386}
   m_Layer: 15
   m_Name: ConnectedCastlePipe
-  m_TagString: Untagged
+  m_TagString: Pipe
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

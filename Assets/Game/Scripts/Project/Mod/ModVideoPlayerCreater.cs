@@ -3,6 +3,8 @@ using PlayerScripts;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
+using UnityEngine.UIElements;
 using UnityEngine.Video;
 
 public class ModVideoPlayerCreater : MonoBehaviour
@@ -42,11 +44,14 @@ public class ModVideoPlayerCreater : MonoBehaviour
     public void OnPlayDJ()
     {
         if (Config.isLoading) return;
-       int number = Random.Range(1, 13);
-        currentVideoNumber = number;
-        OnCreateModVideoPlayer(Vector3.zero, Vector3.one, Vector3.zero, $"DJ/{currentVideoNumber}", 1);
+       //int number = Random.Range(1, 13);
+        currentVideoNumber = 1;
+        GameObject obj = OnCreateModVideoPlayer(Vector3.zero, new Vector3(1.5f,1.5f,1), Vector3.zero, $"DJ/{currentVideoNumber}", 2,"Default", false, -10);
+        obj.GetComponent<DJManager>().OnModVideoPlayStart(true, currentVideoNumber);
+        //Sound.PlaySound("Mod/madongxi");
         isPlayDJ = true;
     }
+
     public void OnPlayGrilVideo()
     {
         if (Config.isLoading) return;
@@ -55,191 +60,12 @@ public class ModVideoPlayerCreater : MonoBehaviour
         OnCreateModVideoPlayer(Vector3.zero, Vector3.one, Vector3.zero, $"GirlMysteryBox/{grilVideoNumber}", 2,"Default",false,-10);
 
     }
-    private IEnumerator BeatShakeCoroutine()
-    {
-        // 获取当前视频的卡点数据
-        if (!DJTimeLine.beatMapData.ContainsKey(currentVideoNumber))
-        {
-            Debug.LogWarning($"No beat map data found for video {currentVideoNumber}");
-            yield break;
-        }
 
-        List<float> beatTimes = DJTimeLine.beatMapData[currentVideoNumber];
-        int currentBeatIndex = 0;
-        float startTime = 0f;
-        float accumulatedTime = 0f; // 累计时间，用于物体运动计时
 
-        // 控制物体的相关变量
-        float currentY = 0f; // 当前Y轴位置
-        float targetY = 0f; // 目标Y轴位置
-        float riseStartTime = 0f; // 上升开始时间
-        float riseDuration = 0.05f; // 上升持续时间
-        float fallSpeed = 10f; // 下落速度
-        bool isRising = false; // 是否正在上升
-        bool isFalling = false; // 是否正在下落
-
-        if (InteractableObjects == null)
-        {
-            InteractableObjects = GameObject.Find("InteractableObjects");
-        }
-
-        // 保存物体的初始Y轴位置
-        if (InteractableObjects != null)
-        {
-            currentY = InteractableObjects.transform.position.y;
-        }
-
-        if (Config.isLoading)
-        {
-            yield break;
-        }
-
-        while (currentBeatIndex < beatTimes.Count)
-        {
-            if (Config.isLoading)
-            {
-                yield break;
-            }
-
-            startTime += Time.deltaTime;
-            accumulatedTime += Time.deltaTime;
-
-            // 更新物体位置
-            if (isRising)
-            {
-                // 上升过程
-                float elapsed = accumulatedTime - riseStartTime;
-                float t = Mathf.Clamp01(elapsed / riseDuration);
-
-                // 使用线性插值上升
-                float newY = Mathf.Lerp(currentY, targetY, t);
-
-                // 更新物体的Y轴位置
-                Vector3 pos = InteractableObjects.transform.position;
-                pos.y = newY;
-                InteractableObjects.transform.position = pos;
-
-                // 上升结束，开始下落
-                if (t >= 1f)
-                {
-                    isRising = false;
-                    isFalling = true;
-                    currentY = targetY; // 更新当前位置
-                }
-            }
-            else if (isFalling)
-            {
-                // 下落过程
-                currentY -= fallSpeed * Time.deltaTime;
-
-                // 更新物体的Y轴位置
-                Vector3 pos = InteractableObjects.transform.position;
-                pos.y = currentY;
-                InteractableObjects.transform.position = pos;
-
-                // 如果落到初始位置以下，停止下落
-                if (currentY <= 0f)
-                {
-                    currentY = 0f;
-                    isFalling = false;
-
-                    // 确保物体在初始高度
-                    Vector3 posFinal = InteractableObjects.transform.position;
-                    posFinal.y = 0f;
-                    InteractableObjects.transform.position = posFinal;
-                }
-            }
-
-            // 检查是否到达下一个卡点时间（考虑一定的误差范围）
-            if (currentBeatIndex < beatTimes.Count &&
-                startTime >= beatTimes[currentBeatIndex] )
-            {
-                PFunc.Log("触发物体上升", startTime);
-
-                // 触发物体上升
-                if (InteractableObjects != null)
-                {
-                    // 如果正在下落，立即中断下落开始新的上升
-                    if (isFalling)
-                    {
-                        isFalling = false;
-                    }
-                    // 如果正在上升，重置上升
-                    else if (isRising)
-                    {
-                        // 从当前位置继续上升，确保总共上升1个单位
-                        targetY = currentY + 1f;
-                    }
-                    else
-                    {
-                        // 从当前位置开始上升
-                        targetY = currentY + 1f;
-                    }
-
-                    // 记录上升开始时间
-                    riseStartTime = accumulatedTime;
-                    isRising = true;
-
-                    // 立即更新一次位置，避免延迟
-                    float t = Mathf.Clamp01((accumulatedTime - riseStartTime) / riseDuration);
-                    float newY = Mathf.Lerp(currentY, targetY, t);
-
-                    Vector3 pos = InteractableObjects.transform.position;
-                    pos.y = newY;
-                    InteractableObjects.transform.position = pos;
-                }
-                else
-                {
-                    Debug.LogWarning("InteractableObjects is null!");
-                }
-
-                currentBeatIndex++;
-            }
-
-            yield return null;
-        }
-
-        Debug.Log($"Beat coroutine finished for video {currentVideoNumber}");
-    }
-
-    public void SnakeObj()
-    {
-        if (InteractableObjects == null)
-        {
-            InteractableObjects = GameObject.Find("InteractableObjects");
-        }
-
-        if (InteractableObjects != null)
-        {
-            Transform trans = InteractableObjects.transform;
-            Vector3 originalPos = trans.localPosition;
-
-            //InteractableObjects.transform.DOKill();
-
-            // 更快速的往返位移
-            float duration = 0.08f; // 总时间更短
-            float offsetY = 0.15f;  // 位移幅度
-
-            // 先向上移动
-            InteractableObjects.transform.DOLocalMoveY(originalPos.y + offsetY, duration / 2)
-                .SetEase(Ease.OutQuad)
-                .OnComplete(() => {
-                    // 然后快速返回
-                    InteractableObjects.transform.DOLocalMoveY(originalPos.y, duration / 2)
-                        .SetEase(Ease.InQuad);
-                });
-        }
-    }
     // 修改现有的视频播放结束方法
     void OnModVideoPlayStart(object msg)
     {
-        if (isPlayDJ)
-        {
-            // 开始卡点协程
-            if (beatCoroutine != null)
-                StopCoroutine(beatCoroutine);
-            beatCoroutine = StartCoroutine(BeatShakeCoroutine());
-        }
+        
     }
     // 修改现有的视频播放结束方法
     void OnVideoPlayEnd(object msg)
@@ -317,16 +143,17 @@ public class ModVideoPlayerCreater : MonoBehaviour
     string nullDUCK = "GreenScreen/Duck/Null";
     string getDUCK = "GreenScreen/Duck/Get";
     Queue<int> onCreate = new Queue<int>();
+    Queue<int> onCreatePsy = new Queue<int>();
     Queue<int> onCreateKoopa = new Queue<int>();
     public void OnCreateDuckVideoPlayer()
     {
-        int index = Random.Range(0, 150);
-        bool getduck = index >= 17;
+        int index = Random.Range(-68, 82);
+        bool getduck = index >= 5;
         string title = getduck ? getDUCK : nullDUCK;
         int duckPath = 0;
         if (getduck)
         {
-            if (index >= 17 && index < 21)
+            if (index >= 5 && index < 21)
             {
                 duckPath = 1;
             }
@@ -398,10 +225,10 @@ public class ModVideoPlayerCreater : MonoBehaviour
             {
                 duckPath = 10000;
             }
-            else
-            {
-                duckPath = 1;
-            }
+            //else
+            //{
+            //    duckPath = 1;
+            //}
         }
         else
             duckPath = Random.Range(1, 24);
@@ -411,15 +238,16 @@ public class ModVideoPlayerCreater : MonoBehaviour
         onCreate.Enqueue(duckPath);
         Invoke("OnBeginCreateDuck",2);
     }
-    public void OnCreateKoopaVideoPlayer()
+    public void OnCreatePsyDuckVideoPlayer()
     {
-        int index = Random.Range(0, 150);
-        bool getduck = index >= 17;
+        int index = Random.Range(-68, 82);
+        bool getduck = index >= 5;
+        // bool getduck = true;
         string title = getduck ? getDUCK : nullDUCK;
         int duckPath = 0;
         if (getduck)
         {
-            if (index >= 17 && index < 21)
+            if (index >= 5 && index < 21)
             {
                 duckPath = 1;
             }
@@ -491,18 +319,113 @@ public class ModVideoPlayerCreater : MonoBehaviour
             {
                 duckPath = 10000;
             }
-            else
-            {
-                duckPath = 1;
-            }
+            //else
+            //{
+            //    duckPath = 1;
+            //}
         }
         else
             duckPath = Random.Range(1, 24);
         string path = $"{title}/{duckPath}";
         OnCreateModVideoPlayer(Vector3.zero, Vector3.one, Vector3.zero, path, 2);
         duckPath = getduck ? duckPath : 0;
+        onCreatePsy.Enqueue(duckPath);
+        Invoke("OnBeginCreatePsyDuck", 2);
+    }
+    string nullTurtles= "GreenScreen/Turtles/Null";
+    string getTurtles = "GreenScreen/Turtles/Get";
+    public void OnCreateKoopaVideoPlayer()
+    {
+        int index = Random.Range(-68, 82);
+        bool getduck = index >= 5;
+        string title = getduck ? getTurtles : nullTurtles;
+        int duckPath = 0;
+        if (getduck)
+        {
+            if (index >= 5 && index < 21)
+            {
+                duckPath = 1;
+            }
+            else if (index >= 21 && index < 25)
+            {
+                duckPath = 1;
+            }
+            else if (index >= 25 && index < 29)
+            {
+                duckPath = 2;
+            }
+            else if (index >= 29 && index < 33)
+            {
+                duckPath = 11;
+            }
+            else if (index >= 33 && index < 37)
+            {
+                duckPath = 11;
+            }
+            else if (index >= 37 && index < 41)
+            {
+                duckPath = 15;
+            }
+            else if (index >= 41 && index < 45)
+            {
+                duckPath = 20;
+            }
+            else if (index >= 45 && index < 49)
+            {
+                duckPath = 40;
+            }
+            else if (index >= 49 && index < 53)
+            {
+                duckPath = 50;
+            }
+            else if (index >= 53 && index < 57)
+            {
+                duckPath = 80;
+            }
+            else if (index >= 57 && index < 61)
+            {
+                duckPath = 100;
+            }
+            else if (index >= 61 && index < 64)
+            {
+                duckPath = 200;
+            }
+            else if (index >= 65 && index < 67)
+            {
+                duckPath = 300;
+            }
+            else if (index >= 73 && index < 75)
+            {
+                duckPath = 500;
+            }
+            else if (index == 77)
+            {
+                duckPath = 1000;
+            }
+            else if (index == 79)
+            {
+                duckPath = 3000;
+            }
+            else if (index == 80)
+            {
+                duckPath = 5000;
+            }
+            else if (index == 81)
+            {
+                duckPath = 10000;
+            }
+            //else
+            //{
+            //    duckPath = 1;
+            //}
+        }
+        else
+            duckPath = Random.Range(1, 24);
+        string path = $"{title}/{duckPath}";
+        OnCreateModVideoPlayer(Vector3.zero, new Vector3(0.75f,0.75f,1), Vector3.zero, path, 2);
+        duckPath = getduck ? duckPath : 0;
         onCreateKoopa.Enqueue(duckPath);
-        Invoke("OnBeginCreateKoopa", 2);
+        Invoke("OnBeginCreateKoopa", 2.2f);
     }
     void OnBeginCreateDuck( )
     {
@@ -511,6 +434,14 @@ public class ModVideoPlayerCreater : MonoBehaviour
         if (getduck > 0)
             ItemCreater.Instance.OnCreateDuck(getduck);
     }
+    void OnBeginCreatePsyDuck()
+    {
+        if (onCreatePsy == null || onCreatePsy.Count <= 0) return;
+        int getduck = onCreatePsy.Dequeue();
+        if (getduck > 0)
+            ItemCreater.Instance.OnCreatePsyDuck(getduck);
+    }
+
     void OnBeginCreateKoopa()
     {
         if (onCreateKoopa == null || onCreateKoopa.Count <= 0) return;
@@ -518,16 +449,104 @@ public class ModVideoPlayerCreater : MonoBehaviour
         if (getduck > 0)
             MonsterCreater.Instance.OnCreateTortoise(getduck);
     }
-    public GameObject OnCreateModVideoPlayer(Vector3 offset, Vector3 scale, Vector3 rotateA,string path, int type, string layer = "Video", bool snake = false,int sortingOrder=-5)
+
+    public GameObject OnCreateModVideoPlayer(Vector3 offset, Vector3 scale, Vector3 rotateA,string path, int type, string layer = "Video", bool snake = false,int sortingOrder=-5, UnityAction callback = null)
     {
         GameObject vplayerObj = SimplePool.Spawn(ModVideoPlayer, transform.position, Quaternion.identity);
         ModVideoPlayer vplayer = vplayerObj.GetComponent<ModVideoPlayer>();
-        vplayer.OnPlayVideo(offset, scale, rotateA, path, type, layer, snake, sortingOrder);
+        vplayer.OnPlayVideo(offset, scale, rotateA, path, type, layer, snake, sortingOrder, callback);
         vplayerObj.transform.SetParent(videoParent);
         IsPlaying = true;
         return vplayerObj;
     }
 
+    public void OnPlayTrunck( )
+    {
+        OnCreateModVideoPlayer(Vector3.zero, Vector3.one, Vector3.zero, "GreenScreen/trunck", 2);
+    }
+    public void OnPlayBig()
+    {
+        OnCreateModVideoPlayer(Vector3.zero, Vector3.one, Vector3.zero, "GreenScreen/big", 2);
+    }
+    public void OnPlaySmall()
+    {
+        OnCreateModVideoPlayer(Vector3.zero, Vector3.one, Vector3.zero, "GreenScreen/small", 2);
+    }
+    public void OnCreateFlog()
+    {
+       int boxIndex = 0;
+        int index = Random.Range(0, 9);
+        string title = "GreenScreen/Flog";
+        int duckPath = 0;
+
+        switch (index)
+        {
+            case 0:
+                duckPath = 8;
+                break;
+            case 1:
+                duckPath = 18;
+                break;
+            case 2:
+                duckPath = 20;
+                break;
+            case 3:
+                duckPath = 30;
+                break;
+            case 4:
+                duckPath = 66;
+                break;
+            case 5:
+                duckPath = 73;
+                break;
+            case 6:
+                duckPath = 88;
+                break;
+            case 7:
+                duckPath = 128;
+                break;
+            case 8:
+                duckPath = 188;
+                break;
+        }
+        string path = $"{title}/{duckPath}";
+        OnCreateModVideoPlayer(Vector3.zero, Vector3.one, Vector3.zero, path, 2);
+        //GameObject obj = SimplePool.Spawn(videoPlayer, PlayerController.Instance.transform.position, Quaternion.identity);
+        //VideoManager videoManager = obj.GetComponent<VideoManager>();
+        //obj.transform.SetParent(transform);
+        //obj.SetActive(true);
+        //videoManager.OnPlayVideo(2, path, false);
+        Debug.Log(path);
+        Invoke("OnShowFlog", 1);
+        //bool protect = ModSystemController.Instance.Protecket;
+        //if (protect) return;
+        Config.FlogCount += duckPath;
+    }
+    void OnShowFlog()
+    {
+        ItemCreater.Instance.OnCreateFlog(1);
+    }
+    public bool isBury = false;
+    public void OnKuFen()
+    {
+        PFunc.Log("哭坟");
+        OnCreateModVideoPlayer(Vector3.zero, Vector3.one, Vector3.zero, "GreenScreen/kufen", 2, "Video", false, -5, OnCloseKufen);
+        ItemCreater.Instance.OnCreateZhiQian(1); 
+        if (PlayerController.Instance != null)
+            PlayerController.Instance.OnChanleControl(true);
+        PlayerModController.Instance.OnChangeState(false);
+        PlayerModController.Instance.OnSetPlayerIns(false);
+        isBury = true;
+    }
+    void OnCloseKufen()
+    {
+        PFunc.Log("哭坟结束");
+        isBury = false;
+        if (PlayerController.Instance != null)
+            PlayerController.Instance.OnChanleControl(false);
+        PlayerModController.Instance.OnChangeState(true);
+        PlayerModController.Instance.OnSetPlayerIns(true);
+    }
     private void OnDestroy()
     {
         EventManager.Instance.RemoveListener(Events.OnModVideoPlayEnd, OnVideoPlayEnd);

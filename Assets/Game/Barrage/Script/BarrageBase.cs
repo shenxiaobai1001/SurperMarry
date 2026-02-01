@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -17,6 +17,40 @@ public class BarrageData
 public class BarrageBase : MonoBehaviour
 {
     public Dictionary<string, int> likeCount = new Dictionary<string, int>();
+
+    // 针对同一盲盒/多特效配置的串行队列，避免并发导致视频同时播放
+    private class BlindBoxRequest
+    {
+        public BarrageController controller;
+        public BarrageBoxSetting box;
+        public string user;
+        public string avatar;
+        public int giftCount;
+    }
+
+    private class SpecialBoxRequest
+    {
+        public BarrageController controller;
+        public BarrageSpecialBoxSetting box;
+        public string user;
+        public string avatar;
+        public int giftCount;
+    }
+
+    private readonly Dictionary<string, Queue<BlindBoxRequest>> _blindQueues = new Dictionary<string, Queue<BlindBoxRequest>>();
+    private readonly HashSet<string> _blindRunning = new HashSet<string>();
+    private readonly Dictionary<string, float> _blindLastExecTime = new Dictionary<string, float>();
+    private readonly Dictionary<string, Queue<SpecialBoxRequest>> _specialQueues = new Dictionary<string, Queue<SpecialBoxRequest>>();
+    private readonly HashSet<string> _specialRunning = new HashSet<string>();
+
+    private static string MakeKey(BarrageBoxSetting box)
+    {
+        return $"{box.Type}|{box.Message}|{box.BoxName}";
+    }
+    private static string MakeKey(BarrageSpecialBoxSetting box)
+    {
+        return $"{box.Type}|{box.Message}|{box.BoxName}";
+    }
 
 
     public void HandleAttention(string json)
@@ -45,7 +79,7 @@ public class BarrageBase : MonoBehaviour
         {
             if (config.Type == "关注")
             {
-                StartCoroutine(PlayBoxVideoThenEnqueue(barrageConfigs, config, user, avatar, 1));
+                EnqueueBlindBox(barrageConfigs, config, user, avatar, 1);
             }
         }
 
@@ -54,7 +88,7 @@ public class BarrageBase : MonoBehaviour
         {
             if (config.Type == "关注")
             {
-                StartCoroutine(PlaySpecialVideoThenEnqueue(barrageConfigs, config, user, avatar, 1));
+                EnqueueSpecialBox(barrageConfigs, config, user, avatar, 1);
             }
         }
     }
@@ -86,7 +120,7 @@ public class BarrageBase : MonoBehaviour
         {
             if (config.Type == "弹幕" && config.Message == content)
             {
-                StartCoroutine(PlayBoxVideoThenEnqueue(barrageConfigs, config, user, avatar, 1));
+                EnqueueBlindBox(barrageConfigs, config, user, avatar, 1);
             }
         }
 
@@ -95,7 +129,7 @@ public class BarrageBase : MonoBehaviour
         {
             if (config.Type == "弹幕" && config.Message == content)
             {
-                StartCoroutine(PlaySpecialVideoThenEnqueue(barrageConfigs, config, user, avatar, 1));
+                EnqueueSpecialBox(barrageConfigs, config, user, avatar, 1);
             }
         }
     }
@@ -128,7 +162,7 @@ public class BarrageBase : MonoBehaviour
         {
             if (config.Type == "礼物" && config.Message == giftName)
             {
-                StartCoroutine(PlayBoxVideoThenEnqueue(barrageConfigs, config, user, avatar, giftCount));
+                EnqueueBlindBox(barrageConfigs, config, user, avatar, giftCount);
             }
         }
 
@@ -137,7 +171,7 @@ public class BarrageBase : MonoBehaviour
         {
             if (config.Type == "礼物" && config.Message == giftName)
             {
-                StartCoroutine(PlaySpecialVideoThenEnqueue(barrageConfigs, config, user, avatar, giftCount));
+                EnqueueSpecialBox(barrageConfigs, config, user, avatar, giftCount);
             }
         }
     }
@@ -168,7 +202,7 @@ public class BarrageBase : MonoBehaviour
         {
             if (config.Type == "进入")
             {
-                StartCoroutine(PlayBoxVideoThenEnqueue(barrageConfigs, config, user, avatar, 1));
+                EnqueueBlindBox(barrageConfigs, config, user, avatar, 1);
             }
         }
 
@@ -177,7 +211,7 @@ public class BarrageBase : MonoBehaviour
         {
             if (config.Type == "进入")
             {
-                StartCoroutine(PlaySpecialVideoThenEnqueue(barrageConfigs, config, user, avatar, 1));
+                EnqueueSpecialBox(barrageConfigs, config, user, avatar, 1);
             }
         }
     }
@@ -219,7 +253,7 @@ public class BarrageBase : MonoBehaviour
         {
             if (config.Type == "点赞" && likeCount[user] > int.Parse(config.Message))
             {
-                StartCoroutine(PlayBoxVideoThenEnqueue(barrageConfigs, config, user, avatar, 1));
+                EnqueueBlindBox(barrageConfigs, config, user, avatar, 1);
                 likeCount[user] -= int.Parse(config.Message);
             }
         }
@@ -229,7 +263,7 @@ public class BarrageBase : MonoBehaviour
         {
             if (config.Type == "点赞" && likeCount[user] > int.Parse(config.Message))
             {
-                StartCoroutine(PlaySpecialVideoThenEnqueue(barrageConfigs, config, user, avatar, 1));
+                EnqueueSpecialBox(barrageConfigs, config, user, avatar, 1);
             }
         }
     }
@@ -252,7 +286,7 @@ public class BarrageBase : MonoBehaviour
             if (!string.IsNullOrEmpty(box.videoName) && box.videoName != "空")
             {
                 string path = $"Box/{box.videoName}";
-                yield return controller.PlayBoxVideoAndWait(path, 2, false, null);
+                yield return controller.PlayBoxVideoAndWait(path, 2, false, ModVideoPlayerCreater.Instance != null ? ModVideoPlayerCreater.Instance.transform : null);
             }
 
             int index = UnityEngine.Random.Range(0, box.Calls.Count);
@@ -287,7 +321,7 @@ public class BarrageBase : MonoBehaviour
             if (!string.IsNullOrEmpty(box.videoName) && box.videoName != "空")
             {
                 string path = $"Box/{box.videoName}";
-                yield return controller.PlayBoxVideoAndWait(path, 2, false, null);
+                yield return controller.PlayBoxVideoAndWait(path, 2, false, ModVideoPlayerCreater.Instance != null ? ModVideoPlayerCreater.Instance.transform : null);
             }
 
             if (box.Calls != null)
@@ -303,5 +337,83 @@ public class BarrageBase : MonoBehaviour
                 yield return new WaitForSeconds(box.Delay);
             }
         }
+    }
+
+    // 串行化：同一盲盒配置排队处理，避免并发播放视频
+    private void EnqueueBlindBox(BarrageController controller, BarrageBoxSetting box, string user, string avatar, int giftCount)
+    {
+        string key = MakeKey(box);
+        if (!_blindQueues.TryGetValue(key, out var q))
+        {
+            q = new Queue<BlindBoxRequest>();
+            _blindQueues[key] = q;
+        }
+        q.Enqueue(new BlindBoxRequest { controller = controller, box = box, user = user, avatar = avatar, giftCount = giftCount });
+        if (!_blindRunning.Contains(key))
+        {
+            _blindRunning.Add(key);
+            StartCoroutine(ProcessBlindBoxQueue(key));
+        }
+    }
+
+    private IEnumerator ProcessBlindBoxQueue(string key)
+    {
+        var q = _blindQueues[key];
+        while (q.Count > 0)
+        {
+            var req = q.Dequeue();
+            // 在开始前根据上次执行时间应用剩余间隔
+            if (req.box != null && req.box.Delay > 0f)
+            {
+                float last = _blindLastExecTime.TryGetValue(key, out var t) ? t : -1f;
+                if (last >= 0f)
+                {
+                    float elapsed = Time.time - last;
+                    float remain = req.box.Delay - elapsed;
+                    if (remain > 0f)
+                    {
+                        Debug.Log($"盲盒队列[{key}] 距上次 {elapsed:F2}s，开始前再等待 {remain:F2}s");
+                        yield return new WaitForSeconds(remain);
+                    }
+                }
+            }
+            yield return PlayBoxVideoThenEnqueue(req.controller, req.box, req.user, req.avatar, req.giftCount);
+            // 记录本次执行时间，用于下一条的前置等待
+            _blindLastExecTime[key] = Time.time;
+            // 尾部等待可选：当前保留，保障紧接着的下一条也不会立刻开始
+            if (q.Count > 0 && req.box != null && req.box.Delay > 0f)
+            {
+                yield return new WaitForSeconds(req.box.Delay);
+            }
+        }
+        _blindRunning.Remove(key);
+    }
+
+    // 串行化：同一多特效配置排队处理
+    private void EnqueueSpecialBox(BarrageController controller, BarrageSpecialBoxSetting box, string user, string avatar, int giftCount)
+    {
+        string key = MakeKey(box);
+        if (!_specialQueues.TryGetValue(key, out var q))
+        {
+            q = new Queue<SpecialBoxRequest>();
+            _specialQueues[key] = q;
+        }
+        q.Enqueue(new SpecialBoxRequest { controller = controller, box = box, user = user, avatar = avatar, giftCount = giftCount });
+        if (!_specialRunning.Contains(key))
+        {
+            _specialRunning.Add(key);
+            StartCoroutine(ProcessSpecialBoxQueue(key));
+        }
+    }
+
+    private IEnumerator ProcessSpecialBoxQueue(string key)
+    {
+        var q = _specialQueues[key];
+        while (q.Count > 0)
+        {
+            var req = q.Dequeue();
+            yield return PlaySpecialVideoThenEnqueue(req.controller, req.box, req.user, req.avatar, req.giftCount);
+        }
+        _specialRunning.Remove(key);
     }
 }

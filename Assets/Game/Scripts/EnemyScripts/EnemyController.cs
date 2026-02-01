@@ -1,9 +1,9 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using SystemScripts;
 using UnityEngine;
-using UnityEngine.TextCore;
 
 namespace EnemyScripts
 {
@@ -23,7 +23,7 @@ namespace EnemyScripts
 
         [Header("组件引用")]
         public List<Collider2D> deadDisableCollider;
-        public Collider2D deadEnableCollider;
+        public GameObject deadEnableCollider;
         public SpriteRenderer spriteTrans;
         public Rigidbody2D rigidbody2D;
         public FlyKoopa flyKoopa;
@@ -31,34 +31,44 @@ namespace EnemyScripts
         public FlyFish flyFish;
         public KoopaShell koopaShell;
         public List<GameObject> bodys;
+        public bool checkDie = true;
         public bool canMove = true;
 
         public bool isDead = false;
 
         public bool isCreate = true;
+        public GameObject bodyCollider;
 
         private Animator _enemyAnim;
         private Vector3 _currentPatrolTarget;  // 当前巡逻目标点
         public Vector3 _moveDirection = Vector3.left;  // 移动方向
         bool isCanMove = false;
         Coroutine destoryObj=null;
+        public bool checkDic = true;
 
 
         private static readonly int DieB = Animator.StringToHash("Die_b");
 
         private void Awake()
         {
-            isCanMove = canMove;
+            //isCanMove = canMove;
             _enemyAnim = GetComponent<Animator>();
         }
-
-        private void OnEnable()
+        private void Start()
         {
             OnBeginMove();
+        }
+        private void OnEnable()
+        {
+           
         }
 
         public void OnBeginMove()
         {
+            if (IsInvoking("OnShowDeath"));
+            {
+                CancelInvoke("OnShowDeath");
+            }
             dieByShell = false;
             if(koopaShell) koopaShell.gameObject.layer = LayerMask.NameToLayer("Koopa");
             if (CompareTag("KoopaShell"))
@@ -87,9 +97,9 @@ namespace EnemyScripts
             }
             if (deadEnableCollider != null)
             {
-                deadEnableCollider.enabled = false;
+                deadEnableCollider.SetActive(false);
             }
-            canMove = isCanMove;
+            canMove = true;
             isDead = false;
 
             if (_enemyAnim)
@@ -97,30 +107,97 @@ namespace EnemyScripts
                 _enemyAnim.Rebind();
                 _enemyAnim.Update(0f);
             }
-            spriteTrans.flipY = false;
+            if (spriteTrans != null)
+            {
+                spriteTrans.flipX = _moveDirection.x > 0;
+                spriteTrans.flipY = false;
+            }
             if (koopaShell) koopaShell._isPlayerKillable = false;
             if (flyFish) flyFish.StartFlight();
             if (flyKoopa) flyKoopa.OnStartFly();
             if(beatles) beatles.OnBeginCheck();
+            destoryObj = null;
+            checkGround = true;
+            if(isCreate) bodyCollider.SetActive(false);
+            //OnCheckHitGround();
         }
-
+        public LayerMask groundLayer; // 障碍物所在的层（如Ground层）
+        bool checkGround = true;
         private void Update()
         {
-            if (transform.position.y<-5)
+            OnCheckHitGround();
+            if (transform.position.y < -3 && checkDie)
             {
                 Die();
                 if (destoryObj == null)
                 {
                     destoryObj = StartCoroutine(Destroy());
                 }
-           
             }
             if (transform.position.y < -0.1f && destoryObj== null&&CompareTag("FlyFish"))
             {
                 transform.position = new Vector3(transform.position.x,0,90);
             }
-            if (canMove)
+            if (canMove&&!Config.EnemyStop)
                 Move();
+
+            //if (canMove&&!isPatrolling)
+            //{
+            //    if (_moveDirection.x > 0)
+            //    {
+            //        RaycastHit2D hit3 = Physics2D.Raycast(   transform.position, Vector2.right,0.7f, groundLayer );
+            //        Debug.DrawRay(transform.position, Vector3.right * 0.7f, Color.red);
+            //        if (hit3.collider != null)
+            //        {
+            //            ChangeDirection();
+            //        }
+            //    }
+            //    else if(_moveDirection.x < 0)
+            //    {
+            //        RaycastHit2D hit3 = Physics2D.Raycast(transform.position, Vector2.left, 0.7f, groundLayer);
+            //        Debug.DrawRay(transform.position, Vector3.left * 0.7f, Color.red);
+            //        if (hit3.collider != null)
+            //        {
+            //            ChangeDirection();
+            //        }
+            //    }
+            //}
+        }
+
+        void OnCheckHitGround()
+        {
+            RaycastHit2D hit = Physics2D.Raycast(
+              transform.position,  // 起点
+              Vector2.down,        // 方向向下
+              1.5f, groundLayer    // 检测距离
+          );
+            RaycastHit2D hit2 = Physics2D.Raycast(
+              transform.position,  // 起点
+              Vector2.left,        // 方向向下
+              1, groundLayer    // 检测距离
+          );
+            RaycastHit2D hit3= Physics2D.Raycast(
+              transform.position,  // 起点
+              Vector2.right,        // 方向向下
+              1, groundLayer    // 检测距离
+          );
+            bool isHit = hit.collider != null /*|| hit2.collider != null || hit3.collider != null*/;
+            if (!isHit && isCreate && checkGround)
+            {
+                if (bodyCollider != null)
+                {
+                    bodyCollider.SetActive(false);
+                }
+            }
+            else if (isHit && isCreate && checkGround)
+            {
+                checkGround = false;
+                if (bodyCollider != null)
+                {
+                    bodyCollider.SetActive(true);
+                }
+            }
+
         }
 
         private void Move()
@@ -171,21 +248,17 @@ namespace EnemyScripts
 
         public void Die()
         {
+            rigidbody2D.isKinematic = false;
+            isPatrolling = false;
+            canMove = false;
             isTouchByPlayer = true;
             GameStatusController.Score += 200;
             for (var i = 0; i < deadDisableCollider.Count; i++)
             {
                 deadDisableCollider[i].enabled = false;
             }
+            Invoke("OnShowDeath",0.05f);
 
-            if (deadEnableCollider != null)
-            {
-                deadEnableCollider.enabled = true;
-            }
-            rigidbody2D.isKinematic = false;
-            isPatrolling = false;
-
-            canMove = false;
             isDead = true;
             if (flyKoopa) flyKoopa.StopFlying();
             if (flyFish) flyFish.StopFlight();
@@ -197,33 +270,24 @@ namespace EnemyScripts
                     destoryObj = StartCoroutine(Destroy());
             }
         }
+        void OnShowDeath()
+        {
+            if (deadEnableCollider != null)
+            {
+                deadEnableCollider.SetActive(true);
+            }
+        }
         bool dieByShell = false;
         private void OnCollisionEnter2D(Collision2D other)
         {
-            // 巡逻模式下不通过碰撞改变方向
-            if (isPatrolling) return;
-
-            // 简化碰撞检测逻辑
-            if (CompareTag("KoopaShell"))
-            {
-                // 龟壳特殊处理
-                if (!IsValidCollisionTarget(other.gameObject.tag))
-                {
-                    ChangeDirection();
-                }
-            }
-            else
-            {
-                // 普通敌人处理
-                if (!IsValidCollisionTarget(other.gameObject.tag))
-                {
-                    ChangeDirection();
-                }
-            }
-
             // 被火球或龟壳击中
-            if (other.gameObject.CompareTag("KoopaShell") || other.gameObject.CompareTag("Fireball"))
+            if (other.gameObject.CompareTag("KoopaShell") || other.gameObject.CompareTag("Fireball")
+                || other.gameObject.CompareTag("UltimatePlayer")
+                || other.gameObject.CompareTag("UltimateBigPlayer"))
             {
+                rigidbody2D.isKinematic = false;
+                isPatrolling = false;
+                canMove = false;
                 dieByShell = true;
                 GameStatusController.Score += 200;
                 GameStatusController.IsEnemyDieOrCoinEat = true;
@@ -232,7 +296,27 @@ namespace EnemyScripts
                     _enemyAnim.SetBool(DieB, true);
                     destoryObj = StartCoroutine(Destroy());
                 }
-                 
+
+            }
+            // 巡逻模式下不通过碰撞改变方向
+            if (isPatrolling) return;
+
+            // 简化碰撞检测逻辑
+            if (CompareTag("KoopaShell"))
+            {
+                // 龟壳特殊处理
+                if (!IsValidCollisionTarget(other.gameObject.tag) && checkDic)
+                {
+                    ChangeDirection();
+                }
+            }
+            else
+            {
+                // 普通敌人处理
+                if (!IsValidCollisionTarget(other.gameObject.tag) && checkDic)
+                {
+                    ChangeDirection();
+                }
             }
         }
 
@@ -243,14 +327,15 @@ namespace EnemyScripts
             {
                 return otherTag == "Player" || otherTag == "Ground" ||
                        otherTag == "Brick" || otherTag == "ScreenBorder" ||
-                       otherTag == "Goomba" || otherTag == "Koopa" ;
+                       otherTag == "Goomba" || otherTag == "Koopa";
             }
             else
             {
                 return otherTag == "Player" || otherTag == "Ground" ||
-                       otherTag == "Brick" || otherTag == "ScreenBorder" ;
+                       otherTag == "Brick" || otherTag == "ScreenBorder";
             }
         }
+        
 
         // 在编辑器场景中绘制巡逻点
         private void OnDrawGizmosSelected()
@@ -273,6 +358,10 @@ namespace EnemyScripts
 
         IEnumerator Destroy()
         {
+            if (IsInvoking("OnShowDeath"));
+            {
+                CancelInvoke("OnShowDeath");
+            }
             Sound.PlaySound("smb_kick");
             if (bodys != null && bodys.Count > 0)
             {
@@ -295,12 +384,14 @@ namespace EnemyScripts
                 Vector3 dropDir = _moveDirection == Vector3.left ? new Vector3(5, 5, 0) : new Vector3(-5, 5, 0);
                 rigidbody2D.AddForce(dropDir,ForceMode2D.Impulse);
             }
-
+            if (isCreate)
+            {
+                MonsterCreater.Instance.OnMinCreates();
+            }
             yield return new WaitForSeconds(0.6f);
 
             if (isCreate)
             {
-                MonsterCreater.Instance.hasCreateMonster--;
                 SimplePool.Despawn(gameObject);
             }
             else

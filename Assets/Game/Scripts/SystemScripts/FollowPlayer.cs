@@ -37,15 +37,18 @@ namespace SystemScripts
                 }
                 return;
             }
+           if (player.transform.position.x > GameModController.Instance.OnGetLevelEndPos()
+                && !GameModController.Instance.OnCheckBoosLevel()
+                ) return;
             checkPlayerPos = false;
-            if (GameStatusController.IsHidden &&!GameStatusController.HiddenMove) return;
+            if (GameStatusController.IsHidden && !GameStatusController.HiddenMove) return;
             float y = GameStatusController.IsHidden ? 32 : 5;
-
+            bool isMoveForward = player.transform.position.x > transform.position.x;
+            bool isMax = player.transform.position.x > PlayerController.Instance.bossPkPos.x;
+            float targetX = GameStatusController.IsBossBattle && isMoveForward && isMax ? PlayerController.Instance.bossPkPos.x : player.transform.position.x;
             transform.position = Vector3.Lerp(
                transform.position,
-               !GameStatusController.IsBossBattle
-                ? new Vector3(player.transform.position.x, y, -10)
-                : new Vector3(PlayerController.Instance.bossPkPos.x, 5, -10),
+              new Vector3(targetX, y, -10),
                30 * Time.deltaTime
            );
         }

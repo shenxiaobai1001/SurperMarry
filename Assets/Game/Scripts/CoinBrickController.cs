@@ -19,7 +19,7 @@ public class CoinBrickController : MonoBehaviour
     private void OnCollisionEnter2D(Collision2D other)
     {
         if ((other.gameObject.CompareTag("Player") || other.gameObject.CompareTag("UltimatePlayer") ||
-             other.gameObject.CompareTag("BigPlayer") || other.gameObject.CompareTag("UltimateBigPlayer")) && !isTouchByPlayer)
+             other.gameObject.CompareTag("BigPlayer") || other.gameObject.CompareTag("UltimateBigPlayer") ) && !isTouchByPlayer)
         {
             if (isNotSpecialBrick)
             {

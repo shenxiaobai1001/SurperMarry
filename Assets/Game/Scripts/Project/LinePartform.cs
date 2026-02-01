@@ -27,6 +27,9 @@ public class LinePartform : MonoBehaviour
     // 初始位置
     private Vector3 leftInitialPos;
     private Vector3 rightInitialPos;
+    // 初始旋转
+    private Quaternion leftInitialRot;
+    private Quaternion rightInitialRot;
 
     // 绳索初始高度
     private float lineInitialHeight = 3f;
@@ -37,9 +40,24 @@ public class LinePartform : MonoBehaviour
 
     void Start()
     {
-        // 记录初始位置
+        EventManager.Instance.AddListener(Events.OnRestBreakBrick, ResetToInitialState);
+        RecordInitialState();
+    }
+    private void OnDestroy()
+    {
+        EventManager.Instance.RemoveListener(Events.OnRestBreakBrick, ResetToInitialState);
+    }
+
+    /// <summary>
+    /// 记录初始状态
+    /// </summary>
+    private void RecordInitialState()
+    {
+        // 记录初始位置和旋转
         leftInitialPos = leftPart.position;
         rightInitialPos = rightPart.position;
+        leftInitialRot = leftPart.rotation;
+        rightInitialRot = rightPart.rotation;
 
         // 记录绳索初始高度
         if (leftLine != null)
@@ -48,19 +66,19 @@ public class LinePartform : MonoBehaviour
         }
 
         // 获取或添加刚体组件
-        leftRb = leftPart.GetComponent<Rigidbody2D>();
-        if (leftRb == null)
-        {
-            leftRb = leftPart.gameObject.AddComponent<Rigidbody2D>();
-            leftRb.bodyType = RigidbodyType2D.Kinematic;
-        }
+        leftRb = GetOrAddRigidbody(leftPart);
+        rightRb = GetOrAddRigidbody(rightPart);
+    }
 
-        rightRb = rightPart.GetComponent<Rigidbody2D>();
-        if (rightRb == null)
+    private Rigidbody2D GetOrAddRigidbody(Transform part)
+    {
+        Rigidbody2D rb = part.GetComponent<Rigidbody2D>();
+        if (rb == null)
         {
-            rightRb = rightPart.gameObject.AddComponent<Rigidbody2D>();
-            rightRb.bodyType = RigidbodyType2D.Kinematic;
+            rb = part.gameObject.AddComponent<Rigidbody2D>();
         }
+        rb.bodyType = RigidbodyType2D.Kinematic;
+        return rb;
     }
 
     void Update()
@@ -91,16 +109,14 @@ public class LinePartform : MonoBehaviour
             float targetBalance = marioOnPlatform; // -1 或 1
             currentBalance = Mathf.MoveTowards(currentBalance, targetBalance, moveSpeed * Time.deltaTime);
         }
-
     }
 
     void UpdatePlatformPositions()
     {
-        // 正常移动
-         
-        leftPart.position = Vector3.Lerp(leftPart.position ,leftInitialPos + new Vector3(0, -currentBalance * maxMovement, 0), recoverySpeed * Time.deltaTime) ;
+        // 使用Lerp平滑移动
+        leftPart.position = Vector3.Lerp(leftPart.position, leftInitialPos + new Vector3(0, -currentBalance * maxMovement, 0), recoverySpeed * Time.deltaTime);
+
         rightPart.position = Vector3.Lerp(rightPart.position, rightInitialPos + new Vector3(0, currentBalance * maxMovement, 0), recoverySpeed * Time.deltaTime);
-       // rightPart.position = rightInitialPos + new Vector3(0, currentBalance * maxMovement, 0);
     }
 
     void UpdateRopes()
@@ -122,23 +138,91 @@ public class LinePartform : MonoBehaviour
         isFalling = true;
 
         // 切换到动态刚体
-        leftRb.bodyType = RigidbodyType2D.Dynamic;
-        rightRb.bodyType = RigidbodyType2D.Dynamic;
+        leftRb.isKinematic =false;
+        rightRb.isKinematic = false;
 
         // 施加掉落力
-        Vector2 fallDirection = new Vector2(Random.Range(-0.3f, 0.3f), -1f).normalized;
-        leftRb.AddForce(fallDirection * fallForce, ForceMode2D.Impulse);
-        rightRb.AddForce(new Vector2(-fallDirection.x, -1f).normalized * fallForce, ForceMode2D.Impulse);
+        //Vector2 fallDirection = new Vector2(Random.Range(-0.3f, 0.3f), -1f).normalized;
+        //leftRb.AddForce(fallDirection * fallForce, ForceMode2D.Impulse);
+        //rightRb.AddForce(new Vector2(-fallDirection.x, -1f).normalized * fallForce, ForceMode2D.Impulse);
 
-        // 添加旋转
-        leftRb.AddTorque(Random.Range(-5f, 5f));
-        rightRb.AddTorque(Random.Range(-5f, 5f));
+        //// 添加旋转
+        //leftRb.AddTorque(Random.Range(-5f, 5f));
+        //rightRb.AddTorque(Random.Range(-5f, 5f));
 
         // 禁用脚本
-        enabled = false;
+        //enabled = false;
     }
 
-    // 触发检测（需要为两个平台添加BoxCollider2D和子物体用于触发）
+    /// <summary>
+    /// 重置到初始状态
+    /// </summary>
+    public void ResetToInitialState(object msg)
+    {
+        // 1. 重置状态变量
+        currentBalance = 0f;
+        marioOnPlatform = 0;
+        isFalling = false;
+
+        // 3. 重置刚体属性
+        ResetRigidbody(leftRb, leftInitialPos, leftInitialRot);
+        ResetRigidbody(rightRb, rightInitialPos, rightInitialRot);
+
+        // 4. 立即更新位置和旋转
+        leftPart.position = leftInitialPos;
+        rightPart.position = rightInitialPos;
+        leftPart.rotation = leftInitialRot;
+        rightPart.rotation = rightInitialRot;
+
+        // 5. 重置绳索
+        ResetRopes();
+
+        // 6. 停止所有正在进行的协程（如果有的话）
+        StopAllCoroutines();
+    }
+
+    /// <summary>
+    /// 重置刚体到初始状态
+    /// </summary>
+    private void ResetRigidbody(Rigidbody2D rb, Vector3 targetPosition, Quaternion targetRotation)
+    {
+        if (rb == null) return;
+
+
+        // 切换回运动学刚体
+        rb.bodyType = RigidbodyType2D.Kinematic;
+
+        // 重置所有物理属性
+        rb.velocity = Vector2.zero;
+        rb.angularVelocity = 0f;
+
+        // 重置位置和旋转
+        rb.transform.position = targetPosition;
+        rb.transform.rotation = targetRotation;
+        rb.gameObject.SetActive(true);
+        // 重置质量、阻力等（如果有特殊设置的话）
+        // rb.mass = 1f;
+        // rb.drag = 0f;
+        // rb.angularDrag = 0.05f;
+    }
+
+    /// <summary>
+    /// 重置绳索到初始状态
+    /// </summary>
+    private void ResetRopes()
+    {
+        if (leftLine != null)
+        {
+            leftLine.size = new Vector2(leftLine.size.x, lineInitialHeight);
+        }
+
+        if (rightLine != null)
+        {
+            rightLine.size = new Vector2(rightLine.size.x, lineInitialHeight);
+        }
+    }
+
+    // 触发检测方法保持不变
     public void OnMarioEnterLeftPlatform()
     {
         marioOnPlatform = -1;

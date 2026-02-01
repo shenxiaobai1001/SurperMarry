@@ -8,6 +8,7 @@ public class ChainPlayer : MonoBehaviour
 {
     public static ChainPlayer Instance;
     public Animator animator;
+    public Transform parent;
     void Awake()
     {
         if (Instance == null)
@@ -20,6 +21,7 @@ public class ChainPlayer : MonoBehaviour
             return;
         }
     }
+
     // Start is called before the first frame update
     void Start()
     {
@@ -27,25 +29,26 @@ public class ChainPlayer : MonoBehaviour
     }
     private void OnEnable()
     {
+        PlayerModController.Instance.OnSetModAniIns(false);
         PlayerModController.Instance.OnSetPlayerIns(false);
         PlayerModController.Instance.OnChangeState(false);
         PlayerController.Instance.transform.position = new Vector3(animator.transform.position.x, animator.transform.position.y, animator.transform.position.z);
         if (GameStatusController.IsFirePlayer && GameStatusController.IsBigPlayer)
         {
-            animator.transform.GetChild(0).gameObject.SetActive(false);
-            animator.transform.GetChild(1).gameObject.SetActive(true);
+            parent.GetChild(0).gameObject.SetActive(false);
+            parent.GetChild(1).gameObject.SetActive(true);
             animator.SetTrigger("redLock");
         }
         else if (!GameStatusController.IsFirePlayer && GameStatusController.IsBigPlayer)
         {
-            animator.transform.GetChild(0).gameObject.SetActive(false);
-            animator.transform.GetChild(1).gameObject.SetActive(true);
+            parent.GetChild(0).gameObject.SetActive(false);
+            parent.GetChild(1).gameObject.SetActive(true);
             animator.SetTrigger("bigLock");
         }
         else
         {
-            animator.transform.GetChild(0).gameObject.SetActive(true);
-            animator.transform.GetChild(1).gameObject.SetActive(false);
+            parent.GetChild(0).gameObject.SetActive(true);
+            parent.GetChild(1).gameObject.SetActive(false);
             animator.SetTrigger("smallLock");
         }
     }

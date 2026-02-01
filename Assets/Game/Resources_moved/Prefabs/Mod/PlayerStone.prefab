@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4510593620629646898}
   - component: {fileID: 6554187222957421849}
-  m_Layer: 11
+  m_Layer: 16
   m_Name: Square (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -95,7 +95,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4997329247271213504}
   - component: {fileID: 6809287288980802903}
-  m_Layer: 11
+  m_Layer: 16
   m_Name: Center
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -174,7 +174,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8105015400400050536}
   - component: {fileID: 7002668259499399615}
-  m_Layer: 11
+  m_Layer: 16
   m_Name: Square
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -260,7 +260,7 @@ GameObject:
   - component: {fileID: 6548919820128780009}
   - component: {fileID: 7882172913300315379}
   - component: {fileID: 2195287685938250226}
-  m_Layer: 11
+  m_Layer: 16
   m_Name: PlayerStone
   m_TagString: Ground
   m_Icon: {fileID: 0}

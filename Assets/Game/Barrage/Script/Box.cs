@@ -17,6 +17,10 @@ public class Box : MonoBehaviour
     public Dropdown videos;
 
     private BarrageController barrageConfig;
+    // TestCall 串行队列与状态
+    private readonly Queue<System.Action> _testQueue = new Queue<System.Action>();
+    private bool _testRunning = false;
+    private float _lastTestExecTime = -1f;
 
     private void Awake()
     {
@@ -46,10 +50,10 @@ public class Box : MonoBehaviour
             }
         }
 
-        if (videos.options[videos.value].text != "空")
+        if(videos.options[videos.value].text != "空")
         {
             string boxPath = $"Box/{videos.options[videos.value].text}";
-            yield return barrageConfig.PlayBoxVideoAndWait(boxPath, 2, false, null);
+            yield return barrageConfig.PlayBoxVideoAndWait(boxPath, 2, false, ModVideoPlayerCreater.Instance != null ? ModVideoPlayerCreater.Instance.transform : null);
         }
     }
 
@@ -159,7 +163,7 @@ public class Box : MonoBehaviour
     public void JoinCall(GameObject call)
     {
         GameObject obj = Instantiate(callObj, calls);
-        if (obj != null)
+        if(obj != null)
         {
             string name = call.transform.GetChild(0).GetComponent<Text>().text;
             barrageConfig.barrageBoxSetting[transform.GetSiblingIndex()].Calls.Add(name);
@@ -270,12 +274,42 @@ public class Box : MonoBehaviour
     /// </summary>
     public void TestCall()
     {
-        StartCoroutine(TestCallRoutine());
+        // 入队一个测试请求，串行处理
+        _testQueue.Enqueue(() => { });
+        if (!_testRunning)
+        {
+            _testRunning = true;
+            StartCoroutine(ProcessTestQueue());
+        }
     }
 
-    private IEnumerator TestCallRoutine()
+    private IEnumerator ProcessTestQueue()
     {
-        // 按“开盒循环”执行：每次先播视频，再随机抽一个功能只执行一次
+        while (_testQueue.Count > 0)
+        {
+            _testQueue.Dequeue(); // 代表一个请求
+            // 在开始前根据上次执行时间应用剩余间隔，确保连续点击不会立刻第二次播放
+            int boxIndex = transform.GetSiblingIndex();
+            var settings = BarrageController.Instance.barrageBoxSetting[boxIndex];
+            if (settings != null && settings.Delay > 0f && _lastTestExecTime >= 0f)
+            {
+                float elapsed = Time.time - _lastTestExecTime;
+                float remain = settings.Delay - elapsed;
+                if (remain > 0f)
+                {
+                    yield return new WaitForSeconds(remain);
+                }
+            }
+
+            // 执行一次测试例程：倍率为 Count；每轮 播视频->随机功能一次->若未到最后一轮等待 Delay
+            yield return TestCallRoutineOnce();
+            _lastTestExecTime = Time.time;
+        }
+        _testRunning = false;
+    }
+
+    private IEnumerator TestCallRoutineOnce()
+    {
         int boxIndex = transform.GetSiblingIndex();
         var settings = BarrageController.Instance.barrageBoxSetting[boxIndex];
         int cycles = Mathf.Max(1, settings.Count);

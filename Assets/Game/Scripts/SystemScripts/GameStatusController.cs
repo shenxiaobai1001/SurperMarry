@@ -16,6 +16,8 @@ namespace SystemScripts
         public TextMeshProUGUI levelText;
         public TextMeshProUGUI secondsText;
         public TextMeshProUGUI livesText;
+        public TextMeshProUGUI deadText;
+        public GameObject deadPanel;
         public GameObject score200Prefab;
         public GameObject score1000Prefab;
         public GameObject pausePopup;
@@ -41,11 +43,13 @@ namespace SystemScripts
         public static int CurrentLevel;
 
         public static bool isDead;
-        public static bool IsDead;
+        public static bool IsDead { get { return isDead; }set { /*Debug.Log(value); */isDead = value; } }
         public static bool IsGameOver;
         public static bool IsStageClear;
         public static bool IsBigPlayer;
         public static bool IsFirePlayer;
+        public static bool IsDaoPlayer;
+        public static bool IsQiangPlayer;
         public static bool IsBossBattle;
         public static bool IsGameFinish;
         public static bool IsEnemyDieOrCoinEat;
@@ -65,7 +69,10 @@ namespace SystemScripts
             tx_life.text = mLife.ToString();
             LiveStart.SetActive(false);
             NpcTalk.SetActive(false);
+            OnShowDeadPanel(null);
+            EventManager.Instance.AddListener(Events.OnShowDeadPanel, OnShowDeadPanel);
         }
+        
 
         private void Update()
         {
@@ -103,13 +110,22 @@ namespace SystemScripts
             }
             else
             {
-                tx_trap.text = "0";
+                tx_trap.text = $"{ModData.tiggerTrapCount}/{ModData.canTrapCount}";
+            }
+            if (ModData.ShowDeadPanel)
+            {
+                if (deadText) deadText.text = $"{ModData.deadCount}";
             }
             SetCoin();
             SetLevel();
             SetScore(playerScoreText, Score);
             SetLive();
             Pause();
+        }
+
+        void OnShowDeadPanel(object msg)
+        {
+            if (deadPanel) deadPanel.SetActive(ModData.ShowDeadPanel);
         }
         public TextMeshProUGUI tx_trap;
         private void SetScore(TextMeshProUGUI scoreText, int score)
@@ -305,6 +321,7 @@ namespace SystemScripts
                     mLife--;
                 }
                 //PFunc.Log("实时判断变化方向", mLife, ModData.mLife);
+                if (mLife < 0) mLife = 0;
                 tx_life.text = mLife.ToString();
                 yield return new WaitForSeconds(0.1f);
             }
@@ -340,6 +357,7 @@ namespace SystemScripts
         }
         private void OnDestroy()
         {
+            EventManager.Instance.RemoveListener(Events.OnShowDeadPanel, OnShowDeadPanel);
             EventManager.Instance.RemoveListener(Events.NpcTalkShow, OnShowNpcTalk);
         }
     }

@@ -48,7 +48,7 @@ public class PlayerModMoveController : MonoBehaviour
     [SerializeField] private float minX = -7.5f;
     [SerializeField] private float maxX = 192;
     [SerializeField] private float minY = 0;
-    [SerializeField] private float maxY = 9;
+    [SerializeField] private float maxY = 11;
 
     [Header("射线检测设置")]
     [SerializeField] private float raycastDistance = 1f;
@@ -140,22 +140,29 @@ public class PlayerModMoveController : MonoBehaviour
     {
         minX = mx;
         maxX = max;
+        PFunc.Log("写入最大位置", minX, maxX);
     }
     public void TriggerModMove(MoveType type, Vector3 dir, float speed = 5f, float time = 2f,
-        bool canFight = true, bool rotate = false, int effectId = 0)
+        bool canFight = true, bool rotate = false, int effectId = 0,bool swim=false)
     {
+        if (Config.isLoading) return;
         if (ItemCreater.Instance != null && ItemCreater.Instance.isHang)
         {
-            PlayerModController.Instance.OnCancelHangSelf();
+            return;
         }
         if (!PlayerModController.Instance.isKinematic)
+        PlayerModController.Instance.OnChangeState(false);
+            PlayerController.Instance.OnChanleControl(true);
+        if (!ItemCreater.Instance.lockPlayer && !swim&&!ModVideoPlayerCreater.Instance.isBury)
         {
-            PlayerModController.Instance.OnChangeState(false);
+            PFunc.Log("跳跃");
+            PlayerModController.Instance.OnMoveShowIcon();
         }
-
-        PlayerController.Instance.OnChanleControl(true);
-        if (!ItemCreater.Instance.lockPlayer)
-             PlayerModController.Instance.OnMoveShowIcon();
+        else
+        {
+            PFunc.Log("游泳");
+            PlayerModController.Instance.OnToHitPos();
+        }
         // 创建移动数据
         MoveEffectData newEffect = new MoveEffectData
         {
@@ -184,14 +191,13 @@ public class PlayerModMoveController : MonoBehaviour
     {
         Debug.Log("所有移动已完全结束");
 
-   
         // 如果有最后完成的移动效果，可以基于它做一些特殊处理
         if (lastFinishedEffect != null)
         {
             Debug.Log($"最后一个完成的移动效果: {lastFinishedEffect.moveType}");
         }
 
-        if (ItemCreater.Instance.lockPlayer)
+        if (ItemCreater.Instance.lockPlayer||ModVideoPlayerCreater.Instance.isBury )
         {
             if (!PlayerModController.Instance.isKinematic)
             {
@@ -201,12 +207,12 @@ public class PlayerModMoveController : MonoBehaviour
         }
         else
         {
-            if (PlayerModController.Instance.isKinematic)
+            if (PlayerModController.Instance.isKinematic&&!Config.isLoading && !GameStatusController.isDead)
             {
                 PlayerModController.Instance.OnChangeState(true);
+                PlayerController.Instance.isHit = false;
+                PlayerModController.Instance.OnEndHitPos();
             }
-            PlayerController.Instance.isHit = false;
-            PlayerModController.Instance.OnEndHitPos();
             PlayerModController.Instance.OnChanleModAni();
         }
 
@@ -338,6 +344,8 @@ public class PlayerModMoveController : MonoBehaviour
                 }
                 yield return null;                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         
             }
+            if (Config.isLoading) ForceStopAllMovement();
+
             // 更新僵持状态
             if (isInStalemate)
             {
@@ -375,9 +383,10 @@ public class PlayerModMoveController : MonoBehaviour
 
         // 射线检测
         Vector3 moveDirection = GetAdjustedMoveDirection();
-
+        //PFunc.Log("moveDirection", moveDirection);
         // 计算移动
         Vector3 moveDelta = moveDirection * currentMoveEffect.moveSpeed * Time.fixedDeltaTime;
+       // PFunc.Log("moveDelta", moveDelta);
         Vector3 newPosition = playerTransform.position + moveDelta;
         tminX = GameStatusController.IsHidden ? 14 : minX;
         tminY=GameStatusController.IsHidden ? 31 : minY;
@@ -385,29 +394,30 @@ public class PlayerModMoveController : MonoBehaviour
         tmaxY = GameStatusController.IsHidden ? 41 : maxY;
 
         // 边界限制
-        newPosition.x = Mathf.Clamp(newPosition.x, tminX, tmaxX);
-
+        //newPosition.x = Mathf.Clamp(newPosition.x, tminX, tmaxX);
+        //PFunc.Log("newPosition", newPosition);
         bool up = currentMoveEffect.direction.y > 0;
         if (up)
-        {
-            // 向上移动：限制在 tminY 和 tmaxY 之间
             newPosition.y = Mathf.Clamp(newPosition.y, tminY, tmaxY);
+        else
+            newPosition.y = newPosition.y <= tminY ? tminY : newPosition.y;
+
+        bool left = currentMoveEffect.direction.x < 0;
+        if (left)
+        {
+            newPosition.x = Mathf.Clamp(newPosition.x, tminX, tmaxX);
         }
         else
         {
-            // 向下移动：确保不低于 tminY，但不高于 tmaxY
-            newPosition.y = newPosition.y <= tminY ? tminY : newPosition.y;
-            // 或者更清晰的写法：
-            // newPosition.y = Mathf.Max(newPosition.y, tminY);
-            // 然后再确保不超过 tmaxY
-            // newPosition.y = Mathf.Min(newPosition.y, tmaxY);
+            newPosition.x = newPosition.x >= tmaxX ? tmaxX : newPosition.x;
+
         }
 
-
-        if(ItemCreater.Instance != null && !ItemCreater.Instance.lockPlayer)
+        if (ItemCreater.Instance != null && !ItemCreater.Instance.lockPlayer && !ModVideoPlayerCreater.Instance.isBury)
         {
             // 应用移动
             playerTransform.position = newPosition;
+            //PFunc.Log("playerTransform.position ", playerTransform.position);
         }
 
         // 处理旋转
@@ -438,18 +448,18 @@ public class PlayerModMoveController : MonoBehaviour
         if (currentMoveEffect == null) return Vector3.zero;
 
         // 如果需要躲避障碍物且计时未结束，继续向上移动
-        if (isAvoidingObstacle)
-        {
-            upwardMoveTimer -= Time.fixedDeltaTime;
-            if (upwardMoveTimer > 0)
-            {
-                return Vector3.up;
-            }
-            else
-            {
-                isAvoidingObstacle = false;
-            }
-        }
+        //if (isAvoidingObstacle)
+        //{
+        //    upwardMoveTimer -= Time.fixedDeltaTime;
+        //    if (upwardMoveTimer > 0)
+        //    {
+        //        return Vector3.up;
+        //    }
+        //    else
+        //    {
+        //        isAvoidingObstacle = false;
+        //    }
+        //}
 
         // 进行射线检测
         Vector3 rayDirection = currentMoveEffect.direction.normalized;
@@ -470,8 +480,8 @@ public class PlayerModMoveController : MonoBehaviour
             Debug.Log($"检测到障碍物: {hit.collider.name}");
 
             // 改为向上移动
-            isAvoidingObstacle = true;
-            upwardMoveTimer = upwardMoveTime;
+            //isAvoidingObstacle = true;
+            //upwardMoveTimer = upwardMoveTime;
             return Vector3.up;
         }
 

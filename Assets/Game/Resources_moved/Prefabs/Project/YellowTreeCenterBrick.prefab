@@ -147,6 +147,7 @@ MonoBehaviour:
   initialSpeed: 8
   gravity: 9.8
   horizontalVelocity: 4
+  breakBrickController: {fileID: 0}
 --- !u!1 &3086278620512599592
 GameObject:
   m_ObjectHideFlags: 0
@@ -294,6 +295,7 @@ MonoBehaviour:
   initialSpeed: 8
   gravity: 9.8
   horizontalVelocity: 4
+  breakBrickController: {fileID: 0}
 --- !u!1 &4529322772720883329
 GameObject:
   m_ObjectHideFlags: 0
@@ -425,7 +427,13 @@ MonoBehaviour:
   - {fileID: 5460158873692555744}
   - {fileID: 2949185606000780220}
   - {fileID: 9209087939406513750}
+  canBreakBrick:
+  - {fileID: 5238112588164862702}
+  - {fileID: 2747039495897733893}
+  - {fileID: 832524760873718684}
+  - {fileID: 3087983267323982150}
   collider2D: {fileID: 3657690595574193981}
+  toPool: 0
 --- !u!1 &6699524622364139661
 GameObject:
   m_ObjectHideFlags: 0
@@ -573,6 +581,7 @@ MonoBehaviour:
   initialSpeed: 8
   gravity: 9.8
   horizontalVelocity: 4
+  breakBrickController: {fileID: 0}
 --- !u!1 &7379835385931778812
 GameObject:
   m_ObjectHideFlags: 0
@@ -720,3 +729,4 @@ MonoBehaviour:
   initialSpeed: 8
   gravity: 9.8
   horizontalVelocity: 4
+  breakBrickController: {fileID: 0}

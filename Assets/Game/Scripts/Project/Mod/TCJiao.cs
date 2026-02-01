@@ -1,6 +1,7 @@
 using DG.Tweening;
 using System.Collections;
 using System.Collections.Generic;
+using System.Xml.Serialization;
 using UnityEngine;
 
 public class TCJiao : MonoBehaviour
@@ -28,11 +29,14 @@ public class TCJiao : MonoBehaviour
 
     void OnBeginCreateBoom()
     {
-        PlayerModMoveController.Instance.TriggerModMove(MoveType.MaxLeft, new Vector3(-1, -0.5f), 10, allTime, true);
+        PlayerModMoveController.Instance.TriggerModMove(MoveType.MaxLeft, new Vector3(-10, -0.5f), 10, allTime, true);
         CameraShaker.Instance.StartShake(allTime);
         StartCoroutine(OnCreateBoom());
     }
-
+    private void OnDisable()
+    {
+        StopCoroutine(OnCreateBoom());
+    }
     IEnumerator OnCreateBoom()
     {
         while (time <= allTime)
@@ -49,7 +53,6 @@ public class TCJiao : MonoBehaviour
             }
             yield return null;
         }
-        PFunc.Log("OnCreateBoom", time);
         if (IsInvoking("OnBeginCreateBoom"))
         {
             CancelInvoke("OnBeginCreateBoom");

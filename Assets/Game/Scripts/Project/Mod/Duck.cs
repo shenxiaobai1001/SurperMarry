@@ -9,6 +9,7 @@ public class Duck : MonoBehaviour
     public float moveSpeed = 3f;
     public Rigidbody rigidbody;
     public float destroyHeight = 20f; // 物体删除的高度阈值
+    public bool atk = true;
 
     bool kickPlayer = true;
     Transform playerTarget;
@@ -60,7 +61,8 @@ public class Duck : MonoBehaviour
         if(Vector3.Distance(transform.position, playerTarget.position)< 0.1f)
         {
             kickPlayer = false;
-            PlayerModMoveController.Instance.TriggerModMove(MoveType.Normal, new Vector3(-1, 1), 20, 0.1f, false, false, 1);
+            if(atk)
+                PlayerModMoveController.Instance.TriggerModMove(MoveType.Normal, new Vector3(-1, 1), 20, 0.1f, false, false, 1);
            // UIDuck.Instance.OnSetNullCount();
             OnReachPlayer();
         }

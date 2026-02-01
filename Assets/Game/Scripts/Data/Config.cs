@@ -10,6 +10,9 @@ public static class Config
     public static string[] passName = new string[] { "1-1", "1-2", "1-3", "1-4", "2-1", "2-2", "2-3", "3-1", "3-2", "3-3", "3-4", "4-1", "4-2", "4-3", "4-4" };
     public static int chainCount;
     public static int passIndex = 0;
+    public static bool EnemyStop = false;
+    public static int FlogCount;
+    public static float playerScale=1;
 }                                                                    
                                       
 /// <summary>事件合集 </summary>               
@@ -25,6 +28,8 @@ public enum Events
     OnFlagEnter,
     ToGetPoleFlagPlayer,
     OnRestBreakBrick,
+    EnemyStopMove,
+    OnShowDeadPanel,
 }                                                                  
 // 移动方向                                                 
 public enum MoveDirection                                

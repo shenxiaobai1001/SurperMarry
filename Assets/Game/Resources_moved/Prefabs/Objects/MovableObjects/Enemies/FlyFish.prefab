@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 2909853286186630501}
   - component: {fileID: 1148382132161228297}
   - component: {fileID: 6496329593235620972}
-  m_Layer: 9
+  m_Layer: 17
   m_Name: FlyFish
   m_TagString: FlyFish
   m_Icon: {fileID: 0}
@@ -118,10 +118,16 @@ MonoBehaviour:
   bodys:
   - {fileID: 7300244701144373030}
   - {fileID: 1605768496812802398}
+  checkDie: 0
   canMove: 1
   isDead: 0
   isCreate: 1
+  bodyCollider: {fileID: 1605768496812802398}
   _moveDirection: {x: -1, y: 0, z: 0}
+  checkDic: 1
+  groundLayer:
+    serializedVersion: 2
+    m_Bits: 32769
 --- !u!114 &6496329593235620972
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -160,7 +166,7 @@ GameObject:
   - component: {fileID: 2711051199924216815}
   - component: {fileID: 3820754684806649093}
   - component: {fileID: 6358063982943686450}
-  m_Layer: 9
+  m_Layer: 17
   m_Name: Body Collider
   m_TagString: EnemyBody
   m_Icon: {fileID: 0}
@@ -225,7 +231,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 0.95, y: 0.7165038}
+  m_Size: {x: 0.8, y: 0.7165038}
   m_EdgeRadius: 0
 --- !u!114 &3820754684806649093
 MonoBehaviour:
@@ -351,7 +357,7 @@ GameObject:
   - component: {fileID: 2727854055996174645}
   - component: {fileID: 2184919846704359104}
   - component: {fileID: 4819146886480479999}
-  m_Layer: 9
+  m_Layer: 17
   m_Name: Head Collider
   m_TagString: EnemyHead
   m_Icon: {fileID: 0}
@@ -538,7 +544,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1600045607536366471}
   - component: {fileID: 2521113792995861571}
-  m_Layer: 9
+  m_Layer: 17
   m_Name: Animations
   m_TagString: Untagged
   m_Icon: {fileID: 0}

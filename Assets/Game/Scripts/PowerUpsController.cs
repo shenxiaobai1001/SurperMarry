@@ -45,6 +45,10 @@ public class PowerUpsController : MonoBehaviour
             isTouchByPlayer = false;
             transform.Translate(speedRight * Time.deltaTime * Vector2.right);
         }
+        if (transform.position.y<-2)
+        {
+            Destroy(gameObject);
+        }
     }
 
     private void OnCollisionEnter2D(Collision2D other)
@@ -54,6 +58,7 @@ public class PowerUpsController : MonoBehaviour
         if (other.gameObject.CompareTag("Stone") || other.gameObject.CompareTag("Pipe") ||
             other.gameObject.CompareTag("Untagged"))
         {
+            PFunc.Log("OnCollisionEnter2D",other.gameObject.tag);
             speedRight = -speedRight;
         }
     }
@@ -87,7 +92,7 @@ public class PowerUpsController : MonoBehaviour
             isTouchByPlayer = true;
             StartCoroutine(SetBoolEatable());
         }
-        else if (other.CompareTag("BigPlayer") || other.CompareTag("UltimateBigPlayer") && !CompareTag("Coin"))
+        else if ((other.CompareTag("BigPlayer") || other.CompareTag("UltimateBigPlayer")) && !CompareTag("Coin"))
         {
             Sound.PlaySound("smb_powerup_appears");
             isTouchByPlayer = true;

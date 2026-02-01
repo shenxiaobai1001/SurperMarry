@@ -28,6 +28,7 @@ public class FlyKoopa : MonoBehaviour
 
     public void OnStartFly()
     {
+        isFlying = false;
         canFly = true;
         StartFlying();
     }
@@ -38,6 +39,11 @@ public class FlyKoopa : MonoBehaviour
 
         canFly = true;
         isFlying = true;
+        if (flyCoroutine != null)
+        {
+            StopCoroutine(flyCoroutine);
+            flyCoroutine = null;
+        }
         flyCoroutine = StartCoroutine(ContinuousFlyRoutine());
     }
 
@@ -53,7 +59,7 @@ public class FlyKoopa : MonoBehaviour
         }
 
         // 平滑回到起始位置
-        StartCoroutine(SmoothReturnToOriginal());
+        //StartCoroutine(SmoothReturnToOriginal());
     }
 
     IEnumerator ContinuousFlyRoutine()
@@ -112,65 +118,6 @@ public class FlyKoopa : MonoBehaviour
             yield return null;
         }
     }
-
-    IEnumerator SmoothReturnToOriginal()
-    {
-        float duration = 0.5f;
-        float elapsed = 0f;
-        Vector3 startPos = transform.position;
-        Vector3 targetPos = new Vector3(startPos.x, originalY, startPos.z);
-
-        while (elapsed < duration)
-        {
-            elapsed += Time.deltaTime;
-            float t = elapsed / duration;
-
-            // 使用缓动函数
-            t = Mathf.SmoothStep(0, 1, t);
-
-            transform.position = Vector3.Lerp(startPos, targetPos, t);
-            yield return null;
-        }
-
-        // 确保精确位置
-        transform.position = targetPos;
-    }
-
-    // 可选：使用正弦波实现更平滑的乒乓运动
-    IEnumerator SineWaveFlyRoutine()
-    {
-        float timer = 0f;
-        Vector3 startPos = transform.position;
-        originalY = startPos.y;
-
-        while (canFly)
-        {
-            timer += Time.deltaTime;
-
-            // 使用正弦波计算Y位置偏移
-            // Mathf.Sin 的周期是 2π，所以除以π来匹配cycleTime
-            float sineValue = Mathf.Sin((timer / cycleTime) * Mathf.PI * 2f);
-
-            // 将正弦值从[-1, 1]映射到[0, 1]
-            float normalizedValue = (sineValue + 1f) / 2f;
-
-            // 应用曲线
-            float curveValue = motionCurve.Evaluate(normalizedValue);
-
-            // 计算新位置
-            float newY = originalY + (curveValue * jumpHeight);
-
-            transform.position = new Vector3(
-                transform.position.x,
-                newY,
-                transform.position.z
-            );
-
-            yield return null;
-        }
-    }
-
-    // 如果要使用正弦波版本，可以将StartFlying中的协程改为SineWaveFlyRoutine
 
     // 在Scene视图中显示辅助线
     private void OnDrawGizmosSelected()

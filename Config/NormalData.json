@@ -1,12 +1,60 @@
 {
     "NormalConfigs": [
         {
-            "CallName": "雷电",
+            "CallName": "动感DJ",
             "Type": "礼物",
             "Message": "",
             "Tip": "",
             "Count": 1,
-            "Delay": 1.0
+            "Delay": 0.0
+        },
+        {
+            "CallName": "哭坟",
+            "Type": "礼物",
+            "Message": "",
+            "Tip": "",
+            "Count": 1,
+            "Delay": 0.0
+        },
+        {
+            "CallName": "拿枪形态",
+            "Type": "礼物",
+            "Message": "",
+            "Tip": "",
+            "Count": 1,
+            "Delay": 0.0
+        },
+        {
+            "CallName": "火圈",
+            "Type": "礼物",
+            "Message": "",
+            "Tip": "",
+            "Count": 1,
+            "Delay": 0.0
+        },
+        {
+            "CallName": "无敌星",
+            "Type": "礼物",
+            "Message": "",
+            "Tip": "",
+            "Count": 10,
+            "Delay": 0.0
+        },
+        {
+            "CallName": "上吊",
+            "Type": "礼物",
+            "Message": "",
+            "Tip": "",
+            "Count": 1,
+            "Delay": 0.0
+        },
+        {
+            "CallName": "乌龟一只",
+            "Type": "礼物",
+            "Message": "",
+            "Tip": "",
+            "Count": 1,
+            "Delay": 0.0
         },
         {
             "CallName": "铁链",
@@ -17,7 +65,7 @@
             "Delay": 0.0
         },
         {
-            "CallName": "随机天火",
+            "CallName": "陷阱数量-1",
             "Type": "礼物",
             "Message": "",
             "Tip": "",
@@ -25,7 +73,7 @@
             "Delay": 0.0
         },
         {
-            "CallName": "全屏天火",
+            "CallName": "变大",
             "Type": "礼物",
             "Message": "",
             "Tip": "",
@@ -33,23 +81,7 @@
             "Delay": 0.0
         },
         {
-            "CallName": "随机地火",
-            "Type": "礼物",
-            "Message": "",
-            "Tip": "",
-            "Count": 1,
-            "Delay": 1.0
-        },
-        {
-            "CallName": "麒麟臂",
-            "Type": "礼物",
-            "Message": "",
-            "Tip": "",
-            "Count": 1,
-            "Delay": 0.0
-        },
-        {
-            "CallName": "天残脚",
+            "CallName": "全部陷阱关闭",
             "Type": "礼物",
             "Message": "",
             "Tip": "",

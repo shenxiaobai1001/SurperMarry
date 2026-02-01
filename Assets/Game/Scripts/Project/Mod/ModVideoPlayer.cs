@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class ModVideoPlayer : MonoBehaviour
 {
@@ -12,17 +13,14 @@ public class ModVideoPlayer : MonoBehaviour
     public GameObject center;
     public GameObject normalPlayer;
     public GameObject specailPlayer;
+    UnityAction callback = null;
 
-    bool snakeScene = false;
     void Start()
     {
         mainPlayer.Events.AddListener(OnVideoEvent);         // 订阅播放器本身提供的事件
-
     }
 
-    int videoType = 0;
-    Vector3 scale = Vector3.one;
-    public void OnPlayVideo(Vector3 offset, Vector3 scale, Vector3 rotate, string path,int type, string layer = "Default", bool snake = false, int sortingOrder=-5)
+    public void OnPlayVideo(Vector3 offset, Vector3 scale, Vector3 rotate, string path,int type, string layer = "Default", bool snake = false, int sortingOrder=-5, UnityAction callback = null)
     {
         PFunc.Log("OnPlayVideo", path, layer);
         normalPlayer.SetActive(type==1);
@@ -33,7 +31,8 @@ public class ModVideoPlayer : MonoBehaviour
         center.transform.localScale = scale;
         center.transform.localEulerAngles = rotate;
         pathTitle = path;
-        snakeScene = snake; OnInitPlayer();
+        this.callback = callback;
+       OnInitPlayer();
         if (mCanvas) mCanvas.sortingLayerName = layer;  // Sorting Layer 名称
         if (mCanvas) mCanvas.sortingOrder = sortingOrder;         // Order in Laye
         OnBeginGetVideo();
@@ -72,18 +71,15 @@ public class ModVideoPlayer : MonoBehaviour
         mainPlayer.Play();
         mainPlayer.Control.SetVolume(Sound.VideoVolume);
         EventManager.Instance.SendMessage(Events.OnModVideoPlayStart);
-        //if (snakeScene)
-        //{
-        //    EventManager.Instance.SendMessage(Events.BeginSnakeMap, true);
-        //}
     }
 
     //跳到结束
     public void OnEnd()
     {
         Sound.PauseOrPlayVolumeMusic(false);
-      //  EventManager.Instance.SendMessage(Events.BeginSnakeMap, false);
         mainPlayer.CloseMedia();
+        if (callback != null) callback.Invoke();
+        callback = null;
         SimplePool.Despawn(this.gameObject);
         EventManager.Instance.SendMessage(Events.OnModVideoPlayEnd);
     }

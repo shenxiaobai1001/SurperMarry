@@ -1,3 +1,4 @@
+using EnemyScripts;
 using PlayerScripts;
 using System.Collections;
 using System.Collections.Generic;
@@ -33,7 +34,7 @@ public class MonsterCreater : MonoBehaviour
     [SerializeField] private float batchInterval = 0.05f;
 
     public int MonsterCount = 0;
-    public int MaxCanCreateMonster = 250;
+    public int MaxCanCreateMonster = 300;
     public int hasCreateMonster = 0;
     // 统一管理生成状态
     private class MonsterSpawnData
@@ -86,35 +87,47 @@ public class MonsterCreater : MonoBehaviour
             }
             if(hasCreateMonster>=MaxCanCreateMonster)
                 yield return new WaitUntil(() => hasCreateMonster < MaxCanCreateMonster);
-            for (int i = 0; i < spawnCount; i++)
-            {
-                if (Config.isLoading)
-                {
-                    yield return new WaitUntil(() => !Config.isLoading);
-                }
-                if (hasCreateMonster >= MaxCanCreateMonster)
-                    yield return new WaitUntil(() => hasCreateMonster < MaxCanCreateMonster);
-                Sound.PlaySound("smb_1-up");
-                Vector3 createPos = CreatePos1.position;
-                createPos = OnGetCreatePos(data);
-                GameObject obj = InstantiateSingleMonster(monsterPrefab, createPos);
-                switch (data.type)
-                {
-                    case "FlyKoopa":
-                        float hight = Random.Range(0.27f, 7);
-                        obj.GetComponent<FlyKoopa>().originalY = hight;
-                        break;
-                    case "flyFish":
-                        float maxHight = Random.Range(2, 8);
-                        obj.GetComponent<FlyFish>().maxHeight = maxHight;
-                        break;
-                }
-                hasCreateMonster++;
-                MonsterCount -= 1;
-            }
 
-            data.count -= spawnCount;
-            yield return new WaitForSeconds(batchInterval);
+            if (Config.isLoading)
+            {
+                yield return new WaitUntil(() => !Config.isLoading);
+            }
+            if (hasCreateMonster >= MaxCanCreateMonster)
+                yield return new WaitUntil(() => hasCreateMonster < MaxCanCreateMonster);
+            Sound.PlaySound("smb_1-up");
+            Vector3 createPos = CreatePos1.position;
+            createPos = OnGetCreatePos(data);
+            GameObject obj = InstantiateSingleMonster(monsterPrefab, createPos);
+            EnemyController enemyController = null;
+            switch (data.type)
+            {
+                case "FlyKoopa":
+                    float hight = Random.Range(0.27f, 7);
+                    obj.GetComponent<FlyKoopa>().originalY = hight;
+
+                    break;
+                case "flyFish":
+                    float maxHight = Random.Range(2, 8);
+                    obj.GetComponent<FlyFish>().maxHeight = maxHight;
+                    break;
+                case "tortoise":
+                        enemyController = obj.GetComponent<EnemyController>();
+                    bool left = Random.Range(0,2)==0;
+                    enemyController._moveDirection = left ? Vector3.left : Vector3.right;
+
+                    break;
+
+            }
+            if(enemyController==null)
+            {
+                enemyController = obj.GetComponent<EnemyController>();
+            }
+            enemyController.OnBeginMove();
+            hasCreateMonster++;
+            MonsterCount -= 1;
+
+            data.count -= 1;
+            yield return null;
         }
 
         data.isCreating = false;
@@ -125,12 +138,14 @@ public class MonsterCreater : MonoBehaviour
         Vector3 createPos = CreatePos1.position;
         switch (data.type)
         {
-            case "tortoise":
-                int value = Random.Range(0, 4);
+             case "mushroom":
+             case "tortoise":
+                float value = Random.Range(0, 7);
                 createPos = new Vector3(CreatePos1.position.x-value, CreatePos1.position.y, CreatePos1.position.z) ;
                 break;
             case "FlyKoopa":
-                createPos = CreatePos1.position;
+                float value1 = Random.Range(-8, 2);
+                createPos = new Vector3(CreatePos1.position.x , CreatePos1.position.y+ value1, CreatePos1.position.z);
                 break;
             case "flyFish":
                 createPos = CreatePos2.position;
@@ -142,11 +157,16 @@ public class MonsterCreater : MonoBehaviour
     /// <summary> 实例化单个怪物 </summary>
     private GameObject InstantiateSingleMonster(GameObject prefab,Vector3 trans)
     {
-        PFunc.Log(trans);
         GameObject obj = SimplePool.Spawn(prefab, trans, Quaternion.identity);
         obj.transform.SetParent(modMonsterPatent);
         obj.SetActive(true);
         return obj;
+    }
+    public void OnMinCreates()
+    {
+        hasCreateMonster--;
+        if (hasCreateMonster <= 0) 
+            hasCreateMonster = 0;
     }
 
     // 保留原有接口，内部调用统一方法

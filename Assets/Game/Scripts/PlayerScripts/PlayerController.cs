@@ -59,7 +59,8 @@ namespace PlayerScripts
         public AudioClip endGameSound;
         public AudioClip fireballSound;
 
-        [HideInInspector]public bool isHit = false;
+        public  bool ishit;
+        [HideInInspector]public bool isHit { get { return ishit; } set { /*Debug.Log(value); */ishit = value; } }
 
         private static readonly int IdleB = Animator.StringToHash("Idle_b");
         private static readonly int WalkB = Animator.StringToHash("Walk_b");
@@ -109,6 +110,21 @@ namespace PlayerScripts
             isInCastle = false;
             getPole = false;
             startPos =transform.position;
+            DieCoroutine = null;
+            if (GameStatusController.IsDaoPlayer)
+            {
+                OnDaoMario();
+            }
+            else if(GameStatusController.IsQiangPlayer)
+            {
+                OnQiangMario();
+            }
+            else
+            {
+                TurnIntoBigPlayer();
+            }
+            if(Config.playerScale!=0)
+                transform.localScale = new Vector3(Config.playerScale, Config.playerScale, 1);
         }
         private void OnDestroy()
         {
@@ -127,7 +143,8 @@ namespace PlayerScripts
                 if (Input.GetKeyDown(KeyCode.K) && _isOnGround || Input.GetKeyDown(KeyCode.Space) && _isOnGround)
                 {
                     _playerAudio.PlayOneShot(GameStatusController.IsBigPlayer ? jumpSound : jumpBigSound);
-                    _isOnGround = false; 
+                    _isOnGround = false;
+                    _playerRb.velocity = Vector3.zero;
                    _playerRb.AddForce(new Vector2(0f, jumpForce));
                     _playerAnim.SetBool(IdleB, false);
                     _playerAnim.SetBool(WalkB, false);
@@ -181,18 +198,33 @@ namespace PlayerScripts
             // J键按下：发射火球（攻击）
             if (Input.GetKeyDown(KeyCode.J) && GameStatusController.IsFirePlayer || Input.GetMouseButtonDown(0) && GameStatusController.IsFirePlayer)
             {
-                Instantiate(fireBallPrefab, fireBallParent.position, fireBallParent.rotation);
-                _playerAudio.PlayOneShot(fireballSound);
+                if (GameStatusController.IsDaoPlayer)
+                {
+                    Sound.PlaySound("Mod/fire");
+                    _playerAnim.SetTrigger("DaoAtk");
+                    ItemCreater.Instance.OnCreateDaoQI(1);
+                }
+                else if (GameStatusController.IsQiangPlayer)
+                {
+                    _playerAnim.SetTrigger("QiangAtk");
+                    Sound.PlaySound("Mod/fire");
+                    PlayerModController.Instance.OnCreateBullet();
+                }
+                 else
+                {
+                    Instantiate(fireBallPrefab, fireBallParent.position, fireBallParent.rotation);
+                    _playerAudio.PlayOneShot(fireballSound);
+                }
             }
 
             // J键按住：加速
-            if (Input.GetKey(KeyCode.J))
+            if (Input.GetKey(KeyCode.J)|| Input.GetKey(KeyCode.LeftShift))
             {
                 _isSprinting = true;
                 speed = 310;
                jumpForce = 720;
             }
-            else if (Input.GetKeyUp(KeyCode.J))
+            else if (Input.GetKeyUp(KeyCode.J) || Input.GetKey(KeyCode.LeftShift))
             {
                 _isSprinting = false;
                 speed = 240;
@@ -204,7 +236,7 @@ namespace PlayerScripts
         private void HandleSKeyInput()
         {
             // S键按下：下蹲或进入管道
-            if (Input.GetKeyDown(KeyCode.S) && _isAboveSpecialPipe|| Input.GetKeyDown(KeyCode.S) && isHidden)
+            if (Input.GetKeyDown(KeyCode.S) && _isAboveSpecialPipe || Input.GetKeyDown(KeyCode.S) && isHidden)
             {
                 PlayerModController.Instance.OnChangeStateFalse();
                 _playerAudio.PlayOneShot(pipeSound);
@@ -301,7 +333,7 @@ namespace PlayerScripts
 
             if (_isFinish)
             {
-                if (transform.position.y >= 1.5f)
+                if (transform.position.y >= 1)
                 {
                     _playerAnim.SetBool(HugB, true);
                     _playerAnim.SetFloat(SpeedF, 0);
@@ -317,11 +349,12 @@ namespace PlayerScripts
                         transform.position = new Vector3(_flagPos + 0.8f, transform.position.y);
                     }
 
-                    _playerRb.isKinematic = false;
                     StartCoroutine(HugPole());
            
                     if (_isNotHugPole)
                     {
+                        _playerRb.isKinematic = false;
+                        playerCol.SetActive(true);
                         transform.localScale = Vector3.one;
                         _playerAnim.SetFloat(SpeedF, 3f);
                         transform.Translate(slideDownSpeed * Time.deltaTime * Vector3.right);
@@ -367,13 +400,14 @@ namespace PlayerScripts
         bool getFlag = false;
         private void OnCollisionEnter2D(Collision2D other)
         {
-            if (other.gameObject.CompareTag("EnemyBody"))
+            if (other.gameObject.CompareTag("EnemyBody")&&!isInvincible&&!PlayerModController.Instance.isInvincible)
             {
                 OnDieNFunc();
                 return;
             }
-            else  if (other.gameObject.CompareTag("Arrow"))
+            else if (other.gameObject.CompareTag("Arrow"))
             {
+                PFunc.Log("OnCollisionEnter2DArrow", isSpecialDie);
                 isSpecialDie = true;
                 OnDieNFunc();
                 return;
@@ -392,10 +426,10 @@ namespace PlayerScripts
             {
                 _isEatable = false;
             }
-
+            //PFunc.Log(other.gameObject.tag, getPole);
             if (other.gameObject.CompareTag("Pole"))
             {
-                OnGetPoleFunc(other.gameObject);
+                OnGetPole(other.gameObject);
             }
 
             if (other.gameObject.CompareTag("Castle"))
@@ -459,7 +493,18 @@ namespace PlayerScripts
                 _playerAudio.PlayOneShot(turnBigSound);
                 _playerRb.velocity = Vector2.zero;
                 _playerRb.isKinematic = true;
-                tag = "UltimateBigPlayer";
+                if (GameStatusController.IsBigPlayer)
+                {
+                    GameStatusController.IsFirePlayer = true;
+                    tag = "UltimateBigPlayer";
+                }
+                else
+                {
+                    GameStatusController.IsBigPlayer = true;
+                    GameStatusController.PlayerTag = "BigPlayer";
+                    tag = GameStatusController.PlayerTag;
+                }
+               
                 TurnIntoBigPlayer();
                 _isEatable = false;
             }
@@ -470,11 +515,11 @@ namespace PlayerScripts
                 OnChanleControl(true);
                 _playerAnim.SetFloat(SpeedF, 0);
                 _playerAudio.PlayOneShot(turnBigSound);
-                _playerRb.velocity = Vector2.zero;
+                _playerRb.velocity = Vector2.zero; 
                 _playerRb.isKinematic = true;
+                GameStatusController.IsFirePlayer = true;
                 TurnIntoBigPlayer();
                 tag = "UltimateBigPlayer";
-                GameStatusController.IsFirePlayer = true;
                 _isEatable = false;
             }
 
@@ -503,8 +548,13 @@ namespace PlayerScripts
         void OnGetPoleFunc(object  msg)
         {
             if(msg == null|| getPole) return;
+            getFlag = true;
+            OnGetPole((GameObject)msg);
+        }
+        void OnGetPole(GameObject other)
+        {
+            PlayerModController.Instance.isSuperMan = false;
             getPole = true;
-            GameObject other= (GameObject)msg;
             Sound.PauseOrPlayVolumeMusic(true);
             ModController.Instance.OnModPause();
             _playerAudio.PlayOneShot(flagPoleSound);
@@ -514,6 +564,8 @@ namespace PlayerScripts
             _playerRb.isKinematic = true;
             isWalkingToCastle = true;
             isStopTime = true;
+            transform.localEulerAngles = Vector3.zero;
+            transform.position = new Vector3(_flagPos, transform.position.y, transform.position.z);
             EventManager.Instance.SendMessage(Events.ToGetPoleFlag);
             StartCoroutine(PlayStageClearSound());
         }
@@ -534,7 +586,7 @@ namespace PlayerScripts
                     Physics2D.IgnoreCollision(GetComponent<Collider2D>(), smallPlayerCollider.GetComponent<Collider2D>());
                 }
             }
-            else if (CompareTag("BigPlayer"))
+            else if (CompareTag("BigPlayer")|| CompareTag("UltimateBigPlayer"))
             {
                 GameStatusController.IsBigPlayer = false;
                 GameStatusController.IsFirePlayer = false;
@@ -546,10 +598,41 @@ namespace PlayerScripts
         }
 
         public void OnFireMario(){
+
+            if (GameStatusController.IsDaoPlayer || GameStatusController.IsQiangPlayer)
+            {
+                _playerAnim.SetTrigger("TFire");
+                GameStatusController.IsDaoPlayer = false;
+                GameStatusController.IsQiangPlayer = false;
+            }
+            GameStatusController.PlayerTag = "BigPlayer";
+            tag = GameStatusController.PlayerTag;
             _playerAudio.PlayOneShot(turnBigSound);
             TurnIntoBigPlayer();
         _isEatable = false;
-            }
+        }
+        public void OnDaoMario()
+        {
+            GameStatusController.IsQiangPlayer = false;
+            GameStatusController.IsDaoPlayer = true;
+            _playerAnim.SetTrigger("Dao_b");
+            GameStatusController.PlayerTag = "BigPlayer";
+            tag = GameStatusController.PlayerTag;
+            _playerAudio.PlayOneShot(turnBigSound);
+            TurnIntoBigPlayer();
+            _isEatable = false;
+        }
+        public void OnQiangMario()
+        {
+            GameStatusController.IsDaoPlayer = false;
+            GameStatusController.IsQiangPlayer = true;
+            _playerAnim.SetTrigger("Qiang_b");
+            GameStatusController.PlayerTag = "BigPlayer";
+            tag = GameStatusController.PlayerTag;
+            _playerAudio.PlayOneShot(turnBigSound);
+            TurnIntoBigPlayer();
+            _isEatable = false;
+        }
         private void OnCollisionExit2D(Collision2D other)
         {
             if (other.gameObject.CompareTag("PowerBrick"))
@@ -599,7 +682,6 @@ namespace PlayerScripts
             {
                 getFlag = true;
             }
-
         }
         private void OnTriggerExit2D(Collider2D collision)
         {
@@ -611,16 +693,16 @@ namespace PlayerScripts
 
         public void TurnIntoBigPlayer()
         {
-            _playerAnim.SetBool(BigB, GameStatusController.IsBigPlayer);
-            _playerAnim.SetBool(FireB, GameStatusController.IsFirePlayer);
             if (GameStatusController.IsBigPlayer)
             {
                 bigPlayer.SetActive(GameStatusController.IsBigPlayer);
                 smallPlayer.SetActive(!GameStatusController.IsBigPlayer);
             }
+            _playerAnim.SetBool(BigB, GameStatusController.IsBigPlayer);
+            _playerAnim.SetBool(FireB, GameStatusController.IsFirePlayer);
+            
         
            // ChangeAnim();
-            PFunc.Log("碰见大花", gameObject.tag);
             if (CompareTag("Player"))
             {
                 isInvulnerable = true;
@@ -644,6 +726,8 @@ namespace PlayerScripts
             yield return new WaitForSeconds(0.7f);
             if (!GameStatusController.IsBigPlayer)
             {
+                GameStatusController.IsDaoPlayer = false;
+                GameStatusController.IsQiangPlayer = false;
                 bigPlayer.SetActive(GameStatusController.IsBigPlayer);
                 smallPlayer.SetActive(!GameStatusController.IsBigPlayer);
             }
@@ -651,6 +735,10 @@ namespace PlayerScripts
             _playerRb.isKinematic = false;
             ChangeCollider();
             OnChanleControl(false);
+            if (PlayerModController.Instance.isInvincible)
+            {
+                PlayerModController.Instance.OnSetInvincileState();
+            }
         }
 
         private void Die()
@@ -665,7 +753,11 @@ namespace PlayerScripts
         bool isSpecialDie = false;
         void OnDieFunc()
         {
-     
+            GameStatusController.IsDaoPlayer = false;
+            GameStatusController.IsQiangPlayer = false;
+            GameStatusController.IsBigPlayer = false;
+            GameStatusController.IsFirePlayer = false;
+
             if (isSpecialDie)
             {
                 if (DieCoroutine == null)
@@ -689,10 +781,29 @@ namespace PlayerScripts
             }
 
         }
+       public void OnHalfDieFunc()
+        {
+            GameStatusController.IsBigPlayer = false;
+            GameStatusController.IsFirePlayer = false;
+            isSpecialDie = true;
+
+            if (DieCoroutine == null)
+            {
+                Sound.PlaySound("smb_mariodie");
+                PlayerModController.Instance.OnSetPlayerIns(false);
+                PlayerModController.Instance.OnChangeState(false);
+                deadPos = isRest ? new Vector3(-2, 0) : new Vector3(transform.position.x, transform.position.y + 2, transform.position.z);
+                DieCoroutine = StartCoroutine(DieAnim());
+                GameStatusController.isDead = true;
+            }
+        }
 
         private void GetPlayerSpeed()
         {
-            _playerAnim.SetFloat(SpeedF, Mathf.Abs(_playerRb.velocity.x));
+            if (!hasToFindNpc)
+            {
+                _playerAnim.SetFloat(SpeedF, Mathf.Abs(_playerRb.velocity.x));
+            }
         }
 
         public void ChangeAnim()
@@ -770,13 +881,15 @@ namespace PlayerScripts
                 GameStatusController.IsDead = false;
                 ResetPlayerState(deadPos);
                 isInvulnerable = true;
-                DieCoroutine = null;
+                _playerAnim.SetTrigger("toDead");
+
             }
-       
+            DieCoroutine = null;
         }
 
         IEnumerator NormalDie()
         {
+            ModController.Instance.OnModPause();
             PFunc.Log("玩家死亡");
             playerCol.SetActive(false);
             _playerAnim.SetBool(DieB,true);
@@ -799,17 +912,52 @@ namespace PlayerScripts
                 yield return StartCoroutine(LoadingScene());
             }
             else {
-                ModController.Instance.OnModPause();
+                EventManager.Instance.SendMessage(Events.OnRestBreakBrick);
+              
+                yield return new WaitForSeconds(1);
                 GameStatusController.IsDead = false;
                 ResetPlayerState(startPos);
                 isInvulnerable=true;
-                PFunc.Log("NormalDie");
                 _playerAnim.SetTrigger("toDead");
                 Camera.main.transform.position = new Vector3(1.5f, 5, -10);
-                EventManager.Instance.SendMessage(Events.OnRestBreakBrick);
+           
                 Config.isLoading = false;
             }
             DieCoroutine = null;
+        }
+
+
+        private IEnumerator HalfDieAnim()
+        {
+            playerCol.SetActive(false);
+
+            ModData.mLife--;
+
+            if (ModData.mLife < 0)
+            {
+                yield return StartCoroutine(LoadingScene());
+            }
+            else if (isRest || GameManager.Instance.time <= 0)
+            {
+                ModController.Instance.OnModPause();
+                EventManager.Instance.SendMessage(Events.OnRestBreakBrick);
+                GameStatusController.IsDead = false;
+                ResetPlayerState(startPos);
+                isInvulnerable = true;
+                _playerAnim.SetTrigger("toDead");
+                Camera.main.transform.position = new Vector3(1.5f, 5, -10);
+                Config.isLoading = false;
+            }
+            else
+            {
+                Sound.PlaySound("Mod/life");
+                yield return playerBreak.OnHuifuIE();
+                GameStatusController.IsDead = false;
+                ResetPlayerState(deadPos);
+                isInvulnerable = true;
+                DieCoroutine = null;
+            }
+
         }
 
         private static IEnumerator LoadingScene()
@@ -817,10 +965,9 @@ namespace PlayerScripts
             yield return new WaitForSeconds(0.1f);
             if (ModData.mLife <= 0)
             {
-                PFunc.Log("LoadingScene");
                 ModController.Instance.statusController.mLife = 30;
                 ModData.mLife = 30;
-                GameModController.Instance.OnLoadTargetScene("LoadingScene");
+                GameModController.Instance.OnLoadScene("1-1");
             }
             else
             {
@@ -866,11 +1013,12 @@ namespace PlayerScripts
             else if(isHidden)
             {
                 GameStatusController.IsHidden = true;
-                GameStatusController. HiddenMove = Config.passIndex!=0;
+                GameStatusController. HiddenMove = Config.passIndex > 1;
                  isHidden = false;
                 transform.position = GameManager.Instance.hiddenEnterPos.position;
                 Camera.main.transform.position = new Vector3(20, 37, -10);
                 PlayerModController.Instance.OnChangeStateFalse();
+                ChangeCollider();
             }
         }
         private IEnumerator OutHiddenPass()
@@ -942,6 +1090,11 @@ namespace PlayerScripts
         // 在PlayerController类中添加以下方法
         public void ResetPlayerState(Vector3? startPosition = null)
         {
+            PlayerModController.Instance.OnSetPlayerIns(true);
+            PlayerModController.Instance.OnChangeState(true);
+            PlayerModController.Instance.OnChanleModAni();
+            PlayerModController.Instance.isSuperMan = false;
+
             checkYpos = true;
             // 1. 停止所有正在运行的协程
             StopAllCoroutines();
@@ -1013,20 +1166,9 @@ namespace PlayerScripts
             }
 
             // 根据标签激活/停用大小玩家碰撞体
-            if (CompareTag("Player") || CompareTag("UltimatePlayer"))
-            {
-                smallPlayerCollider.SetActive(true);
-                bigPlayerCollider.SetActive(false);
-                smallPlayer.SetActive(true);
-                bigPlayer.SetActive(false);
-            }
-            else if (CompareTag("BigPlayer") || CompareTag("UltimateBigPlayer"))
-            {
-                smallPlayerCollider.SetActive(false);
-                bigPlayerCollider.SetActive(true);
-                smallPlayer.SetActive(false);
-                bigPlayer.SetActive(true);
-            }
+            bigPlayer.SetActive(GameStatusController.IsBigPlayer);
+            smallPlayer.SetActive(!GameStatusController.IsBigPlayer);
+            ChangeCollider();
             findNpc = false;
             // 7. 重置层碰撞
             Physics2D.IgnoreLayerCollision(8, 9, false);
@@ -1053,6 +1195,8 @@ namespace PlayerScripts
             GameStatusController.IsStageClear = false;
             GameStatusController.IsShowMessage = false;
             GameStatusController.IsBossBattle = false;
+            GameStatusController.IsDaoPlayer = false;
+            GameStatusController.IsQiangPlayer = false;
             GameManager.Instance.time = 400;
 
             // 12. 设置玩家标签为初始状态
@@ -1062,6 +1206,14 @@ namespace PlayerScripts
             PlayerModController.Instance.OnSetPlayerIns(true);
             // 13. 启用脚本（如果被禁用）
             enabled = true;
+            getPole = false;
+            hasToFindNpc = false;
+            transform.localScale = Vector3.one;
+            if (PlayerModController.Instance.isInvincible)
+            {
+                PlayerModController.Instance.OnSetInvincileState();
+            }
+            ModData.deadCount++;
         }
 
         // 可选：添加一个重载方法，使用默认位置
@@ -1069,11 +1221,14 @@ namespace PlayerScripts
         {
             ResetPlayerState(startPos);
         }
+        bool hasToFindNpc = false;
         bool findNpc = false;
         public void OnToFindNpc()
         {
+            hasToFindNpc = true;
             _playerRb.velocity = Vector2.zero;
             findNpc = false;
+            _playerAnim.SetFloat(SpeedF, 0);
             StartCoroutine(OnFindNpc());
         }
         IEnumerator OnFindNpc()
@@ -1083,8 +1238,9 @@ namespace PlayerScripts
                 transform.Rotate(0, 180, 0);
                 _isFacingRight = true;
             }
-            _playerAnim.SetFloat(SpeedF, 3f);
             PlayerModController.Instance.OnChangeState(true);
+            _playerAnim.SetFloat(SpeedF, 3f);
+           
             _playerAnim.SetBool(RunB, true);
             while (!findNpc)
             {

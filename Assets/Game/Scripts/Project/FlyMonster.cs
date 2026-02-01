@@ -222,4 +222,34 @@ public class FlyMonster : MonoBehaviour
         chaseSpeed = newChaseSpeed;
         chaseDistance = newChaseDistance;
     }
+    public Rigidbody2D rigidbody2D;
+    public SpriteRenderer spriteTrans;
+    public List<GameObject> bodyCollider;
+    Coroutine destoryObj = null;
+    public void OnDIe()
+    {
+        PFunc.Log("1OnDIe");
+        if (destoryObj == null)
+        {
+            PFunc.Log("2OnDIe");
+            destoryObj = StartCoroutine(OnByDestory());
+        }
+    }
+
+    IEnumerator OnByDestory()
+    {
+        PFunc.Log("3OnDIe");
+        for (var i = 0; i < bodyCollider.Count; i++)
+        {
+            bodyCollider[i].SetActive(false);
+        }
+        rigidbody2D.constraints = RigidbodyConstraints2D.FreezeRotation;
+        rigidbody2D.isKinematic = false;
+        spriteTrans.flipY = true;
+        Vector3 dropDir = new Vector3(5, 5, 0);
+        rigidbody2D.AddForce(dropDir, ForceMode2D.Impulse);
+        yield return new  WaitForSeconds(3f);
+        destoryObj = null;
+        Destroy(gameObject);
+    }
 }

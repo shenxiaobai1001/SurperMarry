@@ -20,6 +20,7 @@ public class CanBreakBrick : MonoBehaviour
     private bool isTriggered = false;
     private Rigidbody2D rb;
     Vector3 startPos;
+    Coroutine mainMoveCoroutine;
     private void Start()
     {
         startPos = transform.localPosition;
@@ -42,8 +43,9 @@ public class CanBreakBrick : MonoBehaviour
         {
             rb.bodyType = RigidbodyType2D.Kinematic;
         }
-
-        StartCoroutine(ParabolicMovement());
+        if (mainMoveCoroutine != null)
+            StopCoroutine(mainMoveCoroutine);
+        mainMoveCoroutine= StartCoroutine(ParabolicMovement());
     }
 
     private IEnumerator ParabolicMovement()
@@ -92,14 +94,9 @@ public class CanBreakBrick : MonoBehaviour
     // 可选：添加一个方法来重置砖块状态
     public void ResetBrick()
     {
+        if (mainMoveCoroutine != null)
+            StopCoroutine(mainMoveCoroutine);
         isTriggered = false;
-        gameObject.SetActive(true);
-
-        if (rb != null)
-        {
-            rb.bodyType = RigidbodyType2D.Static;
-        }
-
         transform.localPosition = startPos;
     }
 

@@ -35,7 +35,6 @@ public class MangSeng : MonoBehaviour
         seng2.SetActive(!isLeft);
 
         playerTarget = PlayerController.Instance.transform;
-        PFunc.Log(PlayerController.Instance.transform.position, transform.position, isLeft);
         isMove = true;
         kickPlayer = true;
     }

@@ -30,6 +30,7 @@ public class FlyFish : MonoBehaviour
 
     void Start()
     {
+     
         enemyController = GetComponent<EnemyController>();
     }
 
@@ -39,6 +40,7 @@ public class FlyFish : MonoBehaviour
     public void StartFlight()
     {
         initialPosition = transform.position;
+
         if (flightCoroutine != null)
         {
             StopCoroutine(flightCoroutine);
@@ -62,6 +64,7 @@ public class FlyFish : MonoBehaviour
         // 计算水平移动的方向
         int horizontalDirection = flightDirection == FlightDirection.Left ? -1 : 1;
         spriteRenderer.flipX = flightDirection != FlightDirection.Left;
+
         // 方法1：使用二次函数抛物线
         while (elapsedTime < flightDuration)
         {
@@ -88,7 +91,7 @@ public class FlyFish : MonoBehaviour
             startPos.z
         );
         transform.position = finalPosition;
-
+        flightCoroutine = null;
         if (enemyController != null)
         {
             enemyController.Die();

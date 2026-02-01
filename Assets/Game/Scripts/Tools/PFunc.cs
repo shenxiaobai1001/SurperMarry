@@ -6,12 +6,12 @@ using Object = UnityEngine.Object;
 
 public class PFunc
 {
-    //打日志
+    //打日�?
     static public void Log(params object[] objl)
     {
         // 将所有对象转换为字符串，并用空格分隔
         string logMessage = string.Join("=====", objl);
-        // 输出到调试日志
+        // 输出到调试日�?
         Debug.Log(logMessage);
     }
 
@@ -42,10 +42,10 @@ public class PFunc
         }
     }
 
-    #region 切割字符串
+    #region 切割字符�?
 
     /// <summary>
-    ///分割：|字符串
+    ///分割：|字符�?
     /// </summary>
     public static Dictionary<TKey, TValue> FuncSplitString<TKey, TValue>(string desc, Func<string, TKey> keyConverter,
         Func<string, TValue> valueConverter)
@@ -205,9 +205,9 @@ public class PFunc
     {
         if (num < 1e4) return num.ToString();
 
-        if (num < 1e7) return ((int)(num / 1e3)).ToString() + "千";
+        if (num < 1e7) return ((int)(num / 1e3)).ToString() ;
 
-        if (num < 1e10) return ((int)(num / 1e6)).ToString() + "万";
+        if (num < 1e10) return ((int)(num / 1e6)).ToString() ;
 
         return ((int)(num / 1e9)).ToString() + "B";
     }

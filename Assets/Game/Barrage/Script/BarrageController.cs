@@ -153,7 +153,6 @@ public class BarrageController : MonoBehaviour
     {
         Debug.Log(boxPath);
 
-
         GameObject obj = ModVideoPlayerCreater.Instance.OnCreateModVideoPlayer(Vector3.zero, Vector3.one, Vector3.zero, boxPath, 2, "Default", false, -10);
 
         // 等待对象被回收或失活
@@ -214,24 +213,31 @@ public class BarrageController : MonoBehaviour
                 MonsterCreater.Instance.OnCreateBeatles(100);
                 break;
             case "游戏时间+10s":
+                GameStatusController.IsGameFinish = false;
+                Sound.PlaySound("smb_1-up");
                 GameManager.Instance.time += 10;
                 break;
             case "游戏时间-10s":
+                Sound.PlaySound("smb_1-up");
                 GameManager.Instance.time -= 10;
                 break;
             case "生命+10%":
+                Sound.PlaySound("smb_1-up");
                 ModData.mLife += (int)(ModData.mLife * 0.1f);
                 EventManager.Instance.SendMessage(Events.OnChangeLife);
                 break;
             case "生命-10%":
+                Sound.PlaySound("smb_1-up");
                 ModData.mLife -= (int)(ModData.mLife * 0.1f);
                 EventManager.Instance.SendMessage(Events.OnChangeLife);
                 break;
             case "生命+1":
+                Sound.PlaySound("smb_1-up");
                 ModData.mLife += 1;
                 EventManager.Instance.SendMessage(Events.OnChangeLife);
                 break;
             case "生命-1":
+                Sound.PlaySound("smb_1-up");
                 ModData.mLife -= 1;
                 EventManager.Instance.SendMessage(Events.OnChangeLife);
                 break;
@@ -246,6 +252,9 @@ public class BarrageController : MonoBehaviour
                 break;
             case "抓鸭子":
                 ModVideoPlayerCreater.Instance.OnCreateDuckVideoPlayer();
+                break;
+            case "抓可达鸭":
+                ModVideoPlayerCreater.Instance.OnCreatePsyDuckVideoPlayer();
                 break;
             case "抓乌龟":
                 ModVideoPlayerCreater.Instance.OnCreateKoopaVideoPlayer();
@@ -317,15 +326,108 @@ public class BarrageController : MonoBehaviour
                 ModVideoPlayerCreater.Instance.OnPlayGrilVideo();
                 break;
             case "火焰马里奥":
-                GameStatusController.IsBigPlayer = true;
-                GameStatusController.IsFirePlayer = true;
-                if(PlayerController.Instance!=null) PlayerController.Instance.OnFireMario();
+                PlayerModController.Instance.OnRandromPlayer(2);
                 break;
             case "上一关":
                 if (GameModController.Instance != null) GameModController.Instance.OnEnterNextPass(-1);
                 break;
             case "下一关":
                 if (GameModController.Instance != null) GameModController.Instance.OnEnterNextPass(1);
+                break;
+            case "大蘑菇":
+                ItemCreater.Instance.OnCreateBigMG(1);
+                break;
+            case "超人+10秒":
+                PlayerModController.Instance.OnSuperMan(10);
+                break;
+            case "超人-10秒":
+                PlayerModController.Instance.OnSuperMan(-10);
+                break;
+            case "僵尸+10秒":
+                PlayerModController.Instance.OnShowZomBie(10);
+                break;
+            case "僵尸-10秒":
+                PlayerModController.Instance.OnShowZomBie(-10);
+                break;
+            case "广播体操":
+                PlayerModController.Instance.OnGuangDance();
+                break;
+            case "刀马":
+                PlayerModController.Instance.OnDMDance();
+                break;
+            case "凿头":
+                PlayerModController.Instance.OnKickHead();
+                break;
+            case "砍刀形态":
+                PlayerModController.Instance.OnRandromPlayer(0);
+                break;
+            case "拿枪形态":
+                PlayerModController.Instance.OnRandromPlayer(1);
+                break;
+            case "随机形态":
+                PlayerModController.Instance.OnRandromPlayer(5);
+                break;
+            case "大齿轮":
+                ItemCreater.Instance.OnCreateBigGear(1);
+                break;
+            case "撞大运":
+                ItemCreater.Instance.OnCreateTrunck(1);
+                break;
+            case "打板子盲盒":
+                ModVideoPlayerCreater.Instance.OnCreateFlog();
+                break;
+            case "变大":
+                if (Config.isLoading) return;
+                ModVideoPlayerCreater.Instance.OnPlayBig();
+                PlayerModController.Instance.OnChangScale(0.1f);
+                break;
+            case "变小":
+                if (Config.isLoading) return;
+                ModVideoPlayerCreater.Instance.OnPlaySmall();
+                PlayerModController.Instance.OnChangScale(-0.1f);
+                break;
+            case "关灯":
+                if (Config.isLoading) return;
+                Sound.PlaySound("smb_1-up");
+                UIMask.Instance.OnCloseLight();
+                break;
+            case "重新开始":
+                if (Config.isLoading) return;
+                if (GameModController.Instance != null) GameModController.Instance.OnLoadScene("1-1");
+                break;
+            case "陷阱数量+1":
+                Sound.PlaySound("smb_1-up");
+                if (ModData.canTrapCount< ModData.allTrapCount)
+                    ModData.canTrapCount += 1;
+                break;
+            case "陷阱数量-1":
+                Sound.PlaySound("smb_1-up");
+                if (ModData.canTrapCount >0)
+                    ModData.canTrapCount -= 1;
+                break;
+            case "全部陷阱激活":
+                Sound.PlaySound("smb_1-up");
+                ModData.canTrapCount = ModData.allTrapCount;
+                break;
+            case "全部陷阱关闭":
+                Sound.PlaySound("smb_1-up");
+                ModData.canTrapCount = 0;
+                break;
+            case "无敌星":
+                PlayerModController.Instance.OnSetInvincible();
+                break;
+            case "隐身":
+                PlayerModController.Instance.OnSetInvisibilityState();
+                break;
+            case "火圈":
+                Sound.PlaySound("smb_1-up");
+                ItemCreater.Instance.OnCreatehuoQuan(1);
+                break;
+            case "伸缩藤条":
+                ItemCreater.Instance.OnCreateRattan(1);
+                break;
+            case "哭坟":
+                ModVideoPlayerCreater.Instance.OnKuFen();
                 break;
         }
     }

@@ -20,6 +20,7 @@ public class UISystem : MonoBehaviour
     public TMP_InputField input_Wall;
     public TMP_InputField input_Stone;
     public GameObject Btn_moren;
+    public Toggle tg_dead;
 
     float musicValue = 0;
     float soundValue = 0;
@@ -44,6 +45,7 @@ public class UISystem : MonoBehaviour
         btn_Close.Click(OnClose);
         input_Wall.onEndEdit.AddListener(OnInputWall);
         input_Stone.onEndEdit.AddListener(OnInputStone);
+        tg_dead.onValueChanged.AddListener(OnTgDeadOpen);
         Btn_moren.Click(OnClickMoRen);
         center.SetActive(false);
        Invoke("OnInit",1);
@@ -111,6 +113,11 @@ public class UISystem : MonoBehaviour
         string[] reso = selectedText.Split('x');
         width = int.Parse(reso[0]);
         height = int.Parse(reso[1]);
+    }
+    private void OnTgDeadOpen(bool value)
+    {
+        ModData.ShowDeadPanel=value;
+        EventManager.Instance.SendMessage(Events.OnShowDeadPanel);
     }
 
     void OnClickResolution()

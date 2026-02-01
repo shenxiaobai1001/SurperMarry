@@ -14,7 +14,7 @@ namespace SystemScripts
         public PlayerController player;
         public GameStatusController gameStatusController;
         public List<EnemyController> enemyControllers;
-        public List<GameObject> enemyGameObjects;
+       // public List<GameObject> enemyGameObjects;
         public GameObject stairwayPrefab;
         public Transform stairwayDownParent;
         public Transform stairwayUpParent;
@@ -86,6 +86,7 @@ namespace SystemScripts
                 else
                 {
                     enemyControllers.Remove(enemyControllers[i]);
+
                 }
             }
         }
@@ -93,36 +94,43 @@ namespace SystemScripts
 
         private void SetActiveEnemiesWhenSeePlayer()
         {
-            for (var i = 0; i < enemyGameObjects.Count; i++)
+            for (var i = 0; i < enemyControllers.Count; i++)
             {
-                if (enemyGameObjects[i] != null)
+                if (enemyControllers[i] != null)
                 {
-                    if (enemyGameObjects[i].transform.position.x - player.transform.position.x < showCount)
+                    if (enemyControllers[i].transform.position.x - player.transform.position.x < showCount)
                     {
-                        enemyGameObjects[i].SetActive(true);
+                        if (enemyControllers[i] !=null && !enemyControllers[i].gameObject.activeSelf)
+                        {
+                            //enemyGameObjects[i].SetActive(true);
+                            enemyControllers[i].gameObject.SetActive(true);
+                            enemyControllers[i].OnBeginMove();
+                        }
                     }
                 }
                 else
                 {
-                    enemyGameObjects.Remove(enemyGameObjects[i]);
+                    //enemyGameObjects.Remove(enemyGameObjects[i]);
+                    enemyControllers.Remove(enemyControllers[i]);
                 }
             }
         }
 
         private void DestroyEnemiesOutOfBound()
         {
-            for (var i = 0; i < enemyGameObjects.Count; i++)
+            for (var i = 0; i < enemyControllers.Count; i++)
             {
-                if (enemyGameObjects[i] != null)
+                if (enemyControllers[i] != null)
                 {
-                    if (enemyGameObjects[i].transform.position.x - player.transform.position.x < -15)
+                    if (enemyControllers[i].transform.position.x - player.transform.position.x < -15)
                     {
-                        enemyGameObjects[i].SetActive(false);
+                        enemyControllers[i].gameObject.SetActive(false);
                     }
                 }
                 else
                 {
-                    enemyGameObjects.Remove(enemyGameObjects[i]);
+                    //enemyGameObjects.Remove(enemyGameObjects[i]);
+                    enemyControllers.Remove(enemyControllers[i]);
                 }
             }
         }
@@ -134,32 +142,27 @@ namespace SystemScripts
                 !GameStatusController.IsGameFinish)
             {
                 ModController.Instance.statusController.SetTime(time -= Time.deltaTime * 2);
-                if (time < 0)
+                if (time < 0) 
                 {
+                    if (ItemCreater.Instance.lockPlayer || ModVideoPlayerCreater.Instance.isBury)
+                    {
+                        return;
+                    }
                     PFunc.Log("掉到坑里");
                     time = 0;
                     GameStatusController.IsDead = true;
                 }
             }
-            else if (player.isInCastle&& checkLevel)
+            else if (player.isInCastle&& checkLevel || ModVideoPlayerCreater.Instance.isBury)
             {
+                if (ItemCreater.Instance.lockPlayer)
+                {
+                    return;
+                }
                 checkLevel = false;
                 ModController.Instance.statusController.SetTime(time -= Time.deltaTime * 60);
                 StartCoroutine(NextLevel());
-                //if (time < 0&& checkLevel)
-                //{
-                //    checkLevel = false;
-                //    time = 0;
-                   
-                //}
-                //else
-                //{
-                //    if (finalTime - time >= 1f)
-                //    {
-                //        GameStatusController.Score += 50;
-                //        finalTime = time;
-                //    }
-                //}
+
             }
         }
 
@@ -185,6 +188,7 @@ namespace SystemScripts
                     }
                     else
                     {
+                       // enemyGameObjects.Remove(enemyGameObjects[i]);
                         enemyControllers.Remove(enemyControllers[i]);
                     }
                 }
@@ -201,6 +205,7 @@ namespace SystemScripts
                 GameStatusController.Score += 200;
                 GameStatusController.IsEnemyDieOrCoinEat = true;
                 enemyControllers[i].Die();
+               // enemyGameObjects.Remove(enemyGameObjects[i]);
                 enemyControllers.Remove(enemyControllers[i]);
             }
         }
@@ -218,7 +223,6 @@ namespace SystemScripts
             yield return new WaitForSeconds(1);
             Config.passIndex++;
             string name = Config.passName[Config.passIndex];
-            PFunc.Log(Config.passIndex, name);
             GameModController.Instance.OnLoadScene(name);
         }
 

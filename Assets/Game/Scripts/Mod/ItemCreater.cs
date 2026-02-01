@@ -1,10 +1,10 @@
+
 using PlayerScripts;
 using System;
 using System.Collections;
 using System.Collections.Generic;
 using SystemScripts;
 using UnityEngine;
-using static UnityEngine.Rendering.DebugUI;
 
 public class ItemCreater : MonoBehaviour
 {
@@ -29,6 +29,7 @@ public class ItemCreater : MonoBehaviour
     public GameObject banana;
     public GameObject manyArrow;
     public GameObject duck;
+    public GameObject psyDuck;
     public GameObject hangself;
     public GameObject mangseng;
     public GameObject rollStone;
@@ -43,6 +44,7 @@ public class ItemCreater : MonoBehaviour
     public GameObject Electricity;
     public GameObject ElectricityLeft;
     public GameObject ElectricityRight;
+    public Transform moguParent;
 
     [SerializeField] private float batchInterval = 0.1f;
 
@@ -70,7 +72,6 @@ public class ItemCreater : MonoBehaviour
     /// <summary>统一生成怪物方法 </summary>
     public void CreateItem(GameObject itemPrefab, int count, string type, int batchSize, float batchInterval=0.1f, Action<object> endAction = null)
     {
-        PFunc.Log("等待加载全屏天火2");
         if (!spawnDataDict.ContainsKey(itemPrefab))
         {
             spawnDataDict[itemPrefab] = new ItemSpawnData(type, batchSize, batchInterval, endAction);
@@ -81,7 +82,6 @@ public class ItemCreater : MonoBehaviour
         data.count += count;
         if (!data.isCreating)
         {
-            PFunc.Log("等待加载全屏天火3");
             data.isCreating = true;
             StartCoroutine(CreateItemBatch(itemPrefab));
         }
@@ -91,19 +91,15 @@ public class ItemCreater : MonoBehaviour
     /// <summary> 批量生成协程</summary>
     private IEnumerator CreateItemBatch(GameObject monsterPrefab)
     {
-        PFunc.Log("等待加载全屏天火4");
         ItemSpawnData data = spawnDataDict[monsterPrefab];
         while (data.count > 0)
         {
-            PFunc.Log("等待加载全屏天火5");
             if (Config.isLoading)
             {
-                PFunc.Log("等待加载");
                 yield return new WaitUntil(() => !Config.isLoading);
             }
             if (GameStatusController.isDead)
             {
-                PFunc.Log("等待死亡");
                 yield return new WaitUntil(() => !GameStatusController.isDead);
             }
             int spawnCount = Mathf.Min(data.batchSize, data.count);
@@ -111,18 +107,17 @@ public class ItemCreater : MonoBehaviour
             {
                 if (Config.isLoading)
                 {
-                    PFunc.Log("等待加载");
                     yield return new WaitUntil(() => !Config.isLoading);
                 }
                 if (GameStatusController.isDead)
                 {
-                    PFunc.Log("等待死亡");
                     yield return new WaitUntil(() => !GameStatusController.isDead);
                 }
                 Vector3 createPos = CreatePos1.position;
                 createPos = OnGetCreatePos(data);
                 GameObject obj = InstantiateSingleMonster(monsterPrefab, createPos);
                 OnCreateEnd(data, obj);
+                PFunc.Log("创建", obj.name);
                 obj.SetActive(true);
             }
             data.count -= spawnCount;
@@ -155,6 +150,10 @@ public class ItemCreater : MonoBehaviour
             case "duck":
                 float value1 = UnityEngine.Random.Range(0, 6);
                 createPos = new Vector3(CreatePos2.position.x+5, CreatePos2.position.y+ value1, valueZ);
+                break;
+            case "psyDuck":
+                float value3 = UnityEngine.Random.Range(0, 6);
+                createPos = new Vector3(CreatePos2.position.x + 5, CreatePos2.position.y + value3, valueZ);
                 break;
             case "mangseng":
                 mangleft = UnityEngine.Random.Range(0, 2) == 0;
@@ -196,6 +195,31 @@ public class ItemCreater : MonoBehaviour
             case "Electricity":
                 createPos = vector;
                 break;
+            case "bigMG":
+                createPos = new Vector3(vector.x , vector.y + 10, valueZ);
+                break;
+            case "bigGear":
+                int xValue = PlayerController.Instance._isFacingRight ? 10 : -10;
+               createPos = new Vector3(vector.x- xValue, 0, valueZ);
+                break;
+            case "trunck":
+                createPos = new Vector3(vector.x + 30, vector.y, valueZ);
+                break;
+            case "Flog":
+                 createPos = new Vector3(Camera.main.transform.position.x, Camera.main.transform.position.y, 0);
+                break;
+            case "huoquan":
+                value = UnityEngine.Random.Range(0, 7);
+                createPos = new Vector3(vector.x + 12, vector.y+ value, valueZ);
+                break;
+            case "Rattan":
+                int xxx = UnityEngine.Random.Range(-7, 7);
+                int yyy = UnityEngine.Random.Range(7, 11);
+                createPos = new Vector3(Camera.main.transform.position.x + xxx, yyy, valueZ);
+                break;
+            case "zhiqian":
+                createPos = new Vector3(Camera.main.transform.position.x , Camera.main.transform.position.y, valueZ);
+                break;
         }
         return createPos;
     }
@@ -211,6 +235,12 @@ public class ItemCreater : MonoBehaviour
                 Sound.PlaySound("Mod/Duck");
                 Duck duck1 = obj.GetComponent<Duck>();
                 duck1.StartMove();
+                allReadyCreateDuck--;
+                break;
+            case "psyDuck":
+                Sound.PlaySound("Mod/Duck");
+                PsyDuck duck2 = obj.GetComponent<PsyDuck>();
+                duck2.StartMove();
                 allReadyCreateDuck--;
                 break;
             case "mangseng":
@@ -260,8 +290,32 @@ public class ItemCreater : MonoBehaviour
                 Electricity electricity = obj.GetComponent<Electricity>();
                 electricity.OnStartLazzer();
                 break;
+            case "bigMG":
+                BigMogu BigMoguu = obj.GetComponent<BigMogu>();
+                BigMoguu.OnBeginMove();
+                BigMoguu.transform.SetParent(moguParent);
+                break;
+            case "DaoQI":
+                DaoFire daoFire = obj.GetComponent<DaoFire>();
+                daoFire.OnCreate();
+                break;
+            case "bigGear":
+                DaoFire bbigGear = obj.GetComponent<DaoFire>();
+                bbigGear.OnCreate();
+                break;
+            case "trunck":
+                ModVideoPlayerCreater.Instance.OnPlayTrunck();
+                Trunck tTrunck = obj.GetComponent<Trunck>();
+                tTrunck.StartMove();
+                break;
+            case "Flog":
+                PlayerController.Instance.isHit = true;
+                lockPlayer = true;
+                UIFlog.Instance.OnStartMove();
+                break;
         }
     }
+
     /// <summary> 实例化单个怪物 </summary>
     private GameObject InstantiateSingleMonster(GameObject prefab, Vector3 trans)
     {
@@ -281,6 +335,12 @@ public class ItemCreater : MonoBehaviour
         //UIDuck.Instance.OnSetCenter(true);
         allReadyCreateDuck += count; 
         CreateItem(duck, count, "duck", 1,0.05f);
+    }
+    public void OnCreatePsyDuck(int count)
+    {
+        //UIDuck.Instance.OnSetCenter(true);
+        allReadyCreateDuck += count;
+        CreateItem(psyDuck, count, "psyDuck", 1, 0.05f);
     }
     public void OnCreateHangSelf()
     {
@@ -329,7 +389,8 @@ public class ItemCreater : MonoBehaviour
     public void OnCreateDownFire(int count) => CreateItem(downFire, count, "DownFire", 1);
     public bool lockPlayer = false;
     public void OnCreateChainPlayer(int count) {
-        PlayerController.Instance.isHit = true;
+        if (PlayerController.Instance != null)
+            PlayerController.Instance.OnChanleControl(true);
         lockPlayer = true;
         UIChain.Instance.OnStartMove();
         Sound.PlaySound("Mod/lock");
@@ -341,6 +402,50 @@ public class ItemCreater : MonoBehaviour
         Sound.PlaySound("Mod/lazzer");
         CreateItem(Electricity, count, "Electricity", 1);
     }
-
+    public GameObject bigMG;
+    public void OnCreateBigMG(int count)
+    {
+         CreateItem(bigMG, count, "bigMG", 1);
+    }
     public bool isHang = false;
+
+    public GameObject DaoQI;
+    public void OnCreateDaoQI(int count)
+    {
+        CreateItem(DaoQI, count, "DaoQI", 1);
+    }
+    public GameObject bigGear;
+    public void OnCreateBigGear(int count)
+    {
+        Sound.PlaySound("Mod/gear");
+        CreateItem(bigGear, count, "bigGear", 1);
+    }
+    public GameObject trunck;
+    public void OnCreateTrunck(int count)
+    {
+        CreateItem(trunck, count, "trunck", 1);
+    }
+    public GameObject Flog;
+    public void OnCreateFlog(int count)
+    {
+        if (PlayerController.Instance != null)
+            PlayerController.Instance.OnChanleControl(true);
+        CreateItem(Flog, count, "Flog", 1);
+    }
+    public GameObject huoQuan;
+    public void OnCreatehuoQuan(int count)
+    {
+        CreateItem(huoQuan, count, "huoquan", 1);
+    }
+    public GameObject Rattan;
+    public void OnCreateRattan(int count)
+    {
+        Sound.PlaySound("smb_1-up");
+        CreateItem(Rattan, count, "Rattan", 1);
+    }
+    public GameObject zhiqian;
+    public void OnCreateZhiQian(int count)
+    {
+        CreateItem(zhiqian, count, "zhiqian", 1);
+    }
 }

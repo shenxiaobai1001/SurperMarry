@@ -54,6 +54,7 @@ public class BreakBrickController : MonoBehaviour
         breakCount = 0;
         for (int i = 0; i < canBreakBrick.Count; i++)
         {
+            canBreakBrick[i].gameObject.SetActive(true);
             canBreakBrick[i].ResetBrick();
         }
         collider2D.enabled = true;
@@ -61,7 +62,7 @@ public class BreakBrickController : MonoBehaviour
     }
     void OnRestBreak(object msg)
     {
-        if (!isBreak) return;
+       // if (!isBreak) return;
         OnRest();
     }
     private void OnDestroy()

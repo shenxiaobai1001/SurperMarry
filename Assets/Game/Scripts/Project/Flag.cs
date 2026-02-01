@@ -5,10 +5,13 @@ using UnityEngine;
 public class Flag : MonoBehaviour
 {
     public GameObject pole;
+    public GameObject endPos;
+    bool isToEnd = false;
     // Start is called before the first frame update
     void Start()
     {
         EventManager.Instance.AddListener(Events.ToGetPoleFlag, OnGetPole);
+        if(endPos) endPos.SetActive(false);
     }
     private void OnDestroy()
     {
@@ -21,9 +24,14 @@ public class Flag : MonoBehaviour
 
     private void Update()
     {
-        if (transform.position.y >= 1.5f&& down)
+        if (transform.position.y >= 1&& down)
         {
             transform.Translate(5 * Time.deltaTime * Vector3.down);
+        }
+        else if ( transform.position.y <= 1 &&!isToEnd)
+        {
+            isToEnd = true;
+            if (endPos) endPos.SetActive(true);
         }
     }
 
@@ -31,7 +39,7 @@ public class Flag : MonoBehaviour
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision == null) return;
-        if (collision.gameObject.CompareTag("Player"))
+        if (collision.gameObject.CompareTag("ModCollider"))
         {
             EventManager.Instance.SendMessage(Events.ToGetPoleFlagPlayer, pole);
             down = true;
