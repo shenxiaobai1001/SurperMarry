@@ -42,10 +42,6 @@ namespace RenderHeads.Media.AVProVideo.Editor
 		private readonly static FieldDescription _optionUseTextTrackSupport = new FieldDescription(".useTextTrackSupport", new GUIContent("Use Text Tracks", "Disable if no text tracks are required"));
 		private readonly static FieldDescription _optionUseAudioDelay = new FieldDescription(".useAudioDelay", new GUIContent("Use Audio Delay", "Allows audio to be offset"));
 		private readonly static FieldDescription _optionUseFacebookAudio360Support = new FieldDescription(".useFacebookAudio360Support", new GUIContent("Use Facebook Audio 360", "Disable if no Facebook Audio 360 support is required for"));
-#if AVPROVIDEO_SUPPORT_BUFFERED_DISPLAY
-		private readonly static FieldDescription _optionPauseOnPrerollComplete = new FieldDescription(".pauseOnPrerollComplete", new GUIContent("Pause On Preroll Complete", "Internally pause once preroll is completed.  This is useful for syncing video playback to make sure all players are prerolled"));
-		private readonly static FieldDescription _optionBufferedFrameSelection = new FieldDescription(".bufferedFrameSelection", new GUIContent("Frame Selection", "Mode for selecting the next frame to display from the buffer fo frames"));
-#endif
 		private readonly static FieldDescription _optionUseHapNotchLC = new FieldDescription(".useHapNotchLC", new GUIContent("Use Hap/NotchLC", "Disable if no Hap/NotchLC playback is required"));
 		private readonly static FieldDescription _optionCustomMovParser = new FieldDescription(".useCustomMovParser", new GUIContent("Use Custom MOV Parser", "For playback of Hap and NotchLC media to handle high bit-rates"));
 		private readonly static FieldDescription _optionParallelFrameCount = new FieldDescription(".parallelFrameCount", new GUIContent("Parallel Frame Count", "Number of frames to decode in parallel via multi-threading.  Higher values increase latency but can improve performance for demanding videos."));
@@ -101,18 +97,6 @@ namespace RenderHeads.Media.AVProVideo.Editor
 					DisplayPlatformOption(optionsVarName, _optionLowLatency);
 					DisplayPlatformOption(optionsVarName, _optionUseStereoDetection);
 					DisplayPlatformOption(optionsVarName, _optionUseTextTrackSupport);
-#if AVPROVIDEO_SUPPORT_BUFFERED_DISPLAY
-					if (_showUltraOptions)
-					{
-						SerializedProperty propBufferedFrameSelection = DisplayPlatformOption(optionsVarName, _optionBufferedFrameSelection);
-						if (propBufferedFrameSelection.enumValueIndex != (int)BufferedFrameSelectionMode.None)
-						{
-							EditorGUI.indentLevel++;
-							DisplayPlatformOption(optionsVarName, _optionPauseOnPrerollComplete);
-							EditorGUI.indentLevel--;
-						}
-					}
-#endif
 					if (_showUltraOptions)
 					{
 						SerializedProperty useHapNotchLC = DisplayPlatformOption(optionsVarName, _optionUseHapNotchLC);

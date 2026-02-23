@@ -210,7 +210,7 @@ public class ItemCreater : MonoBehaviour
                 break;
             case "huoquan":
                 value = UnityEngine.Random.Range(0, 7);
-                createPos = new Vector3(vector.x + 12, vector.y+ value, valueZ);
+                createPos = new Vector3(vector.x + 7, vector.y+ value, valueZ);
                 break;
             case "Rattan":
                 int xxx = UnityEngine.Random.Range(-7, 7);

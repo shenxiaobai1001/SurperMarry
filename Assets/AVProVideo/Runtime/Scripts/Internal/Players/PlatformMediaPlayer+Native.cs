@@ -44,6 +44,7 @@ namespace RenderHeads.Media.AVProVideo
 			{
 				AndroidUseOESFastPath = 1 << 0,
 				LinearColourSpace     = 1 << 1,
+				GenerateMipmaps       = 1 << 2,
 			}
 
 			// Video settings
@@ -175,6 +176,7 @@ namespace RenderHeads.Media.AVProVideo
 				HasAudio                  = 1 << 25,
 				HasText                   = 1 << 26,
 				HasMetadata               = 1 << 27,
+				HasVariants               = 1 << 28,
 
 				Failed                    = 1 << 31
 			}
@@ -231,6 +233,7 @@ namespace RenderHeads.Media.AVProVideo
 				internal int videoTrackCount;
 				internal int audioTrackCount;
 				internal int textTrackCount;
+				internal int variantCount;
 				internal AVPPlayerAssetFlags flags;
 			}
 
@@ -304,6 +307,28 @@ namespace RenderHeads.Media.AVProVideo
 				internal AVPPlayerTrackFlags flags;
 			}
 
+			internal enum AVPPlayerVideoRange : int
+			{
+				SDR,
+				HLG,
+				PQ
+			}
+
+			[StructLayout(LayoutKind.Sequential)]
+			internal struct AVPPlayerVariantInfo
+			{
+				// Video
+				internal int averageDataRate;
+				internal int peakDataRate;
+				internal CodecType videoCodecType;
+				internal float frameRate;
+				internal AVPPlayerSize dimensions;
+				internal AVPPlayerVideoRange videoRange;
+
+				// Audio
+				internal CodecType audioCodecType;
+			}
+
 			[StructLayout(LayoutKind.Sequential)]
 			internal struct AVPPlayerTimeRange
 			{
@@ -323,6 +348,7 @@ namespace RenderHeads.Media.AVProVideo
 				internal int bufferedTimeRangesCount;
 				internal int seekableTimeRangesCount;
 				internal int audioCaptureBufferedSamplesCount;
+				internal int selectedVariant;
 			}
 
 			internal enum AVPPlayerTextureFormat: int
@@ -459,6 +485,12 @@ namespace RenderHeads.Media.AVProVideo
 			[DllImport(PluginName)]
 			internal static extern void AVPPlayerGetTextTrackInfo(IntPtr player, int index, ref AVPPlayerTextTrackInfo info);
 
+			[DllImport( PluginName )]
+			internal static extern void AVPPlayerGetVariantInfo(IntPtr player, int index, ref AVPPlayerVariantInfo info);
+
+			[DllImport( PluginName )]
+			internal static extern void AVPPlayerSelectVariant(IntPtr player, int index);
+
 			[DllImport(PluginName)]
 			internal static extern void AVPPlayerGetBufferedTimeRanges(IntPtr player, AVPPlayerTimeRange[] ranges, int count);
 
@@ -473,7 +505,7 @@ namespace RenderHeads.Media.AVProVideo
 
 			[DllImport(PluginName)]
 			internal static extern void AVPPlayerSetPlayerSettings(IntPtr player, AVPPlayerSettings settings);
-			
+
 			[DllImport(PluginName)]
 			[return: MarshalAs(UnmanagedType.U1)]
 			internal static extern bool AVPPlayerOpenURL(IntPtr player, string url, string headers, AVPPlayerOpenOptions options);

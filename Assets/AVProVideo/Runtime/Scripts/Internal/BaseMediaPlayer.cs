@@ -15,7 +15,7 @@ namespace RenderHeads.Media.AVProVideo
 	/// <summary>
 	/// Base class for all platform specific MediaPlayers
 	/// </summary>
-	public abstract partial class BaseMediaPlayer : IMediaPlayer, IMediaControl, IMediaInfo, IMediaCache, ITextureProducer, IMediaSubtitles, IVideoTracks, IAudioTracks, ITextTracks, IBufferedDisplay, System.IDisposable
+	public abstract partial class BaseMediaPlayer : IMediaPlayer, IMediaControl, IMediaInfo, IMediaCache, ITextureProducer, IMediaSubtitles, IVideoTracks, IAudioTracks, ITextTracks, IVariants, System.IDisposable
 	{
 		public BaseMediaPlayer()
 		{
@@ -630,40 +630,6 @@ namespace RenderHeads.Media.AVProVideo
 				Seek(time);
 			}
 		}
-
-		#region IBufferedDisplay Implementation
-
-		private int _unityFrameCountBufferedDisplayGuard = -1;
-
-		/// <inheritdoc/>
-		public long UpdateBufferedDisplay()
-		{
-			// Guard to make sure we're only updating the buffered frame once per Unity frame
-			if (Time.frameCount == _unityFrameCountBufferedDisplayGuard) return GetTextureTimeStamp();
-
-			_unityFrameCountBufferedDisplayGuard = Time.frameCount;
-
-			return InternalUpdateBufferedDisplay();
-		}
-
-		internal virtual long InternalUpdateBufferedDisplay() { return 0; }
-
-		/// <inheritdoc/>
-		public virtual BufferedFramesState GetBufferedFramesState()
-		{
-			return new BufferedFramesState();
-		}
-
-		/// <inheritdoc/>
-		public virtual void SetSlaves(IBufferedDisplay[] slaves) { }
-
-		/// <inheritdoc/>
-		public virtual void SetBufferedDisplayMode(BufferedFrameSelectionMode mode, IBufferedDisplay master = null) { }
-
-		/// <inheritdoc/>
-		public virtual void SetBufferedDisplayOptions(bool pauseOnPrerollComplete) { }
-
-		#endregion // IBufferedDisplay Implementation
 
 		protected PlaybackQualityStats _playbackQualityStats = new PlaybackQualityStats();
 

@@ -29,53 +29,6 @@ namespace RenderHeads.Media.AVProVideo
 		string GetSubtitleText();
 	}
 
-	public enum BufferedFrameSelectionMode : int
-	{
-		// No buffering, just selects the latest decoded frame
-		None = 0,
-
-		// Selects the newest buffered frame, and displays it until a newer frame is available
-		NewestFrame = 10,
-
-		// Selects the oldest buffered frame, and displays it until a newer frame is available
-		OldestFrame = 11,
-
-		// Selects the next buffered frame, and displays it until the number of buffered frames changes
-		MediaClock = 20,
-
-		// Uses Time.deltaTime to keep a clock which is used to select the buffered frame
-		ElapsedTime = 30,
-
-		// Uses VSync delta time to keep a clock which is used to select the buffered frame
-		// Time.deltaTime is used to calculate the number of vsyncs that have elapsed
-		ElapsedTimeVsynced = 40,
-
-		// Selects the buffered frame corresponding to the external timeStamp (useful for frame-syncing players)
-		FromExternalTime = 50,
-
-		// Selects the closest buffered frame corresponding to the external timeStamp (useful for frame-syncing players)
-		FromExternalTimeClosest = 51,
-	}
-
-	/// <summary>
-	/// Interface for buffering frames for more control over the timing of their display
-	/// </summary>
-	public interface IBufferedDisplay
-	{
-		/// <summary>
-		/// We need to manually call UpdateBufferedDisplay() in the case of master-slave synced playback so that master is updated before slaves
-		/// </summary>
-		long						UpdateBufferedDisplay();
-
-		BufferedFramesState			GetBufferedFramesState();
-
-		void						SetSlaves(IBufferedDisplay[] slaves);
-
-		void						SetBufferedDisplayMode(BufferedFrameSelectionMode mode, IBufferedDisplay master = null);
-
-		void						SetBufferedDisplayOptions(bool pauseOnPrerollComplete);
-	}
-
 	public interface IMediaControl
 	{
 		/// <summary>
@@ -311,13 +264,11 @@ namespace RenderHeads.Media.AVProVideo
 		/// </summary>
 		string GetPlayerDescription();
 
-#if !AVPRO_NEW_GAMMA
 		/// <summary>
 		/// Whether this MediaPlayer instance supports linear color space
 		/// If it doesn't then a correction may have to be made in the shader
 		/// </summary>
 		bool PlayerSupportsLinearColorSpace();
-#endif
 
 		/// <summary>
 		/// Checks if the playback is in a stalled state
@@ -516,17 +467,6 @@ namespace RenderHeads.Media.AVProVideo
 		/// <param name="plane">Index of the plane to get compatible render texture format for, defaults to the first plane</param>
 		/// <returns>A compatible render texture format</returns>
 		RenderTextureFormat GetCompatibleRenderTextureFormat(GetCompatibleRenderTextureFormatOptions options = GetCompatibleRenderTextureFormatOptions.Default, int plane = 0);
-
-#if AVPRO_NEW_GAMMA
-		/// <summary>
-		/// Returns the gamma type of a sampled pixel
-		/// Is the texture returns samples in linear gamma then no conversion is need when using Unity's linear color space mode
-		/// If it doesn't then a correction may have to be made in the shader
-		/// </summary>
-		TextureGamma GetTextureSampleGamma();
-
-		bool TextureRequiresGammaConversion();
-#endif
 	}
 
 	/// <summary>
@@ -560,7 +500,7 @@ namespace RenderHeads.Media.AVProVideo
 	public enum MediaSource
 	{
 		Reference,
-		Path,
+		Path
 	}
 
 	public enum MediaPathType
@@ -609,6 +549,11 @@ namespace RenderHeads.Media.AVProVideo
 			#endif
 
 			return result;
+		}
+
+		public static implicit operator MediaPath(string s)
+		{
+			return new MediaPath(s, MediaPathType.AbsolutePathOrURL);
 		}
 
 		public static bool operator == (MediaPath a, MediaPath b)
@@ -922,16 +867,6 @@ namespace RenderHeads.Media.AVProVideo
 		Unknown = 0,
 		TopDown = 1 << 0,
 		SamplingIsLinear = 1 << 1,
-	}
-
-	[System.Runtime.InteropServices.StructLayout(System.Runtime.InteropServices.LayoutKind.Sequential, Pack = 1)]
-	public struct BufferedFramesState
-	{
-		public System.Int32 freeFrameCount;
-		public System.Int32 bufferedFrameCount;
-		public System.Int64 minTimeStamp;
-		public System.Int64 maxTimeStamp;
-		public System.Int32 prerolledCount;
 	}
 
 	[System.Runtime.InteropServices.StructLayout(System.Runtime.InteropServices.LayoutKind.Sequential, Pack = 1)]

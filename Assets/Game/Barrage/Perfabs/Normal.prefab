@@ -121,7 +121,7 @@ MonoBehaviour:
   m_HandleRect: {fileID: 430280690627944169}
   m_Direction: 2
   m_Value: 0
-  m_Size: 1
+  m_Size: 0.9002736
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -214,7 +214,7 @@ GameObject:
   - component: {fileID: 6829950786812530371}
   - component: {fileID: 2683881012820483378}
   m_Layer: 5
-  m_Name: Button (Legacy)
+  m_Name: BtnTest
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -944,7 +944,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
   m_AnchoredPosition: {x: 945.5, y: -31.9296}
-  m_SizeDelta: {x: 63, y: 0}
+  m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &7187381513475727960
 CanvasRenderer:
@@ -1153,7 +1153,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
   m_AnchoredPosition: {x: 782.5, y: -31.9296}
-  m_SizeDelta: {x: 63, y: 0}
+  m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &3323071407470349883
 CanvasRenderer:
@@ -2154,7 +2154,7 @@ MonoBehaviour:
   m_HandleRect: {fileID: 8389985259516601892}
   m_Direction: 2
   m_Value: 0
-  m_Size: 1
+  m_Size: 0.81333333
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -4238,7 +4238,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
   m_AnchoredPosition: {x: 41.5, y: -31.9296}
-  m_SizeDelta: {x: 63, y: 0}
+  m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &4969037252586875587
 CanvasRenderer:

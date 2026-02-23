@@ -10,7 +10,7 @@
 		</data>
 		<key>ios-arm64/libAVProVideo.a</key>
 		<data>
-		3UQW8s+33dEWUoL/J09hN2dnqlA=
+		EMBKjOXGw7gPVIZ7KAZi4uc6hKc=
 		</data>
 		<key>ios-arm64_x86_64-simulator/PrivacyInfo.xcprivacy</key>
 		<data>
@@ -18,7 +18,7 @@
 		</data>
 		<key>ios-arm64_x86_64-simulator/libAVProVideo.a</key>
 		<data>
-		CJa+G+xLF3df7UQiEgglL6R1BxQ=
+		ue/eaQVuZf+NP/1uYfgAPyuECIk=
 		</data>
 	</dict>
 	<key>files2</key>
@@ -38,11 +38,11 @@
 		<dict>
 			<key>hash</key>
 			<data>
-			3UQW8s+33dEWUoL/J09hN2dnqlA=
+			EMBKjOXGw7gPVIZ7KAZi4uc6hKc=
 			</data>
 			<key>hash2</key>
 			<data>
-			bOItK7vy+81P6PxrsGtpocNqfAnxfF30b++2HyRKHiE=
+			LEBXdAIl7du6gNeiFLbK8e2olZz7YOyShLqhi3GkDmg=
 			</data>
 		</dict>
 		<key>ios-arm64_x86_64-simulator/PrivacyInfo.xcprivacy</key>
@@ -60,11 +60,11 @@
 		<dict>
 			<key>hash</key>
 			<data>
-			CJa+G+xLF3df7UQiEgglL6R1BxQ=
+			ue/eaQVuZf+NP/1uYfgAPyuECIk=
 			</data>
 			<key>hash2</key>
 			<data>
-			jSv2IRTbHBvKEpwBOdSCayLfAmNbCz2O8zKvc1kbHQg=
+			SRL6pnlkwYZZEIq+lGZTP1d/DdCok35p0F2Im+Bki4s=
 			</data>
 		</dict>
 	</dict>

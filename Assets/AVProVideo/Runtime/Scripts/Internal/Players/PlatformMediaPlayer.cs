@@ -2,7 +2,7 @@
 // Copyright 2015-2024 RenderHeads Ltd.  All rights reserved.
 //-----------------------------------------------------------------------------
 
-#if UNITY_2017_2_OR_NEWER && ( UNITY_EDITOR_OSX || ( !UNITY_EDITOR && ( UNITY_STANDALONE_OSX || UNITY_IOS || UNITY_TVOS || UNITY_VISIONOS || UNITY_ANDROID ) ) )
+#if UNITY_2017_2_OR_NEWER && (UNITY_EDITOR_OSX || UNITY_STANDALONE_OSX || (!UNITY_EDITOR && (UNITY_IOS || UNITY_TVOS || UNITY_VISIONOS || UNITY_ANDROID)))
 
 using System;
 using System.Runtime.InteropServices;
@@ -102,10 +102,25 @@ namespace RenderHeads.Media.AVProVideo
 			Debug.Log($"playerID: {playerID:X8}");
 
 			long flags = 0;
-			if ((_options as MediaPlayer.OptionsAndroid).textureFormat == MediaPlayer.PlatformOptions.TextureFormat.YCbCr420_OES)
-				flags |= (long)Native.AVPPlayerRenderEventPlayerSetupFlags.AndroidUseOESFastPath;
+			MediaPlayer.OptionsAndroid optionsAndroid = _options as MediaPlayer.OptionsAndroid;
+			if (optionsAndroid != null)
+			{
+				if (optionsAndroid.textureFormat == MediaPlayer.PlatformOptions.TextureFormat.YCbCr420_OES)
+				{
+					flags |= (long)Native.AVPPlayerRenderEventPlayerSetupFlags.AndroidUseOESFastPath;
+				}
+
+				if (optionsAndroid.generateMipmaps)
+				{
+					flags |= (long)Native.AVPPlayerRenderEventPlayerSetupFlags.GenerateMipmaps;
+				}
+			}
+
 			if (QualitySettings.activeColorSpace == ColorSpace.Linear)
+			{
 				flags |= (long)Native.AVPPlayerRenderEventPlayerSetupFlags.LinearColourSpace;
+			}
+
 			Debug.Log($"flags: {flags:X8}");
 
 			long param = (playerID & Native.kAVPPlayerRenderEventDataPlayerIDMask) << Native.kAVPPlayerRenderEventDataPlayerIDShift;
@@ -298,6 +313,7 @@ namespace RenderHeads.Media.AVProVideo
 		private Native.AVPPlayerVideoTrackInfo[] _videoTrackInfo = new Native.AVPPlayerVideoTrackInfo[0];
 		private Native.AVPPlayerAudioTrackInfo[] _audioTrackInfo = new Native.AVPPlayerAudioTrackInfo[0];
 		private Native.AVPPlayerTextTrackInfo[] _textTrackInfo = new Native.AVPPlayerTextTrackInfo[0];
+		private Native.AVPPlayerVariantInfo[] _variantInfo = new Native.AVPPlayerVariantInfo[0];
 		private Native.AVPPlayerTexture _playerTexture;
 		private Native.AVPPlayerText _playerText;
 		private Texture2D[] _texturePlanes = new Texture2D[MaxTexturePlanes];
@@ -362,6 +378,18 @@ namespace RenderHeads.Media.AVProVideo
 				}
 
 				/*BaseMediaPlayer.*/UpdateTracks();
+
+				_variantInfo = new Native.AVPPlayerVariantInfo[_assetInfo.variantCount];
+				if (_state.status.HasVariants())
+				{
+					for (int i = 0; i < _assetInfo.variantCount; ++i)
+					{
+						_variantInfo[i] = new Native.AVPPlayerVariantInfo();
+						Native.AVPPlayerGetVariantInfo(_player, i, ref _variantInfo[i]);
+					}
+				}
+
+				/*BaseMediaPlayer.*/UpdateVariants();
 			}
 
 			if (_state.status.HasUpdatedBufferedTimeRanges())
@@ -466,15 +494,18 @@ namespace RenderHeads.Media.AVProVideo
 							_texturePlanes[i] = null;
 						}
 
+						bool isMipmapped = _playerTexture.flags.IsMipmapped();
+						bool isLinear = _playerTexture.flags.IsLinear();
+
 						_texturePlanes[i] = Texture2D.CreateExternalTexture(
 							_playerTexture.planes[i].width,
 							_playerTexture.planes[i].height,
 							textureFormat,
-							_playerTexture.flags.IsMipmapped(),
-							_playerTexture.flags.IsLinear(),
+							isMipmapped,
+							isLinear,
 							_playerTexture.planes[i].plane
 						);
-						
+
 						base.ApplyTextureProperties(_texturePlanes[i]);
 					}
 					else
@@ -1026,7 +1057,45 @@ namespace RenderHeads.Media.AVProVideo
 
 		public override bool PlayerSupportsLinearColorSpace()
 		{
-			return _playerTexture.flags.IsLinear();
+#if true
+#if !UNITY_EDITOR && UNITY_ANDROID
+	#if !UNITY_2023_1_OR_NEWER
+			// With the Vulkan renderer, Unity versions prior to Unity 6 ignored the isLinear flag passed to
+			// CreateExternalTexture and as a result create an non sRGB VkImageView for the texture. To work
+			// around this we return false here. This configures our shaders to handle the gamma correction
+			// internally.
+			if (SystemInfo.graphicsDeviceType == GraphicsDeviceType.Vulkan)
+			{
+				return false;
+			}
+	#endif
+#endif
+			bool isLinear = (_playerTexture.flags & Native.AVPPlayerTextureFlags.Linear) == Native.AVPPlayerTextureFlags.Linear;
+			return !isLinear;
+#else
+			#if UNITY_EDITOR_OSX || UNITY_STANDALONE_OSX || (!UNITY_EDITOR && (UNITY_IOS || UNITY_TVOS || UNITY_VISIONOS))
+				return true;
+			#elif !UNITY_EDITOR && UNITY_ANDROID
+				if (!IsUsingOESFastpath())
+				{
+					#if UNITY_6000_0_OR_NEWER
+						return true;
+					#else
+						// With the Vulkan renderer, Unity versions prior to Unity6 ignore the isLinear flag passed to
+						// CreateExternalTexture and as a result create an non sRGB VkImageView for the texture. To work
+						// around this we return false here. This configures our shaders to handle the gamma correction
+						// internally.
+						return SystemInfo.graphicsDeviceType != GraphicsDeviceType.Vulkan;
+					#endif
+				}
+				else
+				{
+					return false;
+				}
+			#else
+				return false;
+			#endif
+#endif
 		}
 
 		public override bool IsPlaybackStalled()
@@ -1368,6 +1437,17 @@ namespace RenderHeads.Media.AVProVideo
 			}
 		}
 
+		public override void SelectVariant(Variant variant)
+		{
+			Native.AVPPlayerSelectVariant(_player, variant.Id);
+		}
+
+		public override Variant GetSelectedVariant()
+		{
+			Variant variant = _variants.Find( element => element.Id == _state.selectedVariant ); 
+			return ( variant != null ) ? variant : Variant.Auto;
+		}
+
 		internal override TrackBase InternalGetTrackInfo(TrackType type, int index, ref bool isActiveTrack)
 		{
 			TrackBase track = null;
@@ -1417,6 +1497,33 @@ namespace RenderHeads.Media.AVProVideo
 				return Marshal.PtrToStringUni(_playerText.buffer, _playerText.length);
 			else
 				return null;
+		}
+
+		internal override int InternalGetVariantCount()
+		{
+			// Debug.Log($"InternalGetVariantCount -> {_assetInfo.variantCount}");
+			return _assetInfo.variantCount;
+		}
+
+		internal override Variant InternalGetVariantAtIndex(int index)
+		{
+			if (index >= 0 && index < _variantInfo.Length)
+			{
+				int width = (int)_variantInfo[index].dimensions.width;
+				int height = (int)_variantInfo[index].dimensions.height;
+				int peakDataRate = _variantInfo[index].peakDataRate;
+				int averageDataRate = _variantInfo[index].averageDataRate;
+				CodecType videoCodecType = _variantInfo[index].videoCodecType;
+				float frameRate = _variantInfo[index].frameRate;
+				VideoRange videoRange = (VideoRange)_variantInfo[index].videoRange;
+				CodecType audioCodecType = _variantInfo[index].audioCodecType;
+				// Debug.Log($"InternalGetVariantAtIndex({index}) - width: {width}, height: {height}, peakDataRate: {peakDataRate}, averageDateRate: {averageDataRate}, frameRate: {frameRate}, videoRange: {videoRange}, audioCodecType: {audioCodecType}");
+				return new Variant(index, width, height, peakDataRate, averageDataRate, videoCodecType, frameRate, videoRange, audioCodecType);
+			}
+			else
+			{
+				return null;
+			}
 		}
 	}
 

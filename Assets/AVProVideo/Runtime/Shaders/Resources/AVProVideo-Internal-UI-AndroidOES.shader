@@ -2,7 +2,7 @@
 {
 	Properties
 	{
-		[PerRendererData] _MainTex("Sprite Texture", 2D) = "balck" { }
+		[PerRendererData] _MainTex("Sprite Texture", 2D) = "black" { }
 		[PerRendererData] _ChromaTex("Sprite Texture", 2D) = "gray" { }
 		_Color("Tint", Color) = (1,1,1,1)
 

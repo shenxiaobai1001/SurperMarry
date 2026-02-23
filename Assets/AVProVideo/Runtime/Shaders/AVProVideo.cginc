@@ -135,22 +135,20 @@ FLOAT4 GetStereoScaleOffset(bool isLeftEye, bool isYFlipped)
 #endif
 
 #if defined(STEREO_DEBUG)
-INLINE FLOAT4 GetStereoDebugTint(bool isLeftEye)
+INLINE HALF4 GetStereoDebugTint(bool isLeftEye)
 {
-	FLOAT4 tint = FLOAT4(1.0, 1.0, 1.0, 1.0);
-
 	#if defined(STEREO_TOP_BOTTOM) || defined(STEREO_LEFT_RIGHT) || defined(STEREO_CUSTOM_UV) || defined(STEREO_TWO_TEXTURES)
 		if (isLeftEye)
 		{
-			tint = FLOAT4(0.0, 1.0, 0.0, 1.0);;
+			return HALF4(0.0, 1.0, 0.0, 1.0);	// Left
 		}
 		else
 		{
-			tint = FLOAT4(1.0, 0.0, 0.0, 1.0);
+			return HALF4(1.0, 0.0, 0.0, 1.0);	// Right
 		}
+	#else
+		return HALF4(1.0, 1.0, 1.0, 1.0);		// White
 	#endif
-
-	return tint;
 }
 #endif
 
@@ -173,51 +171,42 @@ FLOAT2 ScaleZoomToFit(float targetWidth, float targetHeight, float sourceWidth, 
 
 FLOAT4 OffsetAlphaPackingUV(FLOAT2 texelSize, FLOAT2 uv, bool flipVertical)
 {
+	if (flipVertical)
+	{
+		uv.y = 1.0 - uv.y;
+	}
+	
 	FLOAT4 result = uv.xyxy;
 
-	// We don't want bilinear interpolation to cause bleeding
-	// when reading the pixels at the edge of the packed areas.
-	// So we shift the UV's by a fraction of a pixel so the edges don't get sampled.
+	// We don't want bilinear interpolation to cause bleeding when reading the pixels at the edge of the
+	// packed areas, so we shift the UV's by a fraction of a pixel so the edges don't get sampled.
 
-#if defined(ALPHAPACK_TOP_BOTTOM)
-	float offset = texelSize.y * 1.5;
-	result.y = LERP(0.0 + offset, 0.5 - offset, uv.y);
-	result.w = result.y + 0.5;
+	#if defined(ALPHAPACK_TOP_BOTTOM)
 
-	if (flipVertical)
-	{
-		// Flip vertically (and offset to put back in 0..1 range)
-		result.yw = 1.0 - result.yw;
-		result.yw = result.wy;
-	}
-	else
-	{
-#if !defined(UNITY_UV_STARTS_AT_TOP)
-		// For opengl we flip
-		result.yw = result.wy;
-#endif
-	}
+		float offset = texelSize.y * 1.5;
+		float y = LERP(offset, 0.5 - offset, uv.y);
 
-#elif defined(ALPHAPACK_LEFT_RIGHT)
-	float offset = texelSize.x * 1.5;
-	result.x = LERP(0.0 + offset, 0.5 - offset, uv.x);
-	result.z = result.x + 0.5;
+		#if defined(UNITY_UV_STARTS_AT_TOP)
+			result.y = 0.5 + y;
+			result.w = y;
+		#else
+			result.y = y;
+			result.w = 0.5 + y;
+		#endif
 
-	if (flipVertical)
-	{
-		// Flip vertically (and offset to put back in 0..1 range)
-		result.yw = 1.0 - result.yw;
-	}
+		if (flipVertical)
+		{
+			result.yw = result.wy;
+		}
+	
+	#elif defined(ALPHAPACK_LEFT_RIGHT)
 
-#else
+		float offset = texelSize.x * 1.5;
+		float x = LERP(offset, 0.5 - offset, uv.x);
+		result.x = x;
+		result.z = 0.5 + x;
 
-	if (flipVertical)
-	{
-		// Flip vertically (and offset to put back in 0..1 range)
-		result.yw = 1.0 - result.yw;
-	}
-
-#endif
+	#endif
 
 	return result;
 }

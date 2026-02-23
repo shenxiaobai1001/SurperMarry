@@ -61,10 +61,6 @@ namespace RenderHeads.Media.AVProVideo.Editor
 					{
 						mediaPlayer.Rewind(true);
 					}
-					if (GUILayout.Button("Preroll"))
-					{
-						mediaPlayer.RewindPrerollPause();
-					}
 					if (GUILayout.Button("End"))
 					{
 						mediaPlayer.Control.Seek(mediaPlayer.Info.GetDuration());

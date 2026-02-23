@@ -221,6 +221,7 @@ namespace RenderHeads.Media.AVProVideo.Editor
 				string guavaFixLine = "dependencies.constraints { implementation( \"com.google.guava:guava\" ) { attributes { attribute( Attribute.of( \"org.gradle.jvm.environment\", String ), \"standard-jvm\" ) } } }";
 				//
 				bool bInDependenciesBlock = false;
+				bool bWatchForDependenciesBlock = true;
 				foreach( string line in allLines )
 				{
 					if( line.Length > 0 )
@@ -259,15 +260,20 @@ namespace RenderHeads.Media.AVProVideo.Editor
 								{
 									// Add guava fix line
 									stringBuilder.AppendLine( "\n" + guavaFixLine + "\n" );
+
+									bWatchForDependenciesBlock = false;
 								}
 							}
 						}
 						else
 						{
-							// Watch for 'dependencies {' block
-							if( line.Contains( "dependencies {" ) )
+							if( bWatchForDependenciesBlock )
 							{
-								bInDependenciesBlock = true;
+								// Watch for 'dependencies {' block
+								if( line.StartsWith( "dependencies {" ) )
+								{
+									bInDependenciesBlock = true;
+								}
 							}
 
 							if( !line.Contains( guavaFixLine ) )

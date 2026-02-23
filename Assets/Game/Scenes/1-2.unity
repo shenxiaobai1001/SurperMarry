@@ -60973,7 +60973,7 @@ GameObject:
   - component: {fileID: 1617074348}
   m_Layer: 0
   m_Name: InteractableObjects
-  m_TagString: Untagged
+  m_TagString: Ground
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -82308,8 +82308,8 @@ Transform:
 SceneRoots:
   m_ObjectHideFlags: 0
   m_Roots:
-  - {fileID: 1617074348}
   - {fileID: 407963450}
+  - {fileID: 1617074348}
   - {fileID: 1330072927}
   - {fileID: 1206660287}
   - {fileID: 1809169898}

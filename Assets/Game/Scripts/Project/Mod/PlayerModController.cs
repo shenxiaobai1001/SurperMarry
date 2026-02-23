@@ -703,10 +703,11 @@ public class PlayerModController : MonoBehaviour
 
     public void OnChangScale(float value)
     {
-        if (Config.playerScale>0)
-        {
+        if (Config.playerScale<0.1f)
+            Config.playerScale = 0.1f;
+        else
             Config.playerScale += value;
-        }
+        PFunc.Log("OnChangScale", value, Config.playerScale);
         transform.localScale = new Vector3(Config.playerScale, Config.playerScale,1);
     }
 

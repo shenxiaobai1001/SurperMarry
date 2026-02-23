@@ -119,6 +119,11 @@ namespace RenderHeads.Media.AVProVideo
 			return (status & PlatformMediaPlayer.Native.AVPPlayerStatus.Failed) == PlatformMediaPlayer.Native.AVPPlayerStatus.Failed;
 		}
 
+		internal static bool HasVariants(this PlatformMediaPlayer.Native.AVPPlayerStatus status)
+		{
+			return (status & PlatformMediaPlayer.Native.AVPPlayerStatus.HasVariants) == PlatformMediaPlayer.Native.AVPPlayerStatus.HasVariants;
+		}
+
 		// AVPPlayerFlags
 
 		internal static bool IsLooping(this PlatformMediaPlayer.Native.AVPPlayerFlags flags)

@@ -23,6 +23,7 @@ public class ModController : MonoBehaviour
     public Transform MonsterParent;
     public Transform itemParent;
     public Transform createParent;
+    public Transform videoParent;
     public GameStatusController statusController;
     public UISystem uISystem;
     public UIPrankContro uPrankContro;
@@ -77,6 +78,18 @@ public class ModController : MonoBehaviour
             for (int i = 0; i < createParent.childCount; i++)
             {
                 GameObject GO = createParent.GetChild(i).gameObject;
+                if (GO.activeSelf)
+                {
+                    SimplePool.Despawn(GO);
+                }
+                yield return null;
+            }
+        }
+        if (videoParent.childCount > 0)
+        {
+            for (int i = 0; i < videoParent.childCount; i++)
+            {
+                GameObject GO = videoParent.GetChild(i).gameObject;
                 if (GO.activeSelf)
                 {
                     SimplePool.Despawn(GO);

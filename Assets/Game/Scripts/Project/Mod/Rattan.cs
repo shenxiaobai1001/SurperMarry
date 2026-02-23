@@ -45,7 +45,7 @@ public class Rattan : MonoBehaviour
 
     private RattanState currentState = RattanState.Idle;
 
-    private void Start()
+    private void OnEnable()
     {
         if (rattanSprite == null)
         {
@@ -68,6 +68,8 @@ public class Rattan : MonoBehaviour
         {
             modAnimations[i].gameObject.SetActive(false);
         }
+        currentState = RattanState.Idle;
+        moveObj.SetActive(true);
     }
 
     private void Update()
@@ -192,14 +194,6 @@ public class Rattan : MonoBehaviour
             playerLayer
         );
 
-        //// 发射右侧射线
-        //RaycastHit2D rightHit = Physics2D.Raycast(
-        //    rattanRightRayStart,
-        //    Vector2.down,
-        //    rayLength,
-        //    playerLayer
-        //);
-
         // 绘制调试射线
         Debug.DrawRay(transform.position, Vector2.down * rayLength, Color.red);
         //Debug.DrawRay(rattanRightRayStart, Vector2.down * rayLength, Color.red);
@@ -207,7 +201,7 @@ public class Rattan : MonoBehaviour
         // 检查是否检测到玩家
         RaycastHit2D hit = leftHit  ;
 
-        if (hit.collider != null && hit.collider.gameObject.tag.Equals(playerTag))
+        if (hit.collider != null && hit.collider.gameObject.tag.Contains(playerTag))
         {
             player = hit.collider.gameObject;
             currentState = RattanState.Detected;
@@ -229,6 +223,7 @@ public class Rattan : MonoBehaviour
         ItemCreater.Instance.lockPlayer = false;
         PlayerModController.Instance.OnSetPlayerIns(true);
         PlayerModController.Instance.OnChangeState(true);
+        PlayerModController.Instance.OnSetModAniIns(true);
         PlayerModController.Instance.OnEndHitPos();
         PlayerModController.Instance.OnChanleModAni();
         if (PlayerController.Instance != null)

@@ -99,7 +99,6 @@ namespace RenderHeads.Media.AVProVideo.Editor
 			_sectionDevModeTexture.Save();
 			_sectionDevModePlaybackQuality.Save();
 			_sectionDevModeHapNotchLCDecoder.Save();
-			_sectionDevModeBufferedFrames.Save();
 
 			EditorPrefs.SetInt(SettingsPrefix + "PlatformIndex", _platformIndex);
 			EditorPrefs.SetBool(SettingsPrefix + "ShowAlphaChannel", _showAlpha);
@@ -185,7 +184,6 @@ namespace RenderHeads.Media.AVProVideo.Editor
 			_sectionDevModeTexture = new AnimCollapseSection("Texture", false, false, OnInspectorGUI_DevMode_Texture, this, Color.white);
 			_sectionDevModePlaybackQuality = new AnimCollapseSection("Presentation Quality", false, false, OnInspectorGUI_DevMode_PresentationQuality, this, Color.white);
 			_sectionDevModeHapNotchLCDecoder = new AnimCollapseSection("Hap/NotchLC Decoder", false, false, OnInspectorGUI_DevMode_HapNotchLCDecoder, this, Color.white);
-			_sectionDevModeBufferedFrames = new AnimCollapseSection("Buffers", false, false, OnInspectorGUI_DevMode_BufferedFrames, this, Color.white);
 		}
 
 		private void ResolveProperties()

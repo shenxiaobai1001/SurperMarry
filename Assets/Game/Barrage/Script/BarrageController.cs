@@ -379,12 +379,12 @@ public class BarrageController : MonoBehaviour
             case "变大":
                 if (Config.isLoading) return;
                 ModVideoPlayerCreater.Instance.OnPlayBig();
-                PlayerModController.Instance.OnChangScale(0.1f);
+                PlayerModController.Instance.OnChangScale(0.01f);
                 break;
             case "变小":
                 if (Config.isLoading) return;
                 ModVideoPlayerCreater.Instance.OnPlaySmall();
-                PlayerModController.Instance.OnChangScale(-0.1f);
+                PlayerModController.Instance.OnChangScale(-0.01f);
                 break;
             case "关灯":
                 if (Config.isLoading) return;

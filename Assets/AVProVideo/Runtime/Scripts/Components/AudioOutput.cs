@@ -85,6 +85,12 @@ namespace RenderHeads.Media.AVProVideo
 		{
 			return _audioSource;
 		}
+		public void SetAudioSource(AudioSource source)
+		{
+			_audioSource = source;
+			if (_mediaPlayer)
+				_mediaPlayer.AudioSource = source;
+		}
 
 		public void ChangeMediaPlayer(MediaPlayer newPlayer)
 		{

@@ -1,7 +1,7 @@
 {
     "NormalConfigs": [
         {
-            "CallName": "动感DJ",
+            "CallName": "抓乌龟",
             "Type": "礼物",
             "Message": "",
             "Tip": "",
@@ -9,15 +9,7 @@
             "Delay": 0.0
         },
         {
-            "CallName": "哭坟",
-            "Type": "礼物",
-            "Message": "",
-            "Tip": "",
-            "Count": 1,
-            "Delay": 0.0
-        },
-        {
-            "CallName": "拿枪形态",
+            "CallName": "凿头",
             "Type": "礼物",
             "Message": "",
             "Tip": "",
@@ -57,7 +49,7 @@
             "Delay": 0.0
         },
         {
-            "CallName": "铁链",
+            "CallName": "抓可达鸭",
             "Type": "礼物",
             "Message": "",
             "Tip": "",
@@ -65,7 +57,7 @@
             "Delay": 0.0
         },
         {
-            "CallName": "陷阱数量-1",
+            "CallName": "一库",
             "Type": "礼物",
             "Message": "",
             "Tip": "",
@@ -77,11 +69,19 @@
             "Type": "礼物",
             "Message": "",
             "Tip": "",
-            "Count": 1,
-            "Delay": 0.0
+            "Count": 100,
+            "Delay": 0.10000000149011612
         },
         {
-            "CallName": "全部陷阱关闭",
+            "CallName": "变小",
+            "Type": "礼物",
+            "Message": "",
+            "Tip": "",
+            "Count": 100,
+            "Delay": 0.10000000149011612
+        },
+        {
+            "CallName": "火圈",
             "Type": "礼物",
             "Message": "",
             "Tip": "",

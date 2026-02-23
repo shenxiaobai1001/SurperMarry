@@ -28,6 +28,8 @@ namespace RenderHeads.Media.AVProVideo.Editor
 		};
 
 		private readonly static FieldDescription _optionFileOffset = new FieldDescription(".fileOffset", GUIContent.none);
+		private readonly static FieldDescription _optionGenerateMipmaps = new FieldDescription("._generateMipmaps", new GUIContent("Generate Mipmaps", "Generate a complete mipmap chain for the output texture. Not supported when the texture format is set to OES"));
+
 //		private readonly static FieldDescription _optionBlitTextureFiltering = new FieldDescription(".blitTextureFiltering", new GUIContent("Blit Texture Filtering", "The texture filtering used for the final internal blit."));
 //		private readonly static FieldDescription _optionShowPosterFrames = new FieldDescription(".showPosterFrame", new GUIContent("Show Poster Frame", "Allows a paused loaded video to display the initial frame. This uses up decoder resources."));
 		private readonly static FieldDescription _optionPreferSoftwareDecoder = new FieldDescription(".preferSoftwareDecoder", GUIContent.none);
@@ -64,24 +66,21 @@ namespace RenderHeads.Media.AVProVideo.Editor
 					propFileOffset.intValue = Mathf.Max(0, propFileOffset.intValue);
 				}
 
+				SerializedProperty propTextureFormat = DisplayPlatformOption(optionsVarName, _optionTextureFormat);
+				bool isOES = (MediaPlayer.PlatformOptions.TextureFormat)( propTextureFormat.enumValueIndex ) == MediaPlayer.PlatformOptions.TextureFormat.YCbCr420_OES;
+				if( isOES )
 				{
-					SerializedProperty propTextureFormat = DisplayPlatformOption(optionsVarName, _optionTextureFormat);
-					if( (MediaPlayer.PlatformOptions.TextureFormat)( propTextureFormat.enumValueIndex ) == MediaPlayer.PlatformOptions.TextureFormat.YCbCr420_OES )
+					EditorHelper.IMGUI.NoticeBox(MessageType.Info, "The OES texture format requires special shaders.  Make sure to assign an AVPro Video OES shader to the meshes or materials that need to display video.");
+
+					EditorHelper.IMGUI.NoticeBox(MessageType.Warning, "OES is not supported in the trial version.  If your Android plugin is not trial then you can ignore this warning.");
+				}
+
+				// Generate mipmaps
+				{
+					SerializedProperty propGenerateMipmaps = DisplayPlatformOption(optionsVarName, _optionGenerateMipmaps);
+					if (isOES)
 					{
-						EditorHelper.IMGUI.NoticeBox(MessageType.Info, "OES can require special shaders.  Make sure you assign an AVPro Video OES shader to your meshes/materials that need to display video.");
-
-						// PlayerSettings.virtualRealitySupported is deprecated from 2019.3
-#if !UNITY_2019_3_OR_NEWER
-						if (PlayerSettings.virtualRealitySupported)
-#endif
-						{
-							if (PlayerSettings.stereoRenderingPath != StereoRenderingPath.MultiPass)
-							{
-								EditorHelper.IMGUI.NoticeBox(MessageType.Error, "OES only supports multi-pass stereo rendering path, please change in Player Settings.");
-							}
-						}
-
-						EditorHelper.IMGUI.NoticeBox(MessageType.Warning, "OES is not supported in the trial version.  If your Android plugin is not trial then you can ignore this warning.");
+						EditorHelper.IMGUI.NoticeBox(MessageType.Warning, "Mip chain generation is not supported when texture format is set to OES.");
 					}
 				}
 

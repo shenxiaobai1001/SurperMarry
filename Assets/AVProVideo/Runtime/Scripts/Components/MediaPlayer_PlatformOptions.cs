@@ -90,8 +90,6 @@ namespace RenderHeads.Media.AVProVideo
 			public bool useTextTrackSupport = true;
 			public bool useFacebookAudio360Support = true;
 			public bool useAudioDelay = false;
-			public BufferedFrameSelectionMode bufferedFrameSelection = BufferedFrameSelectionMode.None;
-			public bool pauseOnPrerollComplete = false;
 			public string forceAudioOutputDeviceName = string.Empty;
 			public List<string> preferredFilters = new List<string>();
 			public Windows.AudioOutput _audioMode = Windows.AudioOutput.System;
@@ -125,8 +123,6 @@ namespace RenderHeads.Media.AVProVideo
 				|| !useTextTrackSupport
 				|| !useFacebookAudio360Support
 				|| useAudioDelay
-				|| pauseOnPrerollComplete
-				|| bufferedFrameSelection != BufferedFrameSelectionMode.None
 				|| videoApi != Windows.VideoApi.MediaFoundation
 				|| _audioMode != Windows.AudioOutput.System
 				|| audio360ChannelMode != Audio360ChannelMode.TBE_8_2
@@ -441,6 +437,7 @@ namespace RenderHeads.Media.AVProVideo
 				PreferredMaximumResolution		= 1 << 2,
 				PreferredCustomResolution		= 1 << 3,
 				AudioMode						= 1 << 4,
+				GenerateMipmaps                 = 1 << 5,
 				All = -1
 			}
 
@@ -448,6 +445,24 @@ namespace RenderHeads.Media.AVProVideo
 
 			private readonly TextureFormat DefaultTextureFormat;
 			public TextureFormat textureFormat;
+
+			[SerializeField]
+			private bool _generateMipmaps = false;
+			public bool generateMipmaps
+			{
+				get
+				{
+					return _generateMipmaps;
+				}
+				set
+				{
+					if (value != _generateMipmaps)
+					{
+						_generateMipmaps = value;
+						_changed |= ChangeFlags.GenerateMipmaps;
+					}
+				}
+			}
 
 			private AudioMode _previousAudioMode = AudioMode.SystemDirect;
 			public AudioMode previousAudioMode

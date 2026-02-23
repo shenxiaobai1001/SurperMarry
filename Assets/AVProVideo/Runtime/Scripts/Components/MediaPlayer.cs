@@ -8,7 +8,7 @@
 #define AVPROVIDEO_SUPPORT_LIVEEDITMODE
 //#define AVPROVIDEO_WINDOWS_UNIFIED_DLLS		// DEV FEATURE: are we using new unified (DS + MF + WRT) Windows DLLs?
 
-#if UNITY_EDITOR_OSX || UNITY_STANDALONE_OSX || UNITY_IOS || UNITY_TVOS || UNITY_VISIONOS
+#if UNITY_EDITOR_OSX || UNITY_STANDALONE_OSX || (!UNITY_EDITOR && (UNITY_IOS || UNITY_TVOS || UNITY_VISIONOS))
 	#define UNITY_PLATFORM_SUPPORTS_YPCBCR
 #endif
 
@@ -40,11 +40,26 @@ namespace RenderHeads.Media.AVProVideo
 		[SerializeField] MediaSource _mediaSource = MediaSource.Reference;
 		public MediaSource MediaSource { get { return _mediaSource; } internal set { _mediaSource = value; } }
 
+		public void SetMediaSource (MediaSource source)
+		{
+            _mediaSource = source;
+		}
+
 		[SerializeField] MediaReference _mediaReference = null;
 		public MediaReference MediaReference { get { return _mediaReference; } internal set { _mediaReference = value; } }
 
+		public void SetMediaReference(MediaReference media)
+		{
+			MediaReference = media;
+		}
+
 		[SerializeField] MediaPath _mediaPath = new MediaPath();
 		public MediaPath MediaPath { get { return _mediaPath; } internal set { _mediaPath = value; } }
+
+		public void SetMediaPath(MediaPath path)
+		{
+			MediaPath = path;
+		}
 
 		[SerializeField] MediaHints _fallbackMediaHints = MediaHints.Default;
 		public MediaHints FallbackMediaHints { get { return _fallbackMediaHints; } set { _fallbackMediaHints = value; } }
@@ -137,6 +152,11 @@ namespace RenderHeads.Media.AVProVideo
 
 		private AudioSource _audioSource = null;
 		public AudioSource AudioSource { get { return _audioSource; } internal set { _audioSource = value; } }
+
+		public void SetAudioSource(AudioSource audioSource)
+		{
+			AudioSource = audioSource;
+		}
 
 		[FormerlySerializedAs("m_PlaybackRate")]
 		[Range(-4.0f, 4.0f)]
@@ -345,17 +365,17 @@ namespace RenderHeads.Media.AVProVideo
 
 		// Interfaces
 
-		private BaseMediaPlayer _baseMediaPlayer;
+		protected BaseMediaPlayer _baseMediaPlayer;
 		private IMediaControl _controlInterface;
 		private ITextureProducer _textureInterface;
 		private IMediaInfo _infoInterface;
 		private IMediaPlayer _playerInterface;
 		private IMediaSubtitles _subtitlesInterface;
 		private IMediaCache _cacheInterface;
-		private IBufferedDisplay _bufferedDisplayInterface;
 		private IVideoTracks _videoTracksInterface;
 		private IAudioTracks _audioTracksInterface;
 		private ITextTracks _textTracksInterface;
+		private IVariants _variantsInterface;
 		private System.IDisposable _disposeInterface;
 
 		public virtual IMediaInfo Info { get { return _infoInterface; } }
@@ -366,8 +386,8 @@ namespace RenderHeads.Media.AVProVideo
 		public virtual IVideoTracks VideoTracks {	get { return _videoTracksInterface; } }
 		public virtual IAudioTracks AudioTracks {	get { return _audioTracksInterface; } }
 		public virtual ITextTracks TextTracks {	get { return _textTracksInterface; } }
+		public virtual IVariants Variants { get { return _variantsInterface; } }
 		public virtual IMediaCache Cache { get { return _cacheInterface; } }
-		public virtual IBufferedDisplay BufferedDisplay { get { return _bufferedDisplayInterface; } }
 
 		// State
 		private bool _isMediaOpened = false;
@@ -417,15 +437,15 @@ namespace RenderHeads.Media.AVProVideo
 				_baseMediaPlayer = mediaPlayer;
 				_controlInterface = mediaPlayer;
 				_textureInterface = mediaPlayer;
-				_infoInterface = mediaPlayer;
+                _infoInterface = mediaPlayer;
 				_playerInterface = mediaPlayer;
 				_subtitlesInterface = mediaPlayer;
 				_videoTracksInterface = mediaPlayer;
 				_audioTracksInterface = mediaPlayer;
 				_textTracksInterface = mediaPlayer;
+				_variantsInterface = mediaPlayer;
 				_disposeInterface = mediaPlayer;
 				_cacheInterface = mediaPlayer;
-				_bufferedDisplayInterface = mediaPlayer;
 
 				string nativePluginVersion = mediaPlayer.GetVersion();
 				string expectedNativePluginVersion = mediaPlayer.GetExpectedVersion();
@@ -716,17 +736,6 @@ namespace RenderHeads.Media.AVProVideo
 			StopRenderCoroutine();
 		}
 
-		public void RewindPrerollPause()
-		{
-			PlatformOptionsWindows.pauseOnPrerollComplete = true;
-			if (BufferedDisplay != null)
-			{
-				BufferedDisplay.SetBufferedDisplayOptions(true);
-			}
-			Rewind(false);
-			Play();
-		}
-
 		public virtual void Play()
 		{
 			if (_controlInterface != null && _controlInterface.CanPlay())
@@ -928,10 +937,10 @@ namespace RenderHeads.Media.AVProVideo
 			_playerInterface = null;
 			_subtitlesInterface = null;
 			_cacheInterface = null;
-			_bufferedDisplayInterface = null;
 			_videoTracksInterface = null;
 			_audioTracksInterface = null;
 			_textTracksInterface = null;
+			_variantsInterface = null;
 
 			if (_disposeInterface != null)
 			{
@@ -1005,7 +1014,7 @@ namespace RenderHeads.Media.AVProVideo
 
 #region Rendering Coroutine
 
-		private void StartRenderCoroutine()
+		protected void StartRenderCoroutine()
 		{
 			if (_renderingCoroutine == null)
 			{
@@ -1459,7 +1468,7 @@ namespace RenderHeads.Media.AVProVideo
 		{
 			#if !UNITY_EDITOR && UNITY_ANDROID
 				PlatformMediaPlayer platformMediaPlayer = (PlatformMediaPlayer)_baseMediaPlayer;
-				return platformMediaPlayer.IsUsingOESFastpath();
+				return platformMediaPlayer != null ? platformMediaPlayer.IsUsingOESFastpath() : false;
 			#else
 				return false;
 			#endif

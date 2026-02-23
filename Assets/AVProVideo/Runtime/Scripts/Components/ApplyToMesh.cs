@@ -247,9 +247,13 @@ namespace RenderHeads.Media.AVProVideo
 			if (_renderer != null)
 			{
 				_isDirty = false;
-
+#if UNITY_EDITOR
+                Material[] meshMaterials = _renderer.sharedMaterials;
+#else
 				Material[] meshMaterials = _renderer.materials;
-				if (meshMaterials != null)
+#endif
+
+                if (meshMaterials != null)
 				{
 					for (int i = 0; i < meshMaterials.Length; i++)
 					{
@@ -275,7 +279,7 @@ namespace RenderHeads.Media.AVProVideo
 										VideoRender.SetupMaterialForMedia(mat, _media, _propTexture.Id, texture, texture == _defaultTexture);
 										_lastTextureApplied = texture;
 
-										#if !UNITY_EDITOR && UNITY_ANDROID
+#if !UNITY_EDITOR && UNITY_ANDROID
 											if (texture == _defaultTexture)
 											{
 												mat.EnableKeyword("USING_DEFAULT_TEXTURE");
@@ -284,7 +288,7 @@ namespace RenderHeads.Media.AVProVideo
 											{
 												mat.DisableKeyword("USING_DEFAULT_TEXTURE");
 											}
-										#endif
+#endif
 									}
 									else
 									{

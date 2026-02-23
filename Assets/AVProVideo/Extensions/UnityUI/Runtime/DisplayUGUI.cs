@@ -36,6 +36,7 @@ namespace RenderHeads.Media.AVProVideo
 	/// </summary>
 	[HelpURL("http://renderheads.com/products/avpro-video/")]
 	[AddComponentMenu("AVPro Video/Display uGUI", 200)]
+	[RequireComponent(typeof(CanvasRenderer))]
 	//[ExecuteInEditMode]
 	public class DisplayUGUI : MaskableGraphic
 	{

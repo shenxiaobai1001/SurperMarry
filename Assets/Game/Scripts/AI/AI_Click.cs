@@ -12,8 +12,8 @@ using DG.Tweening;
 static public class AI_Click
 {
     /// <summary>添加按钮点击</summary>
-    public static void Click(this GameObject obj, UnityAction callback, int snake = 1, int interval = 100,
-        bool canBeEmpty = false, bool autoPlay = true, string sound_url = "Common/Click")
+    public static void Click(this GameObject obj, UnityAction callback, int interval = 100,
+        bool canBeEmpty = false, bool autoPlay = true, string sound_url = "Common/Click", int snake = 1)
     {
         if (obj == null)
         {

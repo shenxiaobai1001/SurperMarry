@@ -553,6 +553,7 @@ namespace PlayerScripts
         }
         void OnGetPole(GameObject other)
         {
+            transform.localScale=Vector3.one;
             PlayerModController.Instance.isSuperMan = false;
             getPole = true;
             Sound.PauseOrPlayVolumeMusic(true);
@@ -1208,11 +1209,13 @@ namespace PlayerScripts
             enabled = true;
             getPole = false;
             hasToFindNpc = false;
-            transform.localScale = Vector3.one;
+            Config.playerScale = 1;
+      transform.localScale=Vector3.one;
             if (PlayerModController.Instance.isInvincible)
             {
                 PlayerModController.Instance.OnSetInvincileState();
             }
+            Sound.PlayMusic("background");
             ModData.deadCount++;
         }
 

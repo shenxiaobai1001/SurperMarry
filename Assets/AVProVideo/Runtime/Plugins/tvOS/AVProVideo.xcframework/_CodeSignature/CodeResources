@@ -10,7 +10,7 @@
 		</data>
 		<key>tvos-arm64/libAVProVideo.a</key>
 		<data>
-		T/rCjabi1bmPMNcu5jlgUOZ3mBA=
+		ha+Htp/mjrqKpWg9fAOtZ49GlQo=
 		</data>
 		<key>tvos-arm64_x86_64-simulator/PrivacyInfo.xcprivacy</key>
 		<data>
@@ -18,7 +18,7 @@
 		</data>
 		<key>tvos-arm64_x86_64-simulator/libAVProVideo.a</key>
 		<data>
-		yb5H9y1BlVMhpvMQzXusT8ze0XU=
+		Nt5PfhgcgA1CYeDrq8Bp3xEsINc=
 		</data>
 	</dict>
 	<key>files2</key>
@@ -38,11 +38,11 @@
 		<dict>
 			<key>hash</key>
 			<data>
-			T/rCjabi1bmPMNcu5jlgUOZ3mBA=
+			ha+Htp/mjrqKpWg9fAOtZ49GlQo=
 			</data>
 			<key>hash2</key>
 			<data>
-			DcwUY4X1IUSB8wbAtn2rh6JzFHOoXg25cL07ATyqyqc=
+			/kBBLkLaNYknUmT2C3jVAcKMg5Z6PcCIBYZ0JvMQpRM=
 			</data>
 		</dict>
 		<key>tvos-arm64_x86_64-simulator/PrivacyInfo.xcprivacy</key>
@@ -60,11 +60,11 @@
 		<dict>
 			<key>hash</key>
 			<data>
-			yb5H9y1BlVMhpvMQzXusT8ze0XU=
+			Nt5PfhgcgA1CYeDrq8Bp3xEsINc=
 			</data>
 			<key>hash2</key>
 			<data>
-			/fDfb3kbQHXn6BlsGl5+tNs74Vq4yR89n3IHujcXSgA=
+			lS9Jnk8y62405QKyrM/aE5f3xXpt05Jr0qf+mukHQaI=
 			</data>
 		</dict>
 	</dict>

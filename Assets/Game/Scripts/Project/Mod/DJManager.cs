@@ -2,8 +2,10 @@ using PlayerScripts;
 using RenderHeads.Media.AVProVideo;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using SystemScripts;
 using UnityEngine;
+using UnityEngine.Video;
 
 public class DJManager : MonoBehaviour
 {
@@ -24,11 +26,19 @@ public class DJManager : MonoBehaviour
     {
         mainPlayer.Events.AddListener(OnVideoEvent);         // 订阅播放器本身提供的事件
         // 保存原始位置
-        originalPosition = Vector3.zero;
+        originalPosition =new Vector3(0,0,90);
+    }
+    private void OnDisable()
+    {
+        mapObj = null;
+        if (beatCoroutine != null)
+            StopCoroutine(beatCoroutine);
     }
     private void OnDestroy()
     {
-        StopAllCoroutines();
+        mapObj = null;
+        if (beatCoroutine != null)
+            StopCoroutine(beatCoroutine);
     }
     private void OnVideoEvent(MediaPlayer mp, MediaPlayerEvent.EventType evt, ErrorCode errorCode)
     {
@@ -42,16 +52,14 @@ public class DJManager : MonoBehaviour
     {
         this.isPlayDJ = isPlayDJ;
         this.currentVideoNumber = count;
-        currentBeatIndex = 0;
     }
 
     public void OnModVideoPlayStart()
     {
         if (!isPlayDJ) return;
-        if (!mapObj)
-        {
-            mapObj = GameObject.Find("InteractableObjects");
-        }
+        mapObj = GameObject.Find("InteractableObjects");
+        if (!mapObj) return;
+
         // 重置位置
         mapObj.transform.localPosition = originalPosition;
         shakeTimer = 0f;
@@ -61,40 +69,38 @@ public class DJManager : MonoBehaviour
         beatTimes = DJTimeLine.beatMapData[currentVideoNumber];
         beatCoroutine = StartCoroutine(BeatShakeCoroutine());
     }
-    int currentBeatIndex = 0;
     // 使用固定时间间隔检查，减少误差
     WaitForEndOfFrame wait = new WaitForEndOfFrame();
     IEnumerator BeatShakeCoroutine()
     {
-        if (Config.isLoading && PlayerController.Instance._isFinish)
-        {
-            yield break;
-        }
+        if (Config.isLoading && PlayerController.Instance._isFinish) yield break;
 
-        // 使用Time.time作为基准时间
-        while (currentBeatIndex < beatTimes.Count)
-        {    
-            // 在帧结束时处理，确保时间更准确
-            if (Config.isLoading && PlayerController.Instance._isFinish)
-            {
-                yield break;
-            }
-            // 计算从开始到现在的准确时间
-            double elapsedTime = mainPlayer.Control.GetCurrentTime();
+        // 预处理：转换所有时间戳
+        List<float> correctedTimes = beatTimes.Select(t =>
+        {
+            int sec = (int)t;
+            int frames = Mathf.RoundToInt((t - sec) * 100);
+            return sec + frames / 60f;
+        }).ToList();
+        int currentIndex = 0;
+
+        while (currentIndex < correctedTimes.Count)
+        {
+            if (Config.isLoading && PlayerController.Instance._isFinish) yield break;
+
+            yield return wait;
+
+            double currentTime = mainPlayer.Control.GetCurrentTime();
             ProcessFalling();
 
-            // 检查卡点
-            if (currentBeatIndex < beatTimes.Count && elapsedTime >= beatTimes[currentBeatIndex])
+            if (currentTime >= correctedTimes[currentIndex])
             {
-                PFunc.Log($"卡点触发: 目标{beatTimes[currentBeatIndex]}, 实际{elapsedTime}");
+                //PFunc.Log($"卡点: 原始{beatTimes[currentIndex]:F2}, 转换后{correctedTimes[currentIndex]:F3}, 实际{currentTime:F3}");
                 TriggerBeatShake();
-                currentBeatIndex++;
+                currentIndex++;
             }
-            yield return wait;
-            // yield return null;
         }
     }
-
     // 触发卡点晃动
     private void TriggerBeatShake()
     {

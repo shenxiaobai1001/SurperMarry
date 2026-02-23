@@ -115,8 +115,8 @@ namespace RenderHeads.Media.AVProVideo
 		private bool				_hintAlphaChannel					= false;
 		private bool				_useLowLatency						= false;
 		private bool				_supportsLinearColorSpace			= true;
-		private TextureFrame		_textureFrame;
 #if AVPROVIDEO_FIX_UPDATEEXTERNALTEXTURE_LEAK
+		private TextureFrame		_textureFrame;
 		private TextureFrame		_textureFramePrev;
 #endif
 		private static bool 		_isInitialised						= false;
@@ -221,8 +221,6 @@ namespace RenderHeads.Media.AVProVideo
 				true,
 				false,
 				true,
-				BufferedFrameSelectionMode.None,
-				false,
 				false
 			);
 		}
@@ -247,16 +245,13 @@ namespace RenderHeads.Media.AVProVideo
 				options.useStereoDetection,
 				options.useTextTrackSupport,
 				options.useFacebookAudio360Support,
-				options.bufferedFrameSelection,
-				options.pauseOnPrerollComplete,
 				options.useAudioDelay
 			);
 		}
 
 		public void SetOptions(Windows.VideoApi videoApi, Windows.AudioOutput audioOutput, bool useHardwareDecoding, bool useRendererSync, bool useTextureMips, bool use10BitTextures,
 								bool hintAlphaChannel, bool useLowLatency, string audioDeviceOutputName, List<string> preferredFilters, bool useCustomMovParser, int parallelFrameCount,
-								int prerollFrameCount, bool useHapNotchLC, bool useStereoDetection, bool useTextTrackSupport, bool useFacebookAudio360Support,
-								BufferedFrameSelectionMode bufferedFrameSelection, bool pauseOnPrerollComplete, bool useAudioDelay)
+								int prerollFrameCount, bool useHapNotchLC, bool useStereoDetection, bool useTextTrackSupport, bool useFacebookAudio360Support, bool useAudioDelay)
 		{
 			_videoApi					= videoApi;
 			_audioOutput				= audioOutput;
@@ -269,10 +264,6 @@ namespace RenderHeads.Media.AVProVideo
 			_useStereoDetection			= useStereoDetection;
 			_useTextTrackSupport		= useTextTrackSupport;
 			_useFacebookAudio360Support = useFacebookAudio360Support;
-#if AVPROVIDEO_SUPPORT_BUFFERED_DISPLAY
-			_frameSelectionMode			= bufferedFrameSelection;
-			_pauseOnPrerollComplete		= pauseOnPrerollComplete;
-#endif
 			_useHapNotchLC				= useHapNotchLC;
 			_useCustomMovParser			= useCustomMovParser;
 			_decoderParallelFrameCount	= parallelFrameCount;
@@ -360,9 +351,6 @@ namespace RenderHeads.Media.AVProVideo
 
 				Native.SetCustomMovParserEnabled(_instance, _useCustomMovParser);
 				Native.SetHapNotchLCEnabled(_instance, _useHapNotchLC);
-#if AVPROVIDEO_SUPPORT_BUFFERED_DISPLAY
-				Native.SetFrameBufferingEnabled(_instance, (_frameSelectionMode != BufferedFrameSelectionMode.None), _pauseOnPrerollComplete);
-#endif
 				Native.SetStereoDetectEnabled(_instance, _useStereoDetection);
 				Native.SetTextTrackSupportEnabled(_instance, _useTextTrackSupport);
 				Native.SetAudioDelayEnabled(_instance, _useAudioDelay, true, 0.0);
@@ -399,7 +387,8 @@ namespace RenderHeads.Media.AVProVideo
 
 		public override bool OpenMediaFromBuffer(byte[] buffer)
 		{
-			CloseMedia();
+			// RJT NOTE: Commented out as already called by 'InternalOpenMedia()' which calls this function
+//			CloseMedia();
 
 			IntPtr[] filters;
 			if (_preferredFilters.Count == 0)
@@ -567,9 +556,6 @@ namespace RenderHeads.Media.AVProVideo
 			_volume = 1f;
 			_balance = 0f;
 			_supportsLinearColorSpace = true;
-			_displayClockTime = 0.0;
-			_timeAccumulation = 0.0;
-			FlushFrameBuffering(true);
 			ReleaseTexture();
 			
 			if (_instance != System.IntPtr.Zero)
@@ -644,33 +630,10 @@ namespace RenderHeads.Media.AVProVideo
 		}
 		public override bool IsPlaying()
 		{
-#if AVPROVIDEO_SUPPORT_BUFFERED_DISPLAY
-			if (_isPlaying && _frameSelectionMode != BufferedFrameSelectionMode.None)
-			{
-				// In case we're still playing the buffered frames at the end of the video
-				// We want to return true, even though internally it has stopping playing
-				if (Native.IsFinished(_instance) && !IsFinished())
-				{
-					return true;
-				}
-				// In this case internal state can change so we need to check that too
-				if (_pauseOnPrerollComplete)
-				{
-					return Native.IsPlaying(_instance);
-				}
-			}
-#endif
 			return Native.IsPlaying(_instance);//_isPlaying;
 		}
 		public override bool IsPaused()
 		{
-#if AVPROVIDEO_SUPPORT_BUFFERED_DISPLAY
-			if (_pauseOnPrerollComplete)
-			{
-				// In this case internal state can change so we need to check that too
-				return _isPaused || !Native.IsPlaying(_instance);
-			}
-#endif
 			// RJT TODO: 'Native.IsPaused()'?
 			return (_isPaused || (_isPlaying && !Native.IsPlaying(_instance)));//_isPaused;
 		}
@@ -688,17 +651,6 @@ namespace RenderHeads.Media.AVProVideo
 				{
 					// This fixes a bug in Media Foundation where in some rare cases Native.IsFinished() returns false
 					result = (GetCurrentTime() > GetDuration());
-				}
-#endif
-#if AVPROVIDEO_SUPPORT_BUFFERED_DISPLAY
-				// During buffered playback we need to wait until all frames have been displayed
-				if (result && _frameSelectionMode != BufferedFrameSelectionMode.None)
-				{
-					BufferedFramesState state = GetBufferedFramesState();
-					if (state.bufferedFrameCount != 0)
-					{
-						result = false;
-					}
 				}
 #endif
 			}
@@ -744,23 +696,11 @@ namespace RenderHeads.Media.AVProVideo
 
 		public override int GetTextureFrameCount()
 		{
-#if AVPROVIDEO_SUPPORT_BUFFERED_DISPLAY
-			if (_frameSelectionMode != BufferedFrameSelectionMode.None)
-			{
-				return (int)_textureFrame.frameCounter;
-			}
-#endif
 			return Native.GetTextureFrameCount(_instance);
 		}
 
 		public override long GetTextureTimeStamp()
 		{
-#if AVPROVIDEO_SUPPORT_BUFFERED_DISPLAY
-			if (_frameSelectionMode != BufferedFrameSelectionMode.None)
-			{
-				return _textureFrame.timeStamp;
-			}
-#endif
 			return Native.GetTextureTimeStamp(_instance);
 		}
 
@@ -789,13 +729,11 @@ namespace RenderHeads.Media.AVProVideo
 		public override void Seek(double time)
 		{
 			Native.SetCurrentTime(_instance, time, false);
-			FlushFrameBuffering(false);
 		}
 
 		public override void SeekFast(double time)
 		{
 			Native.SetCurrentTime(_instance, time, true);
-			FlushFrameBuffering(false);
 		}
 
 		public override double GetCurrentTime()
@@ -1031,17 +969,7 @@ namespace RenderHeads.Media.AVProVideo
 			if (_hasVideo)
 			{
 				System.IntPtr newTexturePtr = System.IntPtr.Zero;
-#if AVPROVIDEO_SUPPORT_BUFFERED_DISPLAY
-				if (_frameSelectionMode != BufferedFrameSelectionMode.None)
-				{
-					UpdateBufferedDisplay();
-					newTexturePtr = _textureFrame.texturePointer;
-				}
-				else
-#endif
-				{
-					newTexturePtr = Native.GetTexturePointer(_instance);
-				}
+				newTexturePtr = Native.GetTexturePointer(_instance);
 
 				UpdateTexture(newTexturePtr);
 			}
@@ -1066,8 +994,8 @@ namespace RenderHeads.Media.AVProVideo
 			}
 			_resolvedTexture = null;
 			_texture = null;
-			_textureFrame = new TextureFrame();
 #if AVPROVIDEO_FIX_UPDATEEXTERNALTEXTURE_LEAK
+			_textureFrame = new TextureFrame();
 			_textureFramePrev = new TextureFrame();
 #endif
 		}
@@ -1622,9 +1550,6 @@ namespace RenderHeads.Media.AVProVideo
 			public static extern void SetHapNotchLCEnabled(System.IntPtr instance, bool enabled);
 
 			[DllImport("AVProVideo")]
-			public static extern void SetFrameBufferingEnabled(System.IntPtr instance, bool enabled, bool pauseOnPrerollComplete);
-
-			[DllImport("AVProVideo")]
 			public static extern void SetStereoDetectEnabled(System.IntPtr instance, bool enabled);
 
 			[DllImport("AVProVideo")]
@@ -1800,6 +1725,9 @@ namespace RenderHeads.Media.AVProVideo
 
 			[DllImport("AVProVideo")]
 			public static extern float GetTexturePixelAspectRatio(System.IntPtr instance);
+
+			[DllImport("AVProVideo")]
+			public static extern void ReleaseTextureFrame(System.IntPtr instance, ref TextureFrame textureFrame);
 
 			[DllImport("AVProVideo")]
 			public static extern System.IntPtr GetRenderEventFunc();
