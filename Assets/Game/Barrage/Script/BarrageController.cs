@@ -165,7 +165,7 @@ public class BarrageController : MonoBehaviour
     /// <param name="task"></param>
     private void ExecuteAction(ActionTask task)
     {
-        BarrageFuncController.Instance.OnAddReadyFunc(task.callName);
+        //BarrageFuncController.Instance.OnAddReadyFunc(task.callName);
         switch (task.callName)
         {
             case "ÎÚ¹êÒ»Ö»":
