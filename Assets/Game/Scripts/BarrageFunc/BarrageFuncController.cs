@@ -18,17 +18,19 @@ public class BarrageFuncController : MonoBehaviour
         }
     }
 
-    [HideInInspector] public List<BarrageValue> readyFunc 
-        = new List<BarrageValue>();//等待执行的功能 
-    [HideInInspector] public Dictionary<BarrageValue, BarraegExecutType> executFunc 
-        = new Dictionary<BarrageValue, BarraegExecutType>();//正在执行的功能 名称
+    [HideInInspector] 
+    public List<BarrageValue> readyFunc = new List<BarrageValue>();//等待执行的功能 
+    [HideInInspector]
+    public List<BarrageValue> executFunc  = new List<BarrageValue>();//正在执行的功能 
+    [HideInInspector]
+    public Dictionary<int, List<BarrageValue>> groupFunc= new Dictionary<int, List<BarrageValue>>();//正在执行的组排功能
 
     Dictionary<int, BarrageFuncData> allBarrage;
 
     bool hasBarrage = false;
     bool checkReadyFunck = false;
-    string executingFunc = "";
     BarrageFuncData executingBarrageData = null;
+
 
     void Start()
     {
@@ -51,15 +53,25 @@ public class BarrageFuncController : MonoBehaviour
             name = value,
             barrageFuncData=data,
             BarrageState = BarrageState.Tigger,
+            barraegExecutType = BarraegExecutType.ReadyExecut,
         };
 
         if (data.type==1 && data.group==0)//生成物体
         {
-            executFunc.Add(barrageValue,BarraegExecutType.ReadyExecut);
+            executFunc.Add(barrageValue);
             return;
         }
 
-        if (OnCheckHighLevelFunc(data.type))//如果正在执行的功能等级更高
+        if (OnCheckHighGroupFunc(data))
+        {
+            readyFunc.Add(barrageValue);
+            if (!checkReadyFunck)
+            {
+                checkReadyFunck = true;
+                StartCoroutine(OnCheckReadyFunc());
+            }
+        }
+       else if (OnCheckHighLevelFunc(data))//如果正在执行的功能等级更高
         {
             readyFunc.Add(barrageValue);
             if (!checkReadyFunck)
@@ -70,9 +82,26 @@ public class BarrageFuncController : MonoBehaviour
         }
         else
         {
-            executFunc.Add(barrageValue, BarraegExecutType.ReadyExecut);
+            executFunc.Add(barrageValue);
         }
         hasBarrage = true;
+    }
+
+    void OnDisposeBarrageByType(BarrageValue barrageValue)
+    {
+        if (barrageValue.barrageFuncData.group!=0)
+        {
+            int group = barrageValue.barrageFuncData.group;
+
+            if (groupFunc.ContainsKey(group))
+            {
+                groupFunc[group].Add(barrageValue);
+            }
+            else
+            {
+                groupFunc.Add(group,new List<BarrageValue> { barrageValue });
+            }
+        }
     }
 
     IEnumerator OnExecutFunc()
@@ -102,7 +131,6 @@ public class BarrageFuncController : MonoBehaviour
         }
     }
 
-
     IEnumerator OnCheckReadyFunc()
     {
         List<BarrageValue> temporaryFunc = new List<BarrageValue>();
@@ -110,10 +138,10 @@ public class BarrageFuncController : MonoBehaviour
         {
             foreach (var kvp in readyFunc)
             {
-                if (!OnCheckHighLevelFunc(kvp.barrageFuncData.type))
-                {
-                    temporaryFunc.Add(kvp);
-                }
+                //if (!OnCheckHighLevelFunc(kvp.barrageFuncData.type))
+                //{
+                //    temporaryFunc.Add(kvp);
+                //}
             }
             if (temporaryFunc != null && temporaryFunc.Count > 0)
             {
@@ -131,22 +159,50 @@ public class BarrageFuncController : MonoBehaviour
         }
     }
 
-
-    public bool OnCheckHighLevelFunc(int type)
+    public bool OnCheckHighGroupFunc(BarrageFuncData data)
     {
         bool isHigh = false;
 
-        //if (executFunc != null && executFunc.Count > 0)
-        //{
-        //    foreach (var kvp in executFunc)
-        //    {
-        //        if (kvp.barrageFuncData.type >= type)
-        //        {
-        //            isHigh = true; 
-        //            break;
-        //        }
-        //    }
-        //}
+        if (executFunc != null && executFunc.Count > 0)
+        {
+            foreach (var kvp in executFunc)
+            {
+                if (kvp.barrageFuncData.group == data.group)
+                {
+                    isHigh = kvp.barrageFuncData.executionlevel > data.executionlevel;
+                }
+            }
+        }
+        return isHigh;
+    }
+
+    /// <summary>检测当前是否有正在执行的同类行更高级别 </summary>
+    public bool OnCheckHighLevelFunc(BarrageFuncData data)
+    {
+        bool isHigh = false;
+
+        if (executFunc != null && executFunc.Count > 0)
+        {
+            foreach (var kvp in executFunc)
+            {
+                switch (kvp.barrageFuncData.type)
+                {
+                    case 1:
+                            isHigh = kvp.barrageFuncData.createlevel > data.createlevel;
+                        break;
+                    case 2:
+                        isHigh = kvp.barrageFuncData.movelevel > data.movelevel;
+                        break;
+                    case 3:
+                        isHigh = kvp.barrageFuncData.controllevel > data.controllevel;
+                        break;
+                    case 4:
+                        isHigh = false;
+                        break;
+                }
+            
+            }
+        }
         return isHigh;
     }
 
@@ -173,4 +229,5 @@ public struct BarrageValue
     public string name;
     public BarrageFuncData barrageFuncData;
     public BarrageState BarrageState;
+    public BarraegExecutType barraegExecutType;
 }
