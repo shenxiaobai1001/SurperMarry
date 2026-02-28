@@ -2,7 +2,10 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.Rendering;
+using UnityEngine.Rendering.Universal;
 using UnityEngine.UI;
+using static UnityEngine.Rendering.DebugUI;
 
 public class UISystem : MonoBehaviour
 {
@@ -22,6 +25,10 @@ public class UISystem : MonoBehaviour
     public GameObject Btn_moren;
     public Toggle tg_dead;
 
+    public Slider sl_statu;
+    public Volume postProcessVolume;
+    ColorAdjustments colorAdjustments;
+
     float musicValue = 0;
     float soundValue = 0;
     int lifeCount = 0;
@@ -33,6 +40,14 @@ public class UISystem : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        if (postProcessVolume != null && postProcessVolume.profile != null)
+        {
+            // 尝试从配置文件中获取ColorAdjustments组件
+            if (!postProcessVolume.profile.TryGet(out colorAdjustments))
+            {
+                Debug.Log("在Volume Profile中未找到Color Adjustments效果！");
+            }
+        }
         sl_music.onValueChanged.AddListener(OnChangeMusic);
         sl_sound.onValueChanged.AddListener(OnChangeSound);
         input_life.onEndEdit.AddListener(OnInputLife);
@@ -47,8 +62,9 @@ public class UISystem : MonoBehaviour
         input_Stone.onEndEdit.AddListener(OnInputStone);
         tg_dead.onValueChanged.AddListener(OnTgDeadOpen);
         Btn_moren.Click(OnClickMoRen);
+        sl_statu.onValueChanged.AddListener(UpdateSaturation);
         center.SetActive(false);
-       Invoke("OnInit",1);
+        Invoke("OnInit",1);
     }
 
     private void OnInit()
@@ -57,6 +73,8 @@ public class UISystem : MonoBehaviour
         soundValue = (float)Sound.VolumeSound / (float)1;
         sl_music.value = musicValue;
         sl_sound.value = soundValue;
+
+        sl_statu.value = SystemController.Instance.statuValue;
     }
     void OnChangeMusic(float value)
     {
@@ -153,6 +171,23 @@ public class UISystem : MonoBehaviour
         Sound.PlaySound("smb_coin");
     }
 
+    // 更新后处理效果的实际参数
+    private void UpdateSaturation(float value)
+    {
+        if (colorAdjustments != null)
+        {
+            // 将0-1的Slider值映射到-100到100的范围
+            // 当value=0.5时，saturationValue=0
+            // 当value=1时，saturationValue=100
+            // 当value=0时，saturationValue=-100
+            float saturationValue = (value - 0.5f) * 200f;
+
+            saturationValue = Mathf.Clamp(saturationValue, -100f, 100f);
+
+            colorAdjustments.saturation.Override(saturationValue);
+            PlayerPrefs.SetFloat("Saturation", value);
+        }
+    }
     void OnClose()
     {
         center.SetActive(false);

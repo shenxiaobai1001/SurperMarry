@@ -1,55 +1,55 @@
 {
     "NormalConfigs": [
         {
-            "CallName": "抓乌龟",
+            "CallName": "乌龟一百只",
             "Type": "礼物",
             "Message": "",
             "Tip": "",
-            "Count": 1,
-            "Delay": 0.0
-        },
-        {
-            "CallName": "凿头",
-            "Type": "礼物",
-            "Message": "",
-            "Tip": "",
-            "Count": 1,
-            "Delay": 0.0
-        },
-        {
-            "CallName": "火圈",
-            "Type": "礼物",
-            "Message": "",
-            "Tip": "",
-            "Count": 1,
-            "Delay": 0.0
-        },
-        {
-            "CallName": "无敌星",
-            "Type": "礼物",
-            "Message": "",
-            "Tip": "",
-            "Count": 10,
-            "Delay": 0.0
-        },
-        {
-            "CallName": "上吊",
-            "Type": "礼物",
-            "Message": "",
-            "Tip": "",
-            "Count": 1,
-            "Delay": 0.0
+            "Count": 100,
+            "Delay": 10.0
         },
         {
             "CallName": "乌龟一只",
             "Type": "礼物",
             "Message": "",
             "Tip": "",
+            "Count": 5,
+            "Delay": 0.0
+        },
+        {
+            "CallName": "擦皮鞋",
+            "Type": "礼物",
+            "Message": "",
+            "Tip": "",
             "Count": 1,
             "Delay": 0.0
         },
         {
-            "CallName": "抓可达鸭",
+            "CallName": "跳绳",
+            "Type": "礼物",
+            "Message": "",
+            "Tip": "",
+            "Count": 20,
+            "Delay": 0.0
+        },
+        {
+            "CallName": "跳绳盲盒",
+            "Type": "礼物",
+            "Message": "",
+            "Tip": "",
+            "Count": 1,
+            "Delay": 0.0
+        },
+        {
+            "CallName": "顶乌龟",
+            "Type": "礼物",
+            "Message": "",
+            "Tip": "",
+            "Count": 1,
+            "Delay": 0.0
+        },
+        {
+            "CallName": "麒麟臂",
             "Type": "礼物",
             "Message": "",
             "Tip": "",
@@ -65,12 +65,12 @@
             "Delay": 0.0
         },
         {
-            "CallName": "变大",
+            "CallName": "超人+10秒",
             "Type": "礼物",
             "Message": "",
             "Tip": "",
             "Count": 100,
-            "Delay": 0.10000000149011612
+            "Delay": 0.0
         },
         {
             "CallName": "变小",

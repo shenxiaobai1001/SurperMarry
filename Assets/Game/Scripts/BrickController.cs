@@ -1,4 +1,5 @@
-﻿using System;
+﻿using PlayerScripts;
+using System;
 using System.Collections;
 using SystemScripts;
 using UnityEngine;
@@ -16,6 +17,7 @@ public class BrickController : MonoBehaviour
     public AudioClip bumpSound;
     public AudioClip breakSound;
     public AudioClip coinSound;
+    public GameObject hitCollider;
     private static readonly int TouchB = Animator.StringToHash("Touch_b");
     private static readonly int TouchT = Animator.StringToHash("Touch_t");
     private static readonly int SpecialB = Animator.StringToHash("Special_b");
@@ -25,8 +27,12 @@ public class BrickController : MonoBehaviour
     {
         _brickAudio = GetComponent<AudioSource>();
         _brickAnim = GetComponent<Animator>();
+ 
     }
-
+    private void Start()
+    {
+        if(hitCollider) hitCollider.SetActive(false);
+    }
     private void Update()
     {
         _brickAnim.SetBool(SpecialB, isSpecialBrick);
@@ -49,6 +55,8 @@ public class BrickController : MonoBehaviour
                 isTouchByPlayer = true;
                 _brickAnim.SetBool(TouchB, isTouchByPlayer);
             // }
+            if (hitCollider) hitCollider.SetActive(true);
+            Invoke("OnClosePlayer",0.1f);
         }
 
         else if ( (other.gameObject.CompareTag("BigPlayer") || other.gameObject.CompareTag("UltimateBigPlayer")) &&
@@ -61,6 +69,7 @@ public class BrickController : MonoBehaviour
             animationSprite.SetActive(false);
             _brickAnim.SetTrigger(TouchT);
             StartCoroutine(Destroy());
+            if (hitCollider) hitCollider.SetActive(true);
         }
 
         if ((other.gameObject.CompareTag("Player") || other.gameObject.CompareTag("UltimatePlayer") ||
@@ -78,6 +87,10 @@ public class BrickController : MonoBehaviour
                 _brickAnim.SetBool(TouchB, isTouchByPlayer);
             }
         }
+    }
+    void OnClosePlayer()
+    {
+        if (hitCollider) hitCollider.SetActive(false);
     }
 
     private void OnCollisionExit2D(Collision2D other)

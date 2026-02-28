@@ -142,15 +142,7 @@ namespace PlayerScripts
                 // 修改2：K键 - 跳跃
                 if (Input.GetKeyDown(KeyCode.K) && _isOnGround || Input.GetKeyDown(KeyCode.Space) && _isOnGround)
                 {
-                    _playerAudio.PlayOneShot(GameStatusController.IsBigPlayer ? jumpSound : jumpBigSound);
-                    _isOnGround = false;
-                    _playerRb.velocity = Vector3.zero;
-                   _playerRb.AddForce(new Vector2(0f, jumpForce));
-                    _playerAnim.SetBool(IdleB, false);
-                    _playerAnim.SetBool(WalkB, false);
-                    _playerAnim.SetBool(RunB, false);
-                    _playerAnim.SetTrigger(JumpTrig);
-                    isJumping = true;
+                    OnJumpAuto();
                 }
 
                 DenyMidAirJump();
@@ -275,6 +267,18 @@ namespace PlayerScripts
         public float jumpingForce;
 
         float jumpTime=0;
+        public void OnJumpAuto()
+        {
+            _playerAudio.PlayOneShot(GameStatusController.IsBigPlayer ? jumpSound : jumpBigSound);
+            _isOnGround = false;
+            _playerRb.velocity = Vector3.zero;
+            _playerRb.AddForce(new Vector2(0f, jumpForce));
+            _playerAnim.SetBool(IdleB, false);
+            _playerAnim.SetBool(WalkB, false);
+            _playerAnim.SetBool(RunB, false);
+            _playerAnim.SetTrigger(JumpTrig);
+            isJumping = true;
+        }
         private void FixedUpdate()
         {
             if (GameStatusController.IsGameFinish)
@@ -369,10 +373,15 @@ namespace PlayerScripts
             isHit = toHit;
         }
         float horizontalInput = 0f;
+        bool canMove = true;
+        public void OnHorLock(bool move)
+        {
+            canMove = move;
+        }
         private void MovePlayer()
         {
             horizontalInput = 0;
-            if (!_isCrouching && !_isGoingDownPipeAble && !isHit)
+            if (!_isCrouching && !_isGoingDownPipeAble && !isHit&& canMove)
             {
                 // 修改：使用AD键获取水平输入
                 if (Input.GetKey(KeyCode.A) && !isHit) horizontalInput = -1f;
@@ -1253,5 +1262,6 @@ namespace PlayerScripts
             _playerRb.velocity = Vector2.zero;
             _playerAnim.SetFloat(SpeedF, 0);
         }
+
     }
 }

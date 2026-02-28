@@ -1,4 +1,5 @@
 
+using EnemyScripts;
 using PlayerScripts;
 using System;
 using System.Collections;
@@ -44,6 +45,9 @@ public class ItemCreater : MonoBehaviour
     public GameObject Electricity;
     public GameObject ElectricityLeft;
     public GameObject ElectricityRight;
+    public GameObject shocShine;
+    public GameObject ropeSkip;
+    public GameObject peakKuba;
     public Transform moguParent;
 
     [SerializeField] private float batchInterval = 0.1f;
@@ -192,7 +196,14 @@ public class ItemCreater : MonoBehaviour
             case "chainPlayer":
                 createPos = new Vector3(Camera.main.transform.position.x, 5, valueZ);
                 break;
+            case "shoeShine":
+                createPos = new Vector3(Camera.main.transform.position.x, 4, valueZ);
+                break;
+            case "ropeSkip":
+                createPos = new Vector3(Camera.main.transform.position.x, 4, valueZ);
+                break;
             case "Electricity":
+            case "peakKuba":
                 createPos = vector;
                 break;
             case "bigMG":
@@ -286,6 +297,16 @@ public class ItemCreater : MonoBehaviour
             case "chainPlayer":
                 Config.chainCount += 20;
                 break;
+            case "shoeShine":
+                Config.shineCount += 20;
+                ShoeShine.Instance.OnStart();
+                break;
+            case "peakKuba":
+                Config.kubaCount += 5;
+                break;
+            case "ropeSkip":
+                RopeSkip.Instance.OnStart();
+                break;
             case "Electricity":
                 Electricity electricity = obj.GetComponent<Electricity>();
                 electricity.OnStartLazzer();
@@ -342,20 +363,40 @@ public class ItemCreater : MonoBehaviour
         allReadyCreateDuck += count;
         CreateItem(psyDuck, count, "psyDuck", 1, 0.05f);
     }
+    int hangCount = 0;
+    bool isCreateHang = false;
     public void OnCreateHangSelf()
     {
-        Vector3 vectorPlayer = PlayerController.Instance.transform.position;
-        float value = GameStatusController.IsHidden ? 32 : 0;
-        Vector3 createPos = new Vector3(vectorPlayer.x-2, value);
-        GameObject obj = SimplePool.Spawn(hangself, createPos, Quaternion.identity);
-        obj.transform.SetParent(transform);
-        Sound.PlaySound("Mod/hangself");
-        isHang = true;
-        PlayerModController.Instance.OnHangSelf();
+        hangCount++;
+      
+        if (!isCreateHang)
+        {
+            isCreateHang = true;
+            StartCoroutine(OnHangSelfQ());
+        }
     }
+
+    IEnumerator OnHangSelfQ()
+    {
+        while (hangCount>0) {
+            hangCount--;
+            Vector3 vectorPlayer = PlayerController.Instance.transform.position;
+            float value = GameStatusController.IsHidden ? 32 : 0;
+            Vector3 createPos = new Vector3(vectorPlayer.x - 2, value);
+            GameObject obj = SimplePool.Spawn(hangself, createPos, Quaternion.identity);
+            obj.transform.SetParent(transform);
+            Sound.PlaySound("Mod/hangself");
+            isHang = true;
+            PlayerModController.Instance.OnHangSelf();
+            yield return new WaitForSeconds(7);
+        }
+        isCreateHang = false;
+        hangCount = 0;
+    }
+
     public void OnCreateMangSeng(int count) {
 
-        if (lockPlayer) Config.chainCount++;
+        if (lockPlayer && UIChain.Instance != null && UIChain.Instance.gameObject.activeSelf) Config.chainCount++;
         CreateItem(mangseng, count, "mangseng", 1);
     }
     public void OnCreateRollStone(int count) => CreateItem(rollStone, count, "rollStone", 1);
@@ -367,11 +408,16 @@ public class ItemCreater : MonoBehaviour
     {
         if (lockPlayer)
         {
-            Config.chainCount -= 2;
-            if (Config.chainCount <= 0)
+            if (UIChain.Instance != null && UIChain.Instance.gameObject.activeSelf)
             {
-                UIChain.Instance.OnChekcMinZero();
+                Config.chainCount -= 2;
+                if (Config.chainCount <= 0)
+                {
+                    Config.chainCount = 0;
+                    UIChain.Instance.OnChekcMinZero();
+                }
             }
+    
         }
         qlCount += count;
         CreateItem(QiLinBi, count, "QiLinBi", 1);
@@ -379,7 +425,7 @@ public class ItemCreater : MonoBehaviour
     public int tcCount = 0;
     public void OnCreateTCJiao(int count)
     {
-        if (lockPlayer) Config.chainCount += 2;
+        if (lockPlayer&& UIChain.Instance != null&& UIChain.Instance.gameObject.activeSelf) Config.chainCount += 2;
         tcCount += count;
         CreateItem(TCJiao, count, "TCJiao", 1);
     }
@@ -396,9 +442,39 @@ public class ItemCreater : MonoBehaviour
         Sound.PlaySound("Mod/lock");
         CreateItem(chainPlayer, count, "chainPlayer", 1);
     }
+    public void OnCreateShoeShine(int count)
+    {
+        if (PlayerController.Instance != null)
+            PlayerController.Instance.OnChanleControl(true);
+        lockPlayer = true;
+        EventManager.Instance.SendMessage(Events.OnShowShine,true);
+        CreateItem(shocShine, count, "shoeShine", 1);
+    }
+    public void OnCreateRopeSkip(int count)
+    {
+        if (PlayerController.Instance != null)
+            PlayerController.Instance.OnHorLock(false);
+        lockPlayer = true;
+        EventManager.Instance.SendMessage(Events.OnShowRope, true);
+        if(RopeSkip.Instance==null|| !RopeSkip.Instance.gameObject.activeSelf)
+        {
+            CreateItem(ropeSkip, count, "ropeSkip", 1);
+        }
+    }
+    public void OnCreatePeakKuba(int count)
+    {
+        Config.kubaCount += 5;
+        if (PeakKuba.Instance == null || !PeakKuba.Instance.gameObject.activeSelf)
+        {
+            GameObject obj = SimplePool.Spawn(peakKuba, PlayerController.Instance.transform.position, Quaternion.identity);
+            obj.SetActive(true);
+        }
+            
+        EventManager.Instance.SendMessage(Events.OnShowKubaCount, true);
+    }
     public void OnCreateLazzer(int count)
     {
-        if ( lockPlayer) Config.chainCount++;
+        if ( lockPlayer && UIChain.Instance != null && UIChain.Instance.gameObject.activeSelf) Config.chainCount++;
         Sound.PlaySound("Mod/lazzer");
         CreateItem(Electricity, count, "Electricity", 1);
     }
@@ -447,5 +523,46 @@ public class ItemCreater : MonoBehaviour
     public void OnCreateZhiQian(int count)
     {
         CreateItem(zhiqian, count, "zhiqian", 1);
+    }
+
+    int danceCount = 0;
+    bool isCreateDance = false;
+
+    public void OnDance()
+    {
+        danceCount++;
+        if (!isCreateDance)
+        {
+            isCreateDance = true;
+            StartCoroutine(OnDanceIe());
+        }
+    }
+
+    IEnumerator OnDanceIe()
+    {
+        if (Config.isLoading)
+        {
+            yield return new WaitUntil(() => !Config.isLoading);
+        }
+        if (GameStatusController.isDead)
+        {
+            yield return new WaitUntil(() => !GameStatusController.isDead);
+        }
+        while (danceCount>0) {
+            danceCount--; 
+            if (Config.isLoading)
+            {
+                yield return new WaitUntil(() => !Config.isLoading);
+            }
+            if (GameStatusController.isDead)
+            {
+                yield return new WaitUntil(() => !GameStatusController.isDead);
+            }
+            PlayerModController.Instance.OnGuangDance();
+            yield return new  WaitForSeconds(109);
+        }
+        PlayerModController.Instance.OnRestDance();
+        isCreateDance = false;
+        danceCount = 0;
     }
 }

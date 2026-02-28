@@ -72,8 +72,9 @@ public class PlayerModController : MonoBehaviour
     }
     public void OnSetPlayerIns(bool show)
     {
+        PFunc.Log("OnSetPlayerIns", show);
         if (show && (ModVideoPlayerCreater.Instance.isBury|| ItemCreater.Instance.lockPlayer || isSuperMan || isDance || isZombie)) return;
-        // PFunc.Log("OnSetPlayerIns", show);
+    
        if(animator) animator.enabled = show;
        if(spriteRenderers!=null|| spriteRenderers.Count>0)
         {
@@ -288,7 +289,7 @@ public class PlayerModController : MonoBehaviour
     public void OnShowModAnimation(int index)
     {
         if (isDance) return;
-        OnSetPlayerIns(false);
+        OnSetPlayerIns(index==-1);
         for (int i = 0; i < modAnimations.Count; i++) {
             modAnimations[i].gameObject.SetActive(i == index);
         }
@@ -445,7 +446,7 @@ public class PlayerModController : MonoBehaviour
    public bool isDance = false;
     public void OnGuangDance()
     {
-        if (GameStatusController.isDead || Config.isLoading || isDance) return;
+        if (GameStatusController.isDead || Config.isLoading ) return;
         Sound.PlayMusic("Mod/guangbo");
         Config.EnemyStop = true;
         if (PlayerController.Instance != null)
@@ -474,9 +475,9 @@ public class PlayerModController : MonoBehaviour
             atrDance.Update(0f);
         }
         isDance = true;
-        Invoke("OnRestDance", 110);
     }
-    void OnRestDance()
+
+    public void OnRestDance()
     {
         Sound.PlayMusic("background");
         Config.EnemyStop = false;
@@ -490,7 +491,7 @@ public class PlayerModController : MonoBehaviour
     bool isDaom = false;
     public void OnDMDance()
     {
-        if (GameStatusController.isDead || Config.isLoading||isDance) return;
+        if (GameStatusController.isDead || Config.isLoading) return;
         Sound.PlaySound("Mod/dmdm");
         Config.EnemyStop = true;
         if (PlayerController.Instance != null)
@@ -519,11 +520,10 @@ public class PlayerModController : MonoBehaviour
             atrDance.Update(0f);
         }
         isDance = true;
-        Invoke("OnRestDMDance", 4);
+       Invoke("OnRestDMDance", 4);
     }
-    void OnRestDMDance()
+    public void OnRestDMDance()
     {
-
         Config.EnemyStop = false;
         isDance = false;
         OnShowModAnimation(-1);

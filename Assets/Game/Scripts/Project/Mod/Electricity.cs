@@ -13,7 +13,7 @@ public class Electricity : MonoBehaviour
     }
     public void OnStartLazzer()
     {
-        if (ItemCreater.Instance.lockPlayer)
+        if (ItemCreater.Instance.lockPlayer && UIChain.Instance != null && UIChain.Instance.gameObject.activeSelf)
         {
             ChainPlayer.Instance.transform.DOShakePosition(0.5f, 0.2f)
         .SetEase(Ease.OutQuad)

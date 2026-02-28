@@ -34,7 +34,7 @@ public class MonsterCreater : MonoBehaviour
     [SerializeField] private float batchInterval = 0.05f;
 
     public int MonsterCount = 0;
-    public int MaxCanCreateMonster = 300;
+    public int MaxCanCreateMonster = 450;
     public int hasCreateMonster = 0;
     // 统一管理生成状态
     private class MonsterSpawnData
@@ -155,7 +155,7 @@ public class MonsterCreater : MonoBehaviour
     }
 
     /// <summary> 实例化单个怪物 </summary>
-    private GameObject InstantiateSingleMonster(GameObject prefab,Vector3 trans)
+    public GameObject InstantiateSingleMonster(GameObject prefab,Vector3 trans)
     {
         GameObject obj = SimplePool.Spawn(prefab, trans, Quaternion.identity);
         obj.transform.SetParent(modMonsterPatent);

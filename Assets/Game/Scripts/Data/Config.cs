@@ -13,8 +13,14 @@ public static class Config
     public static bool EnemyStop = false;
     public static int FlogCount;
     public static float playerScale=1;
-}                                                                    
-                                      
+    public static int shineCount;
+    public static int ropeCount;
+    public static int succRopeCount;
+    public static int missRopeCount;
+    public static int kubaCount;
+    public static int hasKubaCount;
+}
+
 /// <summary>事件合集 </summary>               
 public enum Events                                          
 {                                                                   
@@ -30,6 +36,9 @@ public enum Events
     OnRestBreakBrick,
     EnemyStopMove,
     OnShowDeadPanel,
+    OnShowShine,
+    OnShowRope,
+    OnShowKubaCount,
 }                                                                  
 // 移动方向                                                 
 public enum MoveDirection                                
@@ -44,4 +53,21 @@ public enum MoveType
     HighRight,
     MaxLeft,
     MaxRight
+}
+
+public enum BarrageState//功能状态
+{
+    Tigger,
+    Ready,
+    Underway,
+    Pause,
+    Finsh,
+    Close,
+}
+
+public enum BarraegExecutType//功能处理状态
+{
+    ReadyExecut,
+    Executing,
+    ExecutEnd,
 }

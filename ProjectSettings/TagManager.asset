@@ -48,6 +48,7 @@ TagManager:
   - Flag
   - PlayerMod
   - ModCollider
+  - brickHit
   layers:
   - Default
   - TransparentFX

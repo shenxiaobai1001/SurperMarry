@@ -165,6 +165,7 @@ public class BarrageController : MonoBehaviour
     /// <param name="task"></param>
     private void ExecuteAction(ActionTask task)
     {
+        BarrageFuncController.Instance.OnAddReadyFunc(task.callName);
         switch (task.callName)
         {
             case "ÎÚ¹êÒ»Ö»":
@@ -350,7 +351,7 @@ public class BarrageController : MonoBehaviour
                 PlayerModController.Instance.OnShowZomBie(-10);
                 break;
             case "¹ã²¥Ìå²Ù":
-                PlayerModController.Instance.OnGuangDance();
+                ItemCreater.Instance.OnDance();
                 break;
             case "µ¶Âí":
                 PlayerModController.Instance.OnDMDance();
@@ -428,6 +429,19 @@ public class BarrageController : MonoBehaviour
                 break;
             case "¿Þ·Ø":
                 ModVideoPlayerCreater.Instance.OnKuFen();
+                break;
+            case "²ÁÆ¤Ð¬":
+                ItemCreater.Instance.OnCreateShoeShine(1);
+                break;
+            case "ÌøÉþ":
+                Config.ropeCount += 1;
+                ItemCreater.Instance.OnCreateRopeSkip(1);
+                break;
+            case "ÌøÉþÃ¤ºÐ":
+                ModVideoPlayerCreater.Instance.OnCreateRopeVideoPlayer();
+                break;
+            case "¶¥ÎÚ¹ê":
+                ItemCreater.Instance.OnCreatePeakKuba(1);
                 break;
         }
     }

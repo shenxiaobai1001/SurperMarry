@@ -47,7 +47,7 @@ public class MangSeng : MonoBehaviour
         if (Vector3.Distance(transform.position, playerTarget.position) < 1.5f)
         {
             kickPlayer = false;
-            if (ItemCreater.Instance.lockPlayer)
+            if (ItemCreater.Instance.lockPlayer && UIChain.Instance != null && UIChain.Instance.gameObject.activeSelf)
             {
                 ChainPlayer.Instance.transform.DOShakePosition(0.5f, 0.2f)
             .SetEase(Ease.OutQuad)

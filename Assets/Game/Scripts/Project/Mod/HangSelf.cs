@@ -62,7 +62,7 @@ public class HangSelf : MonoBehaviour
     }
     void OnReadyDes()
     {
-        ModData.mLife -= 1;
+        //ModData.mLife -= 1;
         if (ItemCreater.Instance.isHang)
         {
             PlayerController.Instance.OnChanleControl(false);

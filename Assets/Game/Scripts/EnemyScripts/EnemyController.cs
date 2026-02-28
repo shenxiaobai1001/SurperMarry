@@ -63,6 +63,8 @@ namespace EnemyScripts
            
         }
 
+        public bool isInit = false;
+
         public void OnBeginMove()
         {
             if (IsInvoking("OnShowDeath"));
@@ -75,7 +77,7 @@ namespace EnemyScripts
             {
                 gameObject.tag = "Koopa";
             }
-             speed = 2;
+            speed = 2;
             if (bodys != null && bodys.Count > 0)
             {
                 for (var i = 0; i < bodys.Count; i++)
@@ -120,6 +122,7 @@ namespace EnemyScripts
             checkGround = true;
             if(isCreate) bodyCollider.SetActive(false);
             //OnCheckHitGround();
+            isInit = true;
         }
         public LayerMask groundLayer; // 障碍物所在的层（如Ground层）
         bool checkGround = true;
@@ -248,6 +251,7 @@ namespace EnemyScripts
 
         public void Die()
         {
+            isInit = false;
             rigidbody2D.isKinematic = false;
             isPatrolling = false;
             canMove = false;
@@ -264,12 +268,13 @@ namespace EnemyScripts
             if (flyFish) flyFish.StopFlight();
             _enemyAnim.SetBool(DieB, true);
        
-            if (CompareTag("Goomba")|| CompareTag("FlyFish"))
+            if (CompareTag("Goomba")|| CompareTag("FlyFish")|| dieByShell)
             {
                 if (destoryObj == null)
                     destoryObj = StartCoroutine(Destroy());
             }
         }
+
         void OnShowDeath()
         {
             if (deadEnableCollider != null)
@@ -277,7 +282,7 @@ namespace EnemyScripts
                 deadEnableCollider.SetActive(true);
             }
         }
-        bool dieByShell = false;
+        [HideInInspector]public  bool dieByShell = false;
         private void OnCollisionEnter2D(Collision2D other)
         {
             // 被火球或龟壳击中
@@ -358,6 +363,7 @@ namespace EnemyScripts
 
         IEnumerator Destroy()
         {
+     
             if (IsInvoking("OnShowDeath"));
             {
                 CancelInvoke("OnShowDeath");
@@ -389,7 +395,7 @@ namespace EnemyScripts
                 MonsterCreater.Instance.OnMinCreates();
             }
             yield return new WaitForSeconds(0.6f);
-
+       
             if (isCreate)
             {
                 SimplePool.Despawn(gameObject);

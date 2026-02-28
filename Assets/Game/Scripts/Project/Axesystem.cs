@@ -21,6 +21,7 @@ public class Axesystem : MonoBehaviour
 
         if (collision.tag.Contains("Player")&& check)
         {
+            Sound.PlaySound("smb_world_clear");
           if(Collder) Collder.SetActive(false);
             Sound.PauseOrPlayVolumeMusic(true);
             Config.isLoading = true;

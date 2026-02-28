@@ -46,6 +46,14 @@ MonoBehaviour:
         FilterRuleName: CollectAll
         AssetTags: 
         UserData: 
+      - CollectPath: Assets/Game/Resources_moved/Config
+        CollectorGUID: 627ca69801790db42b718571bd7e01b5
+        CollectorType: 0
+        AddressRuleName: AddressByFileName
+        PackRuleName: PackDirectory
+        FilterRuleName: CollectAll
+        AssetTags: 
+        UserData: 
     - GroupName: Dep
       GroupDesc: 
       AssetTags: 

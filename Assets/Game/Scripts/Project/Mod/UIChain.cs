@@ -32,7 +32,6 @@ public class UIChain : MonoBehaviour
     }
     public void OnStartMove()
     {
-
         Config.EnemyStop = false;
         for (int i = 0; i < gameObjects.Count; i++)
         {

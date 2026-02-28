@@ -71,7 +71,7 @@ public class Trunck : MonoBehaviour
         if(collision.gameObject.CompareTag("Player")|| collision.gameObject.CompareTag("BigPlayer") || collision.gameObject.CompareTag("UltimateBigPlayer"))
         {
             kickPlayer = false;
-            if (ItemCreater.Instance.lockPlayer)
+            if (ItemCreater.Instance.lockPlayer && UIChain.Instance != null && UIChain.Instance.gameObject.activeSelf)
             {
                 ChainPlayer.Instance.transform.DOShakePosition(0.5f, 0.2f).SetEase(Ease.OutQuad).OnComplete(() => {
                     ChainPlayer.Instance.transform.position = new Vector3(Camera.main.transform.position.x, 5, 0);

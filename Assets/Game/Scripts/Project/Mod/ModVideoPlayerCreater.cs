@@ -145,6 +145,7 @@ public class ModVideoPlayerCreater : MonoBehaviour
     Queue<int> onCreate = new Queue<int>();
     Queue<int> onCreatePsy = new Queue<int>();
     Queue<int> onCreateKoopa = new Queue<int>();
+    Queue<int> onCreateRote = new Queue<int>();
     public void OnCreateDuckVideoPlayer()
     {
         int index = Random.Range(-30, 82);
@@ -184,6 +185,77 @@ public class ModVideoPlayerCreater : MonoBehaviour
         duckPath = getduck ? duckPath : 0;
         onCreateKoopa.Enqueue(duckPath);
         Invoke("OnBeginCreateKoopa", 2.2f);
+    }
+    string nullRope = "GreenScreen/Rope/Null";
+    string getRope = "GreenScreen/Rope/Get";
+    public void OnCreateRopeVideoPlayer()
+    {
+        int index = Random.Range(0, 12);
+        bool getduck = index >= 2;
+        string title = getduck ? getRope : nullRope;
+        int duckPath = 0;
+        switch (index)
+        {
+            case 0:
+                duckPath = 1;
+                break;
+                case 1:
+                duckPath = 2;
+                break;
+            case 2:
+                duckPath = 5;
+                break;
+            case 3:
+                duckPath = 10;
+                break;
+            case 4:
+                duckPath = 20;
+                break;
+            case 5:
+                duckPath = 30;
+                break;
+            case 6:
+                duckPath = 40;
+                break;
+            case 7:
+                duckPath = 49;
+                break;
+            case 8:
+                duckPath = 60;
+                break;
+            case 9:
+                duckPath = 80;
+                break;
+            case 10:
+                duckPath = 88;
+                break;
+            case 11:
+                duckPath = 100;
+                break;
+        }
+
+
+        string path = $"{title}/{duckPath}";
+        OnCreateModVideoPlayer(Vector3.zero, new Vector3(0.75f, 0.75f, 1), Vector3.zero, path, 2);
+        duckPath = getduck ? duckPath : 0;
+        onCreateRote.Enqueue(duckPath);
+        Invoke("OnBeginCreateRote", 2);
+    }
+    void OnBeginCreateRote()
+    {
+        if (onCreateRote == null || onCreateRote.Count <= 0) return;
+        int getduck = onCreateRote.Dequeue();
+        if (getduck > 0)
+        {
+            if(RopeSkip.Instance!=null&& RopeSkip.Instance.gameObject.activeSelf)
+                Config.ropeCount += getduck;
+            else
+            {
+                Config.ropeCount += getduck;
+                ItemCreater.Instance.OnCreateRopeSkip(1);
+            }
+              
+        }
     }
     public int OnGetValue(bool getduck,int index)
     {

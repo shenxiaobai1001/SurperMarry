@@ -203,7 +203,18 @@ public class PlayerModMoveController : MonoBehaviour
             {
                 PlayerModController.Instance.OnChangeState(false);
             }
-            PlayerController.Instance.transform.position = ChainPlayer.Instance. animator.transform.position;
+            if(UIChain.Instance != null && UIChain.Instance.gameObject.activeSelf)
+                PlayerController.Instance.transform.position = ChainPlayer.Instance. animator.transform.position;
+            if(RopeSkip.Instance != null && RopeSkip.Instance.gameObject.activeSelf)
+            {
+                if (PlayerModController.Instance.isKinematic && !Config.isLoading && !GameStatusController.isDead)
+                {
+                    PlayerModController.Instance.OnChangeState(true);
+                    PlayerController.Instance.isHit = false;
+                    PlayerModController.Instance.OnEndHitPos();
+                }
+                PlayerModController.Instance.OnChanleModAni();
+            }
         }
         else
         {
