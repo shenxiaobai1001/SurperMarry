@@ -29,7 +29,6 @@ public class FlogPlayer : MonoBehaviour
     {
         if (!checkFlogTime)
         {
-            PlayerModController.Instance.isDance = false;
             PlayerController.Instance.transform.position = new Vector3(smokePos.position.x,
             smokePos.position.y, smokePos.position.z);
             checkFlogTime = true; 
@@ -76,7 +75,6 @@ public class FlogPlayer : MonoBehaviour
 
     public void OnClose()
     {
-        ItemCreater.Instance.lockPlayer = false;
         PlayerModController.Instance.OnSetPlayerIns(true);
         PlayerModController.Instance.OnChangeState(true);
         PlayerModController.Instance.OnEndHitPos();

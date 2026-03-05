@@ -45,10 +45,10 @@ public class RainbowCat : MonoBehaviour
     {
         if (collision.gameObject.tag.Contains("Player"))
         {
-            if (!ItemCreater.Instance.lockPlayer && !ModVideoPlayerCreater.Instance.isBury)
-            {
+
+            if(!BarrageFuncController.Instance.OnCheckHasHighControl())
                 PlayerController.Instance.OnHalfDieFunc();
-            }
+            
         }
     }
 }

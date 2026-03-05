@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Xml.Serialization;
 using UnityEngine;
 
-public class TCJiao : MonoBehaviour
+public class TCJiao : BarrageFuncBase
 {
     public Transform boomPos;
     public GameObject boom;
@@ -19,8 +19,9 @@ public class TCJiao : MonoBehaviour
         startPos = new Vector3(18, 20);
     }
 
-    public void OnStarMove()
+    public override void OnStart(BarrageValue barrageFuncData, int index)
     {
+        base.OnStart(barrageFuncData, index);
         boomTime = 0;
         time = 0;
         targetSprite.localPosition = startPos;
@@ -61,8 +62,16 @@ public class TCJiao : MonoBehaviour
         {
             CancelInvoke("OnCreateBoom");
         }
+        OnClose();
+    }
+
+    public override void OnClose()
+    {
+        ItemCreater.Instance.tcCount--;
+        base.OnClose();
         SimplePool.Despawn(this.gameObject);
     }
+
     private void OnDestroy()
     {
         if (IsInvoking("OnBeginCreateBoom"))

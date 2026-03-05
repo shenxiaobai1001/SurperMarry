@@ -41,20 +41,11 @@ public class MangSeng : MonoBehaviour
 
     void ChasePlayer()
     {
-        
         // ÏòÍæ¼ÒÒÆ¶¯
         transform.position = Vector3.MoveTowards(transform.position, playerTarget.position, moveSpeed * Time.deltaTime);
         if (Vector3.Distance(transform.position, playerTarget.position) < 1.5f)
         {
             kickPlayer = false;
-            if (ItemCreater.Instance.lockPlayer && UIChain.Instance != null && UIChain.Instance.gameObject.activeSelf)
-            {
-                ChainPlayer.Instance.transform.DOShakePosition(0.5f, 0.2f)
-            .SetEase(Ease.OutQuad)
-            .OnComplete(() => {
-                ChainPlayer.Instance.transform.position = new Vector3(Camera.main.transform.position.x, 5, 0);
-            });
-            }
             int x=isLeft ? 1 : -1;   
             PlayerModMoveController.Instance.TriggerModMove(MoveType.Normal, new Vector3(x,0.5f), 15,0.25f,true,false,1);
             OnClose();

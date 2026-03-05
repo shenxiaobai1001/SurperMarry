@@ -72,7 +72,8 @@ public class GameModController : MonoBehaviour
         PlayerController.Instance.transform.position = new Vector3(randX, randY, 90);
     }
     private Coroutine mainMoveCoroutine;
-    public void OnRandromPass()
+    int barrageIndex = 0;
+    public void OnRandromPass(int index)
     {
         Sound.PlaySound("smb_1-up");
         int value =UnityEngine.Random.Range(0, Config.passName.Length);
@@ -80,12 +81,13 @@ public class GameModController : MonoBehaviour
         string name = Config.passName[value];
         if (mainMoveCoroutine==null)
         {
+            barrageIndex = index;
             ModController.Instance.OnModPause();
             Config.passIndex = value;
             mainMoveCoroutine = StartCoroutine(OnLoadScence(name));
         }
     }
-    public void OnEnterNextPass(int value)
+    public void OnEnterNextPass(int value, int index)
     {
         if (Config.passIndex <=0&& value==-1) return;
         if (Config.passIndex >= Config.passName.Length && value == 1) return;
@@ -104,17 +106,19 @@ public class GameModController : MonoBehaviour
             {
                 Config.passIndex = Config.passName.Length - 1;
             }
+            barrageIndex = index;
             string name = Config.passName[Config.passIndex];
             ModController.Instance.OnModPause();
             mainMoveCoroutine = StartCoroutine(OnLoadScence(name));
         }
     }
 
-    public void OnLoadScene(string name)
+    public void OnLoadScene(string name, int index=0)
     {
         Config.passIndex = Array.IndexOf(Config.passName, name);
         if (mainMoveCoroutine == null)
         {
+            barrageIndex = index;
             ModController.Instance.OnModPause();
             mainMoveCoroutine = StartCoroutine(OnLoadScence(name));
         }
@@ -131,6 +135,7 @@ public class GameModController : MonoBehaviour
             mainMoveCoroutine = StartCoroutine(OnLoadScence(name));
         }
     }
+
     public void OnBeginLoading()
     {
  
@@ -161,5 +166,9 @@ public class GameModController : MonoBehaviour
             OnLoadScene("1-1");
         }
         mainMoveCoroutine = null;
+        if (barrageIndex != 0) {
+            EventManager.Instance.SendMessage(Events.OnBarryExecutEnd, barrageIndex);
+            barrageIndex = 0;
+        }
     }
 }

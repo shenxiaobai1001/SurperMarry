@@ -2,9 +2,8 @@ using DG.Tweening;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using static PlayerModController;
 
-public class QLBI : MonoBehaviour
+public class QLBI : BarrageFuncBase
 {
     public Transform boomPos;
     public GameObject boom;
@@ -19,12 +18,14 @@ public class QLBI : MonoBehaviour
         startPos = new Vector3(-16,-16);
     }
 
-    public void OnStarMove()
+    public override void OnStart(BarrageValue barrageFuncData, int index)
     {
+        base.OnStart(barrageFuncData, index);
         boomTime = 0;
         time = 0;
         targetSprite.localPosition = startPos;
-       targetSprite.DOLocalMove(new Vector3(-6.55f,-6), 0.2f).OnComplete(() => { OnBeginCreateBoom(); });
+        targetSprite.DOLocalMove(new Vector3(-6.55f,-6), 0.2f).OnComplete(() => { OnBeginCreateBoom(); });
+        barrageData.BarrageState = BarrageState.Underway;
     }
 
     void OnBeginCreateBoom()
@@ -32,6 +33,10 @@ public class QLBI : MonoBehaviour
         PlayerModMoveController.Instance.TriggerModMove(MoveType.MaxRight,new Vector3(1,0.5f), 10, allTime, true);
         CameraShaker.Instance.StartShake(allTime);
         StartCoroutine(OnCreateBoom());
+        if (BarrageFuncController.Instance.OnCheckBarrageFuncByName("ÌúÁ´"))
+        {
+            Config.chainCount -= 2;
+        }
     }
 
     IEnumerator OnCreateBoom()
@@ -58,6 +63,13 @@ public class QLBI : MonoBehaviour
         {
             CancelInvoke("OnCreateBoom");
         }
+        OnClose();
+    }
+
+    public override void OnClose()
+    {
+        ItemCreater.Instance.qlCount--;
+        base.OnClose();
         SimplePool.Despawn(this.gameObject);
     }
     private void OnDestroy()

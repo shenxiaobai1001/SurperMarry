@@ -11,7 +11,6 @@ GameObject:
   - component: {fileID: 6480719864973831405}
   - component: {fileID: 3680354138825096773}
   - component: {fileID: 6648722082565631136}
-  - component: {fileID: 6869065865109480059}
   m_Layer: 8
   m_Name: ShoeShine
   m_TagString: Untagged
@@ -107,21 +106,3 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
---- !u!114 &6869065865109480059
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7623274616757050508}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b198441debf0e1a47ba22fec24bc8890, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  animator: {fileID: 6648722082565631136}
-  spriteRenderer: {fileID: 3680354138825096773}
-  small: {fileID: 21300000, guid: 2a56b79daf9c4254586ec183bd7f39d7, type: 3}
-  big: {fileID: 21300000, guid: 6a1a662bbf1453c4d8c61178a1ab0e86, type: 3}
-  red: {fileID: 21300000, guid: d32aa0ed37873b5478b3998677236a7a, type: 3}
-  balck: {fileID: 21300000, guid: a442647e01398bd439660967d4da100f, type: 3}

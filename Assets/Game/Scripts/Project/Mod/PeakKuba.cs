@@ -7,22 +7,10 @@ using UnityEngine;
 
 public class PeakKuba : MonoBehaviour
 {
-    public static PeakKuba Instance;
     public Transform kubaPos;
     public Transform kubaCreateos;
     public GameObject KUBA;
-    void Awake()
-    {
-        if (Instance == null)
-        {
-            Instance = this;
-        }
-        else
-        {
-            Destroy(gameObject);
-            return;
-        }
-    }
+
     private void Start()
     {
         currentY = transform.position.y;
@@ -40,11 +28,6 @@ public class PeakKuba : MonoBehaviour
             GameObject kuba = MonsterCreater.Instance.InstantiateSingleMonster(KUBA, kubaCreateos.position);
             kuba.GetComponent<Rigidbody2D>().AddForce(new Vector2(0, 8), ForceMode2D.Impulse);
             kuba.GetComponent<EnemyController>().OnBeginMove();
-            if (Config.kubaCount <=0)
-            {
-                EventManager.Instance.SendMessage(Events.OnShowKubaCount, false);
-                SimplePool.Despawn(gameObject);
-            }
         }
     }
 

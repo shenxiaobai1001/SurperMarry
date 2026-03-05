@@ -63,18 +63,6 @@ public class HangSelf : MonoBehaviour
     void OnReadyDes()
     {
         //ModData.mLife -= 1;
-        if (ItemCreater.Instance.isHang)
-        {
-            PlayerController.Instance.OnChanleControl(false);
-            ItemCreater.Instance.isHang = false;
-            OnBreakeHang();
-            PlayerModController.Instance.OnCancelHangSelf();
-        }
-        if (!ItemCreater.Instance.lockPlayer&& !ModVideoPlayerCreater.Instance.isBury)
-        {
-            PlayerController.Instance.OnHalfDieFunc();
-        }
-
         SimplePool.Despawn(gameObject);
     }
 }

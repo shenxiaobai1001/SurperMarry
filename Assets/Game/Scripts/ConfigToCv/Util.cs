@@ -104,6 +104,7 @@ public class ConfigTableConvert<T, D>
     {
         bool result = false;
         TextReader file = Util.LoadTextFromRes(path);
+        PFunc.Log("Load",file.ToString());
         if (file == null)
         {
             UnityEngine.Debug.LogError("Load Config File Error:" + path);
@@ -129,7 +130,6 @@ public class ConfigTableConvert<T, D>
     public void _Load(TextReader input, ParseFunc parseFunc = null, bool useID = true)
     {
         m_configList = Sinbad.CsvUtil.LoadObjects<T>(input, false);
-
         foreach (T obj in m_configList)
         {
             if (useID && m_configTable.ContainsKey(obj.id))

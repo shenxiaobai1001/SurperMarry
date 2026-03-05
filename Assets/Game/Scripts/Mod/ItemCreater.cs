@@ -60,25 +60,27 @@ public class ItemCreater : MonoBehaviour
         public int batchSize = 10;
         public float batchInterval = 0.1f;
         public bool isCreating = false;
+        public int barrageIndex;
         public Action<object> endAction;
 
-        public ItemSpawnData(string type, int batchSize, float batchInterval,Action<object> endAction=null)
+        public ItemSpawnData(string type, int batchSize, float batchInterval, int barrageIndex, Action<object> endAction=null)
         {
             this.type = type;
             this.batchSize = batchSize;
             this.endAction = endAction;
             this.batchInterval = batchInterval;
+            this.barrageIndex = barrageIndex;
         }
     }
 
     private Dictionary<GameObject, ItemSpawnData> spawnDataDict = new Dictionary<GameObject, ItemSpawnData>();
 
     /// <summary>统一生成怪物方法 </summary>
-    public void CreateItem(GameObject itemPrefab, int count, string type, int batchSize, float batchInterval=0.1f, Action<object> endAction = null)
+    public void CreateItem(GameObject itemPrefab, int count, string type, int batchSize, int barrageIndex, float batchInterval=0.1f,  Action<object> endAction = null)
     {
         if (!spawnDataDict.ContainsKey(itemPrefab))
         {
-            spawnDataDict[itemPrefab] = new ItemSpawnData(type, batchSize, batchInterval, endAction);
+            spawnDataDict[itemPrefab] = new ItemSpawnData(type, batchSize, batchInterval, barrageIndex, endAction);
         }
 
         ItemSpawnData data = spawnDataDict[itemPrefab];
@@ -174,14 +176,6 @@ public class ItemCreater : MonoBehaviour
                 value = UnityEngine.Random.Range(-8, 8);
                 createPos = new Vector3(createPos.x + value, createPos.y, valueZ);
                 break;
-            case "QiLinBi":
-                Sound.PlaySound("Mod/QLBi");
-                createPos = vector;
-                break;
-            case "TCJiao":
-                Sound.PlaySound("Mod/TCJiao");
-                createPos = vector;
-                break;
             case "UPFire":
                 createPos = new Vector3(Camera.main.transform.position.x, createPos.y, valueZ);
                 break;
@@ -269,16 +263,6 @@ public class ItemCreater : MonoBehaviour
                 Meteorite meteorite = obj.GetComponent<Meteorite>();
                 meteorite.OnBeginMove();
                 break;
-            case "QiLinBi":
-                QLBI qLBI = obj.GetComponent<QLBI>();
-                qLBI.OnStarMove();
-                qlCount--;
-                break;
-            case "TCJiao":
-                TCJiao tCJiao = obj.GetComponent<TCJiao>();
-                tCJiao.OnStarMove();
-                tcCount--;
-                break;
             case "UPFire":
                 Sound.PlaySound("smb_1-up");
                 Sound.PlaySound("smb_bowserfire");
@@ -331,7 +315,6 @@ public class ItemCreater : MonoBehaviour
                 break;
             case "Flog":
                 PlayerController.Instance.isHit = true;
-                lockPlayer = true;
                 UIFlog.Instance.OnStartMove();
                 break;
         }
@@ -347,222 +330,107 @@ public class ItemCreater : MonoBehaviour
     }
 
     // 保留原有接口，内部调用统一方法
-    public void OnCreateBanana(int count) => CreateItem(banana, count, "banana", 1);
-    public void OnCreateManyArrow(int count) => CreateItem(manyArrow, count, "manyArrow", 1);
+    public void OnCreateBanana(int count, int intex) => CreateItem(banana, count, "banana", 1, intex);
+    public void OnCreateManyArrow(int count, int intex) => CreateItem(manyArrow, count, "manyArrow", 1, intex);
     public int allReadyCreateDuck = 0;
     public int allCreateDuck = 0;
-    public void OnCreateDuck(int count)
+    public void OnCreateDuck(int count, int intex)
     {
-        //UIDuck.Instance.OnSetCenter(true);
         allReadyCreateDuck += count; 
-        CreateItem(duck, count, "duck", 1,0.05f);
+        CreateItem(duck, count, "duck", 1, intex, 0.05f);
     }
-    public void OnCreatePsyDuck(int count)
+    public void OnCreatePsyDuck(int count, int intex)
     {
-        //UIDuck.Instance.OnSetCenter(true);
         allReadyCreateDuck += count;
-        CreateItem(psyDuck, count, "psyDuck", 1, 0.05f);
-    }
-    int hangCount = 0;
-    bool isCreateHang = false;
-    public void OnCreateHangSelf()
-    {
-        hangCount++;
-      
-        if (!isCreateHang)
-        {
-            isCreateHang = true;
-            StartCoroutine(OnHangSelfQ());
-        }
+        CreateItem(psyDuck, count, "psyDuck", 1, intex, 0.05f);
     }
 
-    IEnumerator OnHangSelfQ()
-    {
-        while (hangCount>0) {
-            hangCount--;
-            Vector3 vectorPlayer = PlayerController.Instance.transform.position;
-            float value = GameStatusController.IsHidden ? 32 : 0;
-            Vector3 createPos = new Vector3(vectorPlayer.x - 2, value);
-            GameObject obj = SimplePool.Spawn(hangself, createPos, Quaternion.identity);
-            obj.transform.SetParent(transform);
-            Sound.PlaySound("Mod/hangself");
-            isHang = true;
-            PlayerModController.Instance.OnHangSelf();
-            yield return new WaitForSeconds(7);
-        }
-        isCreateHang = false;
-        hangCount = 0;
-    }
-
-    public void OnCreateMangSeng(int count) {
-
-        if (lockPlayer && UIChain.Instance != null && UIChain.Instance.gameObject.activeSelf) Config.chainCount++;
-        CreateItem(mangseng, count, "mangseng", 1);
-    }
-    public void OnCreateRollStone(int count) => CreateItem(rollStone, count, "rollStone", 1);
-    public void OnCreateRollArrow(int count) => CreateItem(rollArrow, count, "rollArrow", 1);
-    public void OnCreateMeteorite(int count) => CreateItem(Meteorite, count, "Meteorite", 1);
+    public void OnCreateRollStone(int count, int intex) => CreateItem(rollStone, count, "rollStone", 1, intex);
+    public void OnCreateRollArrow(int count, int intex) => CreateItem(rollArrow, count, "rollArrow", 1, intex);
+    public void OnCreateMeteorite(int count, int intex) => CreateItem(Meteorite, count, "Meteorite", 1, intex);
 
     public int qlCount=0;
-    public void OnCreateQiLinBi(int count)
-    {
-        if (lockPlayer)
-        {
-            if (UIChain.Instance != null && UIChain.Instance.gameObject.activeSelf)
-            {
-                Config.chainCount -= 2;
-                if (Config.chainCount <= 0)
-                {
-                    Config.chainCount = 0;
-                    UIChain.Instance.OnChekcMinZero();
-                }
-            }
-    
-        }
-        qlCount += count;
-        CreateItem(QiLinBi, count, "QiLinBi", 1);
-    }
     public int tcCount = 0;
-    public void OnCreateTCJiao(int count)
-    {
-        if (lockPlayer&& UIChain.Instance != null&& UIChain.Instance.gameObject.activeSelf) Config.chainCount += 2;
-        tcCount += count;
-        CreateItem(TCJiao, count, "TCJiao", 1);
-    }
     
-    public void OnCreateUPFire(int count) => CreateItem(UPFire, count, "UPFire", 1);
-    public void OnCreateSingleUPFire(int count) => CreateItem(singleUPFire, count, "singleUPFire", 1);
-    public void OnCreateDownFire(int count) => CreateItem(downFire, count, "DownFire", 1);
-    public bool lockPlayer = false;
-    public void OnCreateChainPlayer(int count) {
-        if (PlayerController.Instance != null)
-            PlayerController.Instance.OnChanleControl(true);
-        lockPlayer = true;
-        UIChain.Instance.OnStartMove();
-        Sound.PlaySound("Mod/lock");
-        CreateItem(chainPlayer, count, "chainPlayer", 1);
-    }
-    public void OnCreateShoeShine(int count)
+    public void OnCreateUPFire(int count, int intex) => CreateItem(UPFire, count, "UPFire", 1, intex);
+    public void OnCreateSingleUPFire(int count, int intex) => CreateItem(singleUPFire, count, "singleUPFire", 1, intex);
+    public void OnCreateDownFire(int count, int intex) => CreateItem(downFire, count, "DownFire", 1, intex);
+
+    public void OnCreateShoeShine(int count, int intex)
     {
         if (PlayerController.Instance != null)
             PlayerController.Instance.OnChanleControl(true);
-        lockPlayer = true;
+
         EventManager.Instance.SendMessage(Events.OnShowShine,true);
-        CreateItem(shocShine, count, "shoeShine", 1);
+        CreateItem(shocShine, count, "shoeShine", 1, intex);
     }
-    public void OnCreateRopeSkip(int count)
+    public void OnCreateRopeSkip(int count, int intex)
     {
         if (PlayerController.Instance != null)
             PlayerController.Instance.OnHorLock(false);
-        lockPlayer = true;
         EventManager.Instance.SendMessage(Events.OnShowRope, true);
         if(RopeSkip.Instance==null|| !RopeSkip.Instance.gameObject.activeSelf)
         {
-            CreateItem(ropeSkip, count, "ropeSkip", 1);
+            CreateItem(ropeSkip, count, "ropeSkip", 1, intex);
         }
     }
-    public void OnCreatePeakKuba(int count)
+    public void OnCreatePeakKuba(int count, int intex)
     {
         Config.kubaCount += 5;
-        if (PeakKuba.Instance == null || !PeakKuba.Instance.gameObject.activeSelf)
-        {
-            GameObject obj = SimplePool.Spawn(peakKuba, PlayerController.Instance.transform.position, Quaternion.identity);
-            obj.SetActive(true);
-        }
-            
+
         EventManager.Instance.SendMessage(Events.OnShowKubaCount, true);
     }
-    public void OnCreateLazzer(int count)
+    public void OnCreateLazzer(int count, int intex)
     {
-        if ( lockPlayer && UIChain.Instance != null && UIChain.Instance.gameObject.activeSelf) Config.chainCount++;
+        if (BarrageFuncController.Instance.OnCheckBarrageFuncByName("铁链")) Config.chainCount++;
         Sound.PlaySound("Mod/lazzer");
-        CreateItem(Electricity, count, "Electricity", 1);
+        CreateItem(Electricity, count, "Electricity", 1, intex);
     }
     public GameObject bigMG;
-    public void OnCreateBigMG(int count)
+    public void OnCreateBigMG(int count, int intex)
     {
-         CreateItem(bigMG, count, "bigMG", 1);
+         CreateItem(bigMG, count, "bigMG", 1, intex);
     }
     public bool isHang = false;
 
     public GameObject DaoQI;
-    public void OnCreateDaoQI(int count)
+    public void OnCreateDaoQI(int count, int intex)
     {
-        CreateItem(DaoQI, count, "DaoQI", 1);
+        CreateItem(DaoQI, count, "DaoQI", 1, intex);
     }
     public GameObject bigGear;
-    public void OnCreateBigGear(int count)
+    public void OnCreateBigGear(int count, int intex)
     {
         Sound.PlaySound("Mod/gear");
-        CreateItem(bigGear, count, "bigGear", 1);
+        CreateItem(bigGear, count, "bigGear", 1, intex);
     }
     public GameObject trunck;
-    public void OnCreateTrunck(int count)
+    public void OnCreateTrunck(int count, int intex)
     {
-        CreateItem(trunck, count, "trunck", 1);
+        CreateItem(trunck, count, "trunck", 1, intex);
     }
     public GameObject Flog;
-    public void OnCreateFlog(int count)
+    public void OnCreateFlog(int count, int intex)
     {
         if (PlayerController.Instance != null)
             PlayerController.Instance.OnChanleControl(true);
-        CreateItem(Flog, count, "Flog", 1);
+        CreateItem(Flog, count, "Flog", 1, intex);
     }
     public GameObject huoQuan;
-    public void OnCreatehuoQuan(int count)
+    public void OnCreatehuoQuan(int count, int intex)
     {
-        CreateItem(huoQuan, count, "huoquan", 1);
+        CreateItem(huoQuan, count, "huoquan", 1, intex);
     }
     public GameObject Rattan;
-    public void OnCreateRattan(int count)
+    public void OnCreateRattan(int count, int intex)
     {
         Sound.PlaySound("smb_1-up");
-        CreateItem(Rattan, count, "Rattan", 1);
+        CreateItem(Rattan, count, "Rattan", 1, intex);
     }
     public GameObject zhiqian;
-    public void OnCreateZhiQian(int count)
+    public void OnCreateZhiQian(int count, int intex)
     {
-        CreateItem(zhiqian, count, "zhiqian", 1);
+        CreateItem(zhiqian, count, "zhiqian", 1, intex);
     }
 
-    int danceCount = 0;
-    bool isCreateDance = false;
-
-    public void OnDance()
-    {
-        danceCount++;
-        if (!isCreateDance)
-        {
-            isCreateDance = true;
-            StartCoroutine(OnDanceIe());
-        }
-    }
-
-    IEnumerator OnDanceIe()
-    {
-        if (Config.isLoading)
-        {
-            yield return new WaitUntil(() => !Config.isLoading);
-        }
-        if (GameStatusController.isDead)
-        {
-            yield return new WaitUntil(() => !GameStatusController.isDead);
-        }
-        while (danceCount>0) {
-            danceCount--; 
-            if (Config.isLoading)
-            {
-                yield return new WaitUntil(() => !Config.isLoading);
-            }
-            if (GameStatusController.isDead)
-            {
-                yield return new WaitUntil(() => !GameStatusController.isDead);
-            }
-            PlayerModController.Instance.OnGuangDance();
-            yield return new  WaitForSeconds(109);
-        }
-        PlayerModController.Instance.OnRestDance();
-        isCreateDance = false;
-        danceCount = 0;
-    }
 }

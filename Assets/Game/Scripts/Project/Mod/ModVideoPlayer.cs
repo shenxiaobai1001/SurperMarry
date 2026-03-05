@@ -32,7 +32,7 @@ public class ModVideoPlayer : MonoBehaviour
         center.transform.localEulerAngles = rotate;
         pathTitle = path;
         this.callback = callback;
-       OnInitPlayer();
+        OnInitPlayer();
         if (mCanvas) mCanvas.sortingLayerName = layer;  // Sorting Layer Ãû³Æ
         if (mCanvas) mCanvas.sortingOrder = sortingOrder;         // Order in Laye
         OnBeginGetVideo();

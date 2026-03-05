@@ -91,7 +91,6 @@ public class RopeSkip : MonoBehaviour
             Sound.PlayMusic("background");
             Sound.PauseOrPlayVolumeMusic(false);
             PlayerModController.Instance.OnSetModAniIns(true);
-            ItemCreater.Instance.lockPlayer = false;
             PlayerController.Instance.isHit = false;
             SimplePool.Despawn(gameObject);
             PlayerModController.Instance.OnSetPlayerIns(true);

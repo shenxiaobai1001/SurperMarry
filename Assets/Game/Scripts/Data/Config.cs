@@ -19,6 +19,9 @@ public static class Config
     public static int missRopeCount;
     public static int kubaCount;
     public static int hasKubaCount;
+    public static float superManTime;
+    public static float allZombieTime;
+    public static float maskTime;
 }
 
 /// <summary>事件合集 </summary>               
@@ -39,6 +42,9 @@ public enum Events
     OnShowShine,
     OnShowRope,
     OnShowKubaCount,
+    OnBarryExecutEnd,
+    HangSelfByKick,
+    OnMangSengKick,
 }                                                                  
 // 移动方向                                                 
 public enum MoveDirection                                

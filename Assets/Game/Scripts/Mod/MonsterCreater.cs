@@ -43,11 +43,13 @@ public class MonsterCreater : MonoBehaviour
         public int count = 0;
         public int batchSize = 10;
         public bool isCreating = false;
+        public int barryName;
 
-       public MonsterSpawnData(string type, int batchSize)
+       public MonsterSpawnData(string type, int batchSize, int barryName)
         {
             this.type = type;
-            this.batchSize = batchSize; 
+            this.batchSize = batchSize;
+            this.barryName = barryName;
         }
     }
 
@@ -56,12 +58,12 @@ public class MonsterCreater : MonoBehaviour
     /// <summary>
     /// 统一生成怪物方法
     /// </summary>
-    public void CreateMonster(GameObject monsterPrefab, int count,string type, int batchSize)
+    public void CreateMonster(GameObject monsterPrefab, int count,string type, int batchSize, int barrageName)
     {
         MonsterCount += count;
         if (!spawnDataDict.ContainsKey(monsterPrefab))
         {
-            spawnDataDict[monsterPrefab] = new MonsterSpawnData(type, batchSize);
+            spawnDataDict[monsterPrefab] = new MonsterSpawnData(type, batchSize, barrageName);
         }
 
         MonsterSpawnData data = spawnDataDict[monsterPrefab];
@@ -131,6 +133,7 @@ public class MonsterCreater : MonoBehaviour
         }
 
         data.isCreating = false;
+        EventManager.Instance.SendMessage(Events.OnBarryExecutEnd, data.barryName);
     }
 
     Vector3 OnGetCreatePos(MonsterSpawnData data)
@@ -170,10 +173,10 @@ public class MonsterCreater : MonoBehaviour
     }
 
     // 保留原有接口，内部调用统一方法
-    public void OnCreateTortoise(int count) => CreateMonster(tortoise, count, "tortoise",2);
-    public void OnCreateMushroom(int count) => CreateMonster(mushroom, count, "mushroom", 2);
-    public void OnCreateFlyKoopa(int count) => CreateMonster(FlyKoopa, count, "FlyKoopa", 1);
-    public void OnCreateFlyFish(int count) => CreateMonster(flyFish, count, "flyFish", 1);
-    public void OnCreateBeatles(int count) => CreateMonster(Beatles, count, "Beatles", 1);
+    public void OnCreateTortoise(int count, int barrageName) => CreateMonster(tortoise, count, "tortoise",2, barrageName);
+    public void OnCreateMushroom(int count, int barrageName) => CreateMonster(mushroom, count, "mushroom", 2, barrageName);
+    public void OnCreateFlyKoopa(int count, int barrageName) => CreateMonster(FlyKoopa, count, "FlyKoopa", 1, barrageName);
+    public void OnCreateFlyFish(int count, int barrageName) => CreateMonster(flyFish, count, "flyFish", 1, barrageName);
+    public void OnCreateBeatles(int count, int barrageName) => CreateMonster(Beatles, count, "Beatles", 1, barrageName);
 
 }

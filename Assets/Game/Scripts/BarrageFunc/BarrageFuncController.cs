@@ -1,6 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
+using SystemScripts;
 using UnityEngine;
+using static UnityEngine.Rendering.DebugUI;
 
 public class BarrageFuncController : MonoBehaviour
 {
@@ -17,36 +19,49 @@ public class BarrageFuncController : MonoBehaviour
             return;
         }
     }
-
-    [HideInInspector] 
+    private object _lockExecutFunc = new object(); // 专门用于 executFunc 的锁
+    [HideInInspector]
     public List<BarrageValue> readyFunc = new List<BarrageValue>();//等待执行的功能 
     [HideInInspector]
-    public List<BarrageValue> executFunc  = new List<BarrageValue>();//正在执行的功能 
-    [HideInInspector]
-    public Dictionary<int, List<BarrageValue>> groupFunc= new Dictionary<int, List<BarrageValue>>();//正在执行的组排功能
-
+    public Dictionary<int, BarrageValue> executFunc  = new Dictionary<int, BarrageValue>();//正在执行的功能 
     Dictionary<int, BarrageFuncData> allBarrage;
 
     bool hasBarrage = false;
     bool checkReadyFunck = false;
-    BarrageFuncData executingBarrageData = null;
-
+    int barrageIndex = 0;
 
     void Start()
     {
         GameData.Instance.Init();
         allBarrage = GameData.Instance.barrage_info.GetAllInfo();
+        EventManager.Instance.AddListener(Events.OnBarryExecutEnd, OnBarryExecutEnd);
+    }
 
+    void OnBarryExecutEnd(object msg)
+    {
+        int index = (int) msg;
+        lock (_lockExecutFunc)
+        {
+            if (executFunc != null && executFunc.Count > 0)
+            {
+                executFunc.Remove(index);
+            }
+        }
+    }
 
+    private void OnDestroy()
+    {
+        EventManager.Instance.RemoveListener(Events.OnBarryExecutEnd, OnBarryExecutEnd);
     }
 
     /// <summary> 触发弹幕功能 </summary>
     public void OnAddReadyFunc(string value)
     {
         if (readyFunc == null) readyFunc = new List<BarrageValue>();
-        if (executFunc == null) new Dictionary<BarrageValue, BarraegExecutType>();
+        if (executFunc == null) executFunc = new Dictionary<int, BarrageValue>();
 
         var data = GameData.Instance.barrage_info.GetInfo(value);
+        PFunc.Log("触发弹幕功能",value, data);
 
         BarrageValue barrageValue = new BarrageValue
         {
@@ -56,50 +71,33 @@ public class BarrageFuncController : MonoBehaviour
             barraegExecutType = BarraegExecutType.ReadyExecut,
         };
 
-        if (data.type==1 && data.group==0)//生成物体
+        if ((OnCheckHighGroupFunc(data) || OnCheckHighLevelFunc(data) || OnCheckQueueLevel(data))
+            && data.queuestate == 0)
         {
-            executFunc.Add(barrageValue);
-            return;
-        }
-
-        if (OnCheckHighGroupFunc(data))
-        {
-            readyFunc.Add(barrageValue);
-            if (!checkReadyFunck)
-            {
-                checkReadyFunck = true;
-                StartCoroutine(OnCheckReadyFunc());
-            }
-        }
-       else if (OnCheckHighLevelFunc(data))//如果正在执行的功能等级更高
-        {
-            readyFunc.Add(barrageValue);
-            if (!checkReadyFunck)
-            {
-                checkReadyFunck = true;
-                StartCoroutine(OnCheckReadyFunc());
-            }
+            OnAddReadFunc();
         }
         else
         {
-            executFunc.Add(barrageValue);
-        }
-        hasBarrage = true;
-    }
-
-    void OnDisposeBarrageByType(BarrageValue barrageValue)
-    {
-        if (barrageValue.barrageFuncData.group!=0)
-        {
-            int group = barrageValue.barrageFuncData.group;
-
-            if (groupFunc.ContainsKey(group))
+            lock (_lockExecutFunc)
             {
-                groupFunc[group].Add(barrageValue);
+                barrageIndex++;
+                executFunc.Add(barrageIndex, barrageValue);
             }
-            else
+        }
+
+        if (!hasBarrage)
+        {
+            hasBarrage = true;
+            StartCoroutine(OnExecutFunc()); 
+        }
+
+        void OnAddReadFunc( )
+        {
+            readyFunc.Add(barrageValue);
+            if (!checkReadyFunck)
             {
-                groupFunc.Add(group,new List<BarrageValue> { barrageValue });
+                checkReadyFunck = true;
+                StartCoroutine(OnCheckReadyFunc());
             }
         }
     }
@@ -108,27 +106,46 @@ public class BarrageFuncController : MonoBehaviour
     {
         while (executFunc.Count > 0)
         {
-            //foreach (var kvp in readyFunc)
-            //{
-            //    if (!OnCheckHighLevelFunc(kvp.barrageFuncData.type, kvp.barrageFuncData.level))
-            //    {
-            //        temporaryFunc.Add(kvp);
-            //    }
-            //}
-            //if (temporaryFunc != null && temporaryFunc.Count > 0)
-            //{
-            //    foreach (var kvp in temporaryFunc)
-            //    { 
-            //        if (readyFunc.Contains(kvp))
-            //        {
-            //            readyFunc.Remove(kvp);
-            //            executFunc.Add(kvp);
-            //            BarrageExecutting.OnExecutingBarrage(kvp.name);
-            //        }
-            //    }
-            //}
+            List<KeyValuePair<int, BarrageValue>> copy;
+            lock (_lockExecutFunc)
+            {
+                // 创建 executFunc 的副本
+                copy = new List<KeyValuePair<int, BarrageValue>>(executFunc);
+            }
+            if (Config.isLoading)
+            {
+                yield return new WaitUntil(() => !Config.isLoading);
+            }
+            if (GameStatusController.IsDead)
+            {
+                yield return new WaitUntil(() => !GameStatusController.IsDead);
+            }
+            foreach (var kvp in copy)
+            {
+                if (kvp.Value.barraegExecutType == BarraegExecutType.ReadyExecut)
+                {
+                    if (Config.isLoading)
+                    {
+                        yield return new WaitUntil(() => !Config.isLoading);
+                    }
+                    if (GameStatusController.IsDead)
+                    {
+                        yield return new WaitUntil(() => !GameStatusController.IsDead);
+                    }
+                    BarrageExecutting.OnExecutingBarrage(kvp.Value.name, kvp.Key, kvp.Value);
+                    lock (_lockExecutFunc)
+                    {
+                        // 修改值前确保键仍存在
+                        if (executFunc.ContainsKey(kvp.Key))
+                        {
+                            executFunc[kvp.Key].barraegExecutType = BarraegExecutType.Executing;
+                        }
+                    }
+                }
+            }
             yield return new WaitForSeconds(0.1f);
         }
+        hasBarrage = false;
     }
 
     IEnumerator OnCheckReadyFunc()
@@ -138,11 +155,22 @@ public class BarrageFuncController : MonoBehaviour
         {
             foreach (var kvp in readyFunc)
             {
-                //if (!OnCheckHighLevelFunc(kvp.barrageFuncData.type))
-                //{
-                //    temporaryFunc.Add(kvp);
-                //}
+                if (!OnCheckHighGroupFunc(kvp.barrageFuncData)//没有同组更高
+                    && !OnCheckHighLevelFunc(kvp.barrageFuncData)//没有同级更高
+                    && !OnCheckQueueLevel(kvp.barrageFuncData))//没有自我排队
+                {
+                    barrageIndex++;
+                    executFunc.Add(barrageIndex,kvp);
+                    temporaryFunc.Add(kvp);
+                    if (!hasBarrage)
+                    {
+                        hasBarrage = true;
+                        StartCoroutine(OnExecutFunc());
+                    }
+                    yield return null;
+                }
             }
+
             if (temporaryFunc != null && temporaryFunc.Count > 0)
             {
                 foreach (var kvp in temporaryFunc)
@@ -150,81 +178,166 @@ public class BarrageFuncController : MonoBehaviour
                     if (readyFunc.Contains(kvp))
                     {
                         readyFunc.Remove(kvp);
-                      //  executFunc.Add(kvp);
-                        BarrageExecutting.OnExecutingBarrage(kvp.name);
                     }
                 }
             }
+
+            temporaryFunc?.Clear();
             yield return new WaitForSeconds(0.1f);
         }
+        checkReadyFunck = false;
     }
 
+    /// <summary> 检测有没有同级但执行等级更高 </summary>
     public bool OnCheckHighGroupFunc(BarrageFuncData data)
     {
         bool isHigh = false;
-
-        if (executFunc != null && executFunc.Count > 0)
+        if (data.group != 0)
         {
-            foreach (var kvp in executFunc)
+            List<KeyValuePair<int, BarrageValue>> copy;
+            lock (_lockExecutFunc)
             {
-                if (kvp.barrageFuncData.group == data.group)
+                copy = new List<KeyValuePair<int, BarrageValue>>(executFunc);
+            }
+            foreach (var kvp in copy)
+            {
+                if (kvp.Value.barrageFuncData.group == data.group)
                 {
-                    isHigh = kvp.barrageFuncData.executionlevel > data.executionlevel;
+                    isHigh = kvp.Value.barrageFuncData.executionlevel > data.executionlevel;
+                    if (isHigh) break;
                 }
             }
         }
         return isHigh;
     }
 
-    /// <summary>检测当前是否有正在执行的同类行更高级别 </summary>
+    /// <summary> 检测有没有同级但执行等级更高 </summary>
     public bool OnCheckHighLevelFunc(BarrageFuncData data)
     {
         bool isHigh = false;
-
-        if (executFunc != null && executFunc.Count > 0)
+        List<KeyValuePair<int, BarrageValue>> copy;
+        lock (_lockExecutFunc)
         {
-            foreach (var kvp in executFunc)
+            copy = new List<KeyValuePair<int, BarrageValue>>(executFunc);
+        }
+        foreach (var kvp in copy)
+        {
+            if (kvp.Value.barrageFuncData.type != data.type) continue;
+            switch (kvp.Value.barrageFuncData.type)
             {
-                switch (kvp.barrageFuncData.type)
-                {
-                    case 1:
-                            isHigh = kvp.barrageFuncData.createlevel > data.createlevel;
-                        break;
-                    case 2:
-                        isHigh = kvp.barrageFuncData.movelevel > data.movelevel;
-                        break;
-                    case 3:
-                        isHigh = kvp.barrageFuncData.controllevel > data.controllevel;
-                        break;
-                    case 4:
-                        isHigh = false;
-                        break;
-                }
-            
+                case 1:
+                    isHigh = kvp.Value.barrageFuncData.createlevel > data.createlevel;
+                    break;
+                case 2:
+                    isHigh = kvp.Value.barrageFuncData.movelevel > data.movelevel;
+                    break;
+                case 3:
+                    isHigh = kvp.Value.barrageFuncData.controllevel > data.controllevel;
+                    break;
+                case 4:
+                    isHigh = false;
+                    break;
             }
+            if (isHigh) break;
+        }
+        return isHigh;
+    }
+    /// <summary> 检测有没有同功能排队 </summary>
+    public bool OnCheckQueueLevel(BarrageFuncData data)
+    {
+        bool isHigh = false;
+        if (data.queue == 1)
+        {
+            List<KeyValuePair<int, BarrageValue>> copy; 
+            lock (_lockExecutFunc)
+            {
+                copy = new List<KeyValuePair<int, BarrageValue>>(executFunc);
+            }
+            foreach (var kvp in copy)
+            {
+                isHigh = kvp.Value.barrageFuncData.name == data.name;
+                if (isHigh) break;
+            }
+        }
+       // PFunc.Log("OnCheckQueueLevel", data.name, isHigh);
+        return isHigh;
+    }
+
+    /// <summary> 检测有没有强控以上的功能在触发 </summary>
+    public bool OnCheckHasHighControl(BarrageFuncData data)
+    {
+        bool isHigh = false;
+        List<KeyValuePair<int, BarrageValue>> copy;
+        lock (_lockExecutFunc)
+        {
+            copy = new List<KeyValuePair<int, BarrageValue>>(executFunc);
+        }
+        foreach (var kvp in copy)
+        {
+            isHigh = kvp.Value.name!= data.name && kvp.Value.barrageFuncData.type >= 3;
+            if (isHigh) break;
+        }
+        return isHigh;
+    }    
+    /// <summary> 检测有没有强控以上的功能在触发 </summary>
+    public bool OnCheckHasHighControl()
+    {
+        bool isHigh = false;
+        List<KeyValuePair<int, BarrageValue>> copy;
+        lock (_lockExecutFunc)
+        {
+            copy = new List<KeyValuePair<int, BarrageValue>>(executFunc);
+        }
+        foreach (var kvp in copy)
+        {
+            isHigh =  kvp.Value.barrageFuncData.type >= 3 && (kvp.Value.BarrageState == BarrageState.Underway
+                || kvp.Value.BarrageState == BarrageState.Ready);
+            if (isHigh) break;
         }
         return isHigh;
     }
 
-    public BarrageFuncData OnGetInfoByName(string name)
+    /// <summary> 检测有没有强控且等级高于以上的功能在触发 </summary>
+    public bool OnCheckHasHighControlLevel(BarrageFuncData data)
     {
-        BarrageFuncData data = null;
-
-        if (allBarrage != null && allBarrage.Count > 0)
+        bool isHigh = false;
+        List<KeyValuePair<int, BarrageValue>> copy;
+        lock (_lockExecutFunc)
         {
-            foreach (var kvp in allBarrage) {
-
-                if (kvp.Value.name == name)
-                {
-                    data=kvp.Value; break;
-                }
-            }
+            copy = new List<KeyValuePair<int, BarrageValue>>(executFunc);
         }
-        return data;
+        foreach (var kvp in copy)
+        {
+            isHigh = kvp.Value.name != data.name 
+                && kvp.Value.barrageFuncData.type >= 3 
+                && kvp.Value.barrageFuncData.controllevel > data.controllevel;
+            if (isHigh) break;
+        }
+        return isHigh;
+    }
+    
+    /// <summary> 检测有没有某功能正在执行 </summary>
+    public bool OnCheckBarrageFuncByName(string name)
+    {
+        bool isHigh = false;
+        List<KeyValuePair<int, BarrageValue>> copy;
+        lock (_lockExecutFunc)
+        {
+            copy = new List<KeyValuePair<int, BarrageValue>>(executFunc);
+        }
+        foreach (var kvp in copy)
+        {
+            isHigh = kvp.Value.name == name
+                && (kvp.Value.BarrageState == BarrageState.Underway
+                || kvp.Value.BarrageState == BarrageState.Pause);
+            PFunc.Log(kvp.Value.name,kvp.Value.BarrageState);
+            if (isHigh) break;
+        }
+        return isHigh;
     }
 }
 
-public struct BarrageValue
+public class BarrageValue
 {
     public string name;
     public BarrageFuncData barrageFuncData;

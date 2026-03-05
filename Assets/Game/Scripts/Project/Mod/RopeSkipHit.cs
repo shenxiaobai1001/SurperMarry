@@ -4,12 +4,13 @@ using UnityEngine;
 
 public class RopeSkipHit : MonoBehaviour
 {
-    public RopeSkip ropeSkip;
+    public BarrageRopeSkip ropeSkip;
     private void OnTriggerEnter2D(Collider2D collision)
     {
+        PFunc.Log("RopeSkipHit", collision);
         if (collision.gameObject.tag.Contains("Player"))
         {
-            PFunc.Log("Åöµ½Íæ¼Ò");
+            PFunc.Log("RopeSkipHit", collision);
             Config.missRopeCount++;
             ropeSkip.triggerPlayer = true;
             EventManager.Instance.SendMessage(Events.OnLazzerHit);

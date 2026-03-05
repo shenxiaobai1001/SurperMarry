@@ -220,7 +220,6 @@ public class Rattan : MonoBehaviour
     }
     public void OnClose()
     {
-        ItemCreater.Instance.lockPlayer = false;
         PlayerModController.Instance.OnSetPlayerIns(true);
         PlayerModController.Instance.OnChangeState(true);
         PlayerModController.Instance.OnSetModAniIns(true);

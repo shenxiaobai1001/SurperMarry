@@ -58,7 +58,7 @@ public class PsyDuck : MonoBehaviour
         }
         // ÏòÍæ¼ÒÒÆ¶¯
         transform.position = Vector2.MoveTowards(transform.position, playerTarget.position, moveSpeed * Time.deltaTime);
-        PFunc.Log(Vector3.Distance(transform.position, playerTarget.position));
+
         if (Vector2.Distance(transform.position, playerTarget.position) < 1.8f)
         {
             kickPlayer = false;

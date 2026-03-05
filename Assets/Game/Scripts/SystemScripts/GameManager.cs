@@ -144,7 +144,7 @@ namespace SystemScripts
                 ModController.Instance.statusController.SetTime(time -= Time.deltaTime * 2);
                 if (time < 0) 
                 {
-                    if (ItemCreater.Instance.lockPlayer || ModVideoPlayerCreater.Instance.isBury)
+                    if (BarrageFuncController.Instance.OnCheckHasHighControl())
                     {
                         return;
                     }
@@ -153,9 +153,9 @@ namespace SystemScripts
                     GameStatusController.IsDead = true;
                 }
             }
-            else if (player.isInCastle&& checkLevel || ModVideoPlayerCreater.Instance.isBury)
+            else if (player.isInCastle&& checkLevel)
             {
-                if (ItemCreater.Instance.lockPlayer)
+                if (BarrageFuncController.Instance.OnCheckHasHighControl())
                 {
                     return;
                 }

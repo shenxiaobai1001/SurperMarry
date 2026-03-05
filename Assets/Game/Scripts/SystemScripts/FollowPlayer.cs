@@ -40,8 +40,10 @@ namespace SystemScripts
            if (player.transform.position.x > GameModController.Instance.OnGetLevelEndPos()
                 && !GameModController.Instance.OnCheckBoosLevel()
                 ) return;
+
             checkPlayerPos = false;
             if (GameStatusController.IsHidden && !GameStatusController.HiddenMove) return;
+            if (BarrageFuncController.Instance.OnCheckHasHighControl()) return;
             float y = GameStatusController.IsHidden ? 32 : 5;
             bool isMoveForward = player.transform.position.x > transform.position.x;
             bool isMax = player.transform.position.x > PlayerController.Instance.bossPkPos.x;

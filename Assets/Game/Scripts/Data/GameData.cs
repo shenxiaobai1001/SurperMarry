@@ -21,11 +21,13 @@ public class BarrageFuncData : ConfigData//全局数据
     public int type;
     public int group;
     public int executionlevel;
+    public int queuestate;
     public int createlevel;
     public int movelevel;
     public int controllevel;
-    public int breakfinsh; 
-    public int interactivefunc;
+    public int breakfinsh;
+    public int queue;
+    public string interactivefunc;
 
     public override string GetName()
     {

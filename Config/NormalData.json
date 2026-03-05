@@ -1,19 +1,27 @@
 {
     "NormalConfigs": [
         {
-            "CallName": "乌龟一百只",
+            "CallName": "抓乌龟",
             "Type": "礼物",
             "Message": "",
             "Tip": "",
-            "Count": 100,
-            "Delay": 10.0
+            "Count": 1,
+            "Delay": 0.0
         },
         {
-            "CallName": "乌龟一只",
+            "CallName": "铁链",
             "Type": "礼物",
             "Message": "",
             "Tip": "",
-            "Count": 5,
+            "Count": 1,
+            "Delay": 0.0
+        },
+        {
+            "CallName": "上吊",
+            "Type": "礼物",
+            "Message": "",
+            "Tip": "",
+            "Count": 1,
             "Delay": 0.0
         },
         {
@@ -42,46 +50,6 @@
         },
         {
             "CallName": "顶乌龟",
-            "Type": "礼物",
-            "Message": "",
-            "Tip": "",
-            "Count": 1,
-            "Delay": 0.0
-        },
-        {
-            "CallName": "麒麟臂",
-            "Type": "礼物",
-            "Message": "",
-            "Tip": "",
-            "Count": 1,
-            "Delay": 0.0
-        },
-        {
-            "CallName": "一库",
-            "Type": "礼物",
-            "Message": "",
-            "Tip": "",
-            "Count": 1,
-            "Delay": 0.0
-        },
-        {
-            "CallName": "超人+10秒",
-            "Type": "礼物",
-            "Message": "",
-            "Tip": "",
-            "Count": 100,
-            "Delay": 0.0
-        },
-        {
-            "CallName": "全屏天火",
-            "Type": "礼物",
-            "Message": "",
-            "Tip": "",
-            "Count": 1,
-            "Delay": 0.0
-        },
-        {
-            "CallName": "火圈",
             "Type": "礼物",
             "Message": "",
             "Tip": "",

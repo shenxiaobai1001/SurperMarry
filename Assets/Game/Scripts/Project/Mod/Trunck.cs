@@ -68,15 +68,12 @@ public class Trunck : MonoBehaviour
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        if(collision.gameObject.CompareTag("Player")|| collision.gameObject.CompareTag("BigPlayer") || collision.gameObject.CompareTag("UltimateBigPlayer"))
+        if(collision.gameObject.CompareTag("Player")
+            || collision.gameObject.CompareTag("BigPlayer") 
+            || collision.gameObject.CompareTag("UltimateBigPlayer"))
         {
             kickPlayer = false;
-            if (ItemCreater.Instance.lockPlayer && UIChain.Instance != null && UIChain.Instance.gameObject.activeSelf)
-            {
-                ChainPlayer.Instance.transform.DOShakePosition(0.5f, 0.2f).SetEase(Ease.OutQuad).OnComplete(() => {
-                    ChainPlayer.Instance.transform.position = new Vector3(Camera.main.transform.position.x, 5, 0);
-                });
-            }
+            EventManager.Instance.SendMessage(Events.OnMangSengKick);
             CameraShaker.Instance.StartShake(0.2f);
             PlayerModMoveController.Instance.TriggerModMove(MoveType.Normal, new Vector3(-1, 0.5f), 15, 0.25f, true, false, 1);
             OnClose();

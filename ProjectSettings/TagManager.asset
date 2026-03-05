@@ -49,6 +49,8 @@ TagManager:
   - PlayerMod
   - ModCollider
   - brickHit
+  - VecHit
+  - RopeGround
   layers:
   - Default
   - TransparentFX

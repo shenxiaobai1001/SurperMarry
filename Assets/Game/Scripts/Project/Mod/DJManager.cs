@@ -34,12 +34,14 @@ public class DJManager : MonoBehaviour
         if (beatCoroutine != null)
             StopCoroutine(beatCoroutine);
     }
+
     private void OnDestroy()
     {
         mapObj = null;
         if (beatCoroutine != null)
             StopCoroutine(beatCoroutine);
     }
+
     private void OnVideoEvent(MediaPlayer mp, MediaPlayerEvent.EventType evt, ErrorCode errorCode)
     {
         //当视频加载完毕开始播放视频
@@ -48,6 +50,7 @@ public class DJManager : MonoBehaviour
             OnModVideoPlayStart();
         }
     }
+
     public void OnModVideoPlayStart(bool isPlayDJ,int count)
     {
         this.isPlayDJ = isPlayDJ;

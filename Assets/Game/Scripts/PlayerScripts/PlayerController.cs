@@ -111,18 +111,9 @@ namespace PlayerScripts
             getPole = false;
             startPos =transform.position;
             DieCoroutine = null;
-            if (GameStatusController.IsDaoPlayer)
-            {
-                OnDaoMario();
-            }
-            else if(GameStatusController.IsQiangPlayer)
-            {
-                OnQiangMario();
-            }
-            else
-            {
-                TurnIntoBigPlayer();
-            }
+
+            TurnIntoBigPlayer();
+            
             if(Config.playerScale!=0)
                 transform.localScale = new Vector3(Config.playerScale, Config.playerScale, 1);
         }
@@ -194,7 +185,7 @@ namespace PlayerScripts
                 {
                     Sound.PlaySound("Mod/fire");
                     _playerAnim.SetTrigger("DaoAtk");
-                    ItemCreater.Instance.OnCreateDaoQI(1);
+                    ItemCreater.Instance.OnCreateDaoQI(1,0);
                 }
                 else if (GameStatusController.IsQiangPlayer)
                 {
@@ -267,12 +258,13 @@ namespace PlayerScripts
         public float jumpingForce;
 
         float jumpTime=0;
-        public void OnJumpAuto()
+        public void OnJumpAuto(bool auto=false)
         {
             _playerAudio.PlayOneShot(GameStatusController.IsBigPlayer ? jumpSound : jumpBigSound);
             _isOnGround = false;
             _playerRb.velocity = Vector3.zero;
-            _playerRb.AddForce(new Vector2(0f, jumpForce));
+            float jumpFor = auto ? 300 : jumpForce;
+            _playerRb.AddForce(new Vector2(0f, jumpFor));
             _playerAnim.SetBool(IdleB, false);
             _playerAnim.SetBool(WalkB, false);
             _playerAnim.SetBool(RunB, false);
@@ -377,6 +369,7 @@ namespace PlayerScripts
         public void OnHorLock(bool move)
         {
             canMove = move;
+            horizontalInput=0;
         }
         private void MovePlayer()
         {
@@ -563,7 +556,6 @@ namespace PlayerScripts
         void OnGetPole(GameObject other)
         {
             transform.localScale=Vector3.one;
-            PlayerModController.Instance.isSuperMan = false;
             getPole = true;
             Sound.PauseOrPlayVolumeMusic(true);
             ModController.Instance.OnModPause();
@@ -1103,7 +1095,6 @@ namespace PlayerScripts
             PlayerModController.Instance.OnSetPlayerIns(true);
             PlayerModController.Instance.OnChangeState(true);
             PlayerModController.Instance.OnChanleModAni();
-            PlayerModController.Instance.isSuperMan = false;
 
             checkYpos = true;
             // 1. 停止所有正在运行的协程
@@ -1136,7 +1127,6 @@ namespace PlayerScripts
             slideDownSpeed = 5;
             jumpForce = 620;
 
-    
             // 确保面向右侧
             transform.rotation = Quaternion.identity;
             transform.localScale = Vector3.one;
@@ -1219,7 +1209,7 @@ namespace PlayerScripts
             getPole = false;
             hasToFindNpc = false;
             Config.playerScale = 1;
-      transform.localScale=Vector3.one;
+             transform.localScale=Vector3.one;
             if (PlayerModController.Instance.isInvincible)
             {
                 PlayerModController.Instance.OnSetInvincileState();

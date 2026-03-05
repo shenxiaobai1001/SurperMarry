@@ -47,12 +47,27 @@ public class PlayerModController : MonoBehaviour
     [HideInInspector] public bool isKinematic = false;
     public void OnChangeState(bool open)
     {
-        if (open && (ModVideoPlayerCreater.Instance.isBury || ItemCreater.Instance.lockPlayer || isSuperMan||isDance)) return;
         rigidbody2D.velocity = Vector3.zero;
         rigidbody2D.isKinematic = !open;
         isKinematic = !open;
         Center.SetActive(open);
     }
+
+    //设置玩家状态：是否被控制、是否显示主要角色
+    public void OnSetPlayerContro(bool CanControl,bool show,bool closeModAni)
+    {
+        rigidbody2D.velocity = Vector3.zero;
+        rigidbody2D.isKinematic = !CanControl;
+        PlayerController.Instance.OnChanleControl(!CanControl);
+        Center.SetActive(CanControl);
+        OnSetPlayerIns(show);
+        if (closeModAni)
+        {
+            OnChanleModAni();
+             OnShowModAnimation(-1);
+        }
+    }
+
     public void OnChangeStateTrue()
     {
         rigidbody2D.velocity = Vector3.zero;
@@ -60,9 +75,9 @@ public class PlayerModController : MonoBehaviour
         isKinematic = true;
         Center.SetActive(false);
     }
+
     public void OnChangeStateFalse()
     {
-        if (ModVideoPlayerCreater.Instance.isBury || ItemCreater.Instance.lockPlayer || isSuperMan) return;
         if (PlayerController.Instance != null)
             PlayerController.Instance.OnChanleControl(false);
         rigidbody2D.velocity = Vector3.zero;
@@ -70,11 +85,10 @@ public class PlayerModController : MonoBehaviour
         isKinematic = false;
         Center.SetActive(true);
     }
+
     public void OnSetPlayerIns(bool show)
     {
         PFunc.Log("OnSetPlayerIns", show);
-        if (show && (ModVideoPlayerCreater.Instance.isBury|| ItemCreater.Instance.lockPlayer || isSuperMan || isDance || isZombie)) return;
-    
        if(animator) animator.enabled = show;
        if(spriteRenderers!=null|| spriteRenderers.Count>0)
         {
@@ -84,7 +98,6 @@ public class PlayerModController : MonoBehaviour
                 spriteRenderers[i].color = color;
             }
         }
-    
     }
 
     public void OnToHitPos()
@@ -125,10 +138,6 @@ public class PlayerModController : MonoBehaviour
 
     public void OnAddFourePlayer(Vector3 vector)
     {
-        if (ItemCreater.Instance.isHang)
-        {
-            OnCancelHangSelf();
-        }
         rigidbody2D.velocity = new Vector2(0, 0); // 重置水平速度
         rigidbody2D.AddForce(vector, ForceMode2D.Impulse); // 重置水平速度
     }
@@ -143,46 +152,7 @@ public class PlayerModController : MonoBehaviour
             OnToSwim();
         }
     }
-    public void OnHangSelf()
-    {
-        OnChangeState(false);
 
-        if (PlayerController.Instance != null)
-            PlayerController.Instance.OnChanleControl(true);
-        OnSetPlayerIns(false);
-        isPassivityMove++;
-    }
-
-    public void OnCancelHangSelf()
-    {
-        animator.gameObject.SetActive(true);
-        isPassivityMove--;
-        if (isPassivityMove <= 0)
-        {
-            isPassivityMove = 0;
-            OnChangeState(true);
-        }
-
-        if (HangSelf.Instance != null && HangSelf.Instance.lastPoint != null)
-        {
-            Vector3 vector = HangSelf.Instance.lastPoint.transform.position;
-            if (vector != Vector3.zero)
-            {
-                if(!ItemCreater.Instance.lockPlayer && !ModVideoPlayerCreater.Instance.isBury)
-                    transform.position = vector;
-            }
-            HangSelf.Instance.OnBreakeHang();
-        }
-        OnSetPlayerIns(true);
-        if (isSuperMan)
-        {
-            OnShowModAnimation(7);
-        }
-        else if (isZombie)
-        {
-            OnShowModAnimation(15);
-        }
-    }
 
     public void OnTriggerModAnimator(string riggerName)
     {
@@ -239,8 +209,8 @@ public class PlayerModController : MonoBehaviour
 
     public void OnChanleModAni()
     {
-        OnShowModAnimation(-1);
-        OnSetPlayerIns(true);
+        //OnShowModAnimation(-1);
+       // OnSetPlayerIns(true);
 
         animator.SetTrigger("endMenace");
 
@@ -268,15 +238,7 @@ public class PlayerModController : MonoBehaviour
             animator.Play("Idle", 0);
             animator.SetTrigger("endSwim");
         }
-        if (isSuperMan)
-        {
-            OnShowModAnimation(7);
-        }
-        else if (isZombie)
-        {
-            OnShowModAnimation(15);
-        }
-        else if (isInvincible)
+        if (isInvincible)
         {
             OnSetInvincileState();
         }
@@ -288,8 +250,8 @@ public class PlayerModController : MonoBehaviour
 
     public void OnShowModAnimation(int index)
     {
-        if (isDance) return;
-        OnSetPlayerIns(index==-1);
+       // if (isDance) return;
+       // OnSetPlayerIns(index==-1);
         for (int i = 0; i < modAnimations.Count; i++) {
             modAnimations[i].gameObject.SetActive(i == index);
         }
@@ -298,7 +260,6 @@ public class PlayerModController : MonoBehaviour
     public void OnMoveShowIcon()
     {
         OnSetPlayerIns(false);
-        if (ItemCreater.Instance.lockPlayer) return;
         if (GameStatusController.IsFirePlayer && GameStatusController.IsBigPlayer)
         {
             OnShowModAnimation(6);
@@ -318,44 +279,7 @@ public class PlayerModController : MonoBehaviour
         if (modAnimator) modAnimator.Play("Filer");
         // if (spriteBlinkController) spriteBlinkController.StartBlink();
     }
-    public bool isSuperMan = false;
-    public GameObject superEffert;
-    public Transform superEffertTrans;
-    float superManTime = 0;
-    Coroutine superMainTime;
     float superSpeed = 10;
-    public void OnSuperMan(float Time)
-    {
-        if (GameStatusController.isDead || Config.isLoading) return;
-        Sound.PlaySound("smb_1-up");
-        superManTime += Time;
-        if (superMainTime == null && !isSuperMan)
-        {
-            if (PlayerController.Instance != null)
-                PlayerController.Instance.OnChanleControl(true);
-            isSuperMan = true;
-            OnShowModAnimation(7);
-            OnSetPlayerIns(false);
-            OnChangeStateTrue();
-            superMainTime = StartCoroutine(SuperManTime());
-        }
-    }
-
-    IEnumerator SuperManTime()
-    {
-        while (superManTime > 0&& isSuperMan) {
-            superManTime -= Time.deltaTime;
-            yield return null;
-        }
-        if (PlayerController.Instance != null)
-            PlayerController.Instance.OnChanleControl(false);
-        isSuperMan = false;
-        superMainTime = null;
-        OnShowModAnimation(-1);
-        OnSetPlayerIns(true);
-        OnChangeStateFalse();
-    }
-    float superEffectTime = 0;
     private void Update()
     {
         #region GM
@@ -396,63 +320,9 @@ public class PlayerModController : MonoBehaviour
             rigidbody2D.isKinematic = false;
         }
         #endregion
-
-        if (isSuperMan&&!isDance && !ItemCreater.Instance.isHang && !ItemCreater.Instance.lockPlayer&&!ModVideoPlayerCreater.Instance.isBury) {
-            if (Input.GetKey(KeyCode.A))
-            {
-                transform.Translate(Vector2.right * superSpeed * Time.deltaTime);
-                if (PlayerController.Instance._isFacingRight)
-                {
-                    transform.Rotate(0, 180, 0);
-                    PlayerController.Instance._isFacingRight = false;
-                }
-                OnCreateSuperEffect();
-            }
-            if (Input.GetKey(KeyCode.D))
-            {
-                transform.Translate(Vector2.right * superSpeed * Time.deltaTime);
-                if (!PlayerController.Instance._isFacingRight)
-                {
-                    transform.Rotate(0, 180, 0);
-                    PlayerController.Instance._isFacingRight = true;
-                }
-                OnCreateSuperEffect();
-            }
-            if (Input.GetKey(KeyCode.S))
-            {
-                transform.Translate(Vector2.down * superSpeed * Time.deltaTime);
-                OnCreateSuperEffect();
-            }
-            if (Input.GetKey(KeyCode.W))
-            {
-                transform.Translate(Vector2.up * superSpeed * Time.deltaTime);
-                OnCreateSuperEffect();
-            }
-        }
     }
-
-    void OnCreateSuperEffect()
+    public Animator OnGuangDance()
     {
-        superEffectTime += Time.deltaTime;
-        if (superEffectTime >= 0.02f)
-        {
-            GameObject obj = SimplePool.Spawn(superEffert, superEffertTrans.position, Quaternion.identity);
-            obj.transform.SetParent(ModController.Instance.itemParent);
-            obj.SetActive(true);
-            superEffectTime = 0;
-        }
-    }
-
-   public bool isDance = false;
-    public void OnGuangDance()
-    {
-        if (GameStatusController.isDead || Config.isLoading ) return;
-        Sound.PlayMusic("Mod/guangbo");
-        Config.EnemyStop = true;
-        if (PlayerController.Instance != null)
-            PlayerController.Instance.OnChanleControl(true);
-        OnSetPlayerIns(false);
-        OnChangeStateTrue();
         Animator atrDance = null;
         if (GameStatusController.IsFirePlayer && GameStatusController.IsBigPlayer)
         {
@@ -474,30 +344,11 @@ public class PlayerModController : MonoBehaviour
             atrDance.Rebind();
             atrDance.Update(0f);
         }
-        isDance = true;
-    }
-
-    public void OnRestDance()
-    {
-        Sound.PlayMusic("background");
-        Config.EnemyStop = false;
-        isDance = false;
-
-        OnShowModAnimation(-1);
-        OnSetPlayerIns(true);
-
-        OnChangeStateFalse();
+        return atrDance;
     }
     bool isDaom = false;
-    public void OnDMDance()
+    public Animator OnDMDance()
     {
-        if (GameStatusController.isDead || Config.isLoading) return;
-        Sound.PlaySound("Mod/dmdm");
-        Config.EnemyStop = true;
-        if (PlayerController.Instance != null)
-            PlayerController.Instance.OnChanleControl(true);
-        OnSetPlayerIns(false);
-        OnChangeStateTrue();
         Animator atrDance = null;
         if (GameStatusController.IsFirePlayer && GameStatusController.IsBigPlayer)
         {
@@ -519,32 +370,26 @@ public class PlayerModController : MonoBehaviour
             atrDance.Rebind();
             atrDance.Update(0f);
         }
-        isDance = true;
-       Invoke("OnRestDMDance", 4);
+        return atrDance;
     }
-    public void OnRestDMDance()
-    {
-        Config.EnemyStop = false;
-        isDance = false;
-        OnShowModAnimation(-1);
-        OnSetPlayerIns(true);
-   
-        OnChangeStateFalse();
-    }
-    bool isKickHead = false;
     Tween tween = null;
     public GameObject kickHeadObj;
-    public void OnKickHead()
+    public Transform superEffertTrans;
+    int kickHeadIndex = 0;
+    public void OnKickHead(int index)
     {
         Sound.PlaySound("Mod/kickHead");
         GameObject obj = SimplePool.Spawn(kickHeadObj, superEffertTrans.position, Quaternion.identity);
         obj.transform.SetParent(ModController.Instance.itemParent);
         obj.SetActive(true);
-        OnSetPlayerIns(false);
-
+        if (!BarrageFuncController.Instance.OnCheckHasHighControl())
+        {
+            OnSetPlayerContro(true, false, true);
+            OnShowModAnimation(11);
+        }
+        kickHeadIndex = index;
         Transform trans =  modAnimations[11].transform ;
         trans.localScale = Vector3.one;
-        OnShowModAnimation(11);
         tween = trans.DOScale(new Vector3(1, 0.75f, 1), 0.05f).SetLoops(-1);
         tween.Play();
         Invoke("OnEndKickHead", 2.1f);
@@ -552,67 +397,13 @@ public class PlayerModController : MonoBehaviour
     void OnEndKickHead()
     {
         if(tween!=null) tween.Kill();
-        OnShowModAnimation(-1);
-        OnSetPlayerIns(true);
-    }
-    private float moveTimer = 0;
-    private float moveDuration = 0.5f; // 每个方向的移动时间，单位秒
-    private float moveSpeed = 8;    // 移动速度
-    private bool movingUp = true;    // 当前移动方向
-    private Vector3 startPos;        // 起始位置
-
-    bool isZombie = false;
-    float allZombieTime = 0;
-    Coroutine ZombieMainTime;
-
-   public void OnShowZomBie(float Time)
-    {
-        if (GameStatusController.isDead || Config.isLoading) return;
-        Sound.PlaySound("smb_1-up");
-        allZombieTime += Time;
-        if (ZombieMainTime == null && !isZombie)
+        if (!BarrageFuncController.Instance.OnCheckHasHighControl())
         {
-            //if (PlayerController.Instance != null)
-            //    PlayerController.Instance.OnChanleControl(true);
-            isZombie = true;
-            OnShowModAnimation(15);
-            OnSetPlayerIns(false);
-            ZombieMainTime = StartCoroutine(UpDownMovement());
+            OnSetPlayerContro(true, true, true);
         }
+        EventManager.Instance.SendMessage(Events.OnBarryExecutEnd, kickHeadIndex);
     }
 
-    public LayerMask groundLayer; // 障碍物所在的层（如Ground层）
-
-    IEnumerator UpDownMovement()
-    {
-        float lastTriggerTime = 0f; // 记录上次触发的时间
-        lastTriggerTime = Time.time; // 更新触发时间
-        while (allZombieTime > 0 && isZombie)
-        {
-            allZombieTime -= Time.deltaTime;
-            if (!GameStatusController.isDead && !Config.isLoading
-                && !ItemCreater.Instance.lockPlayer && !ItemCreater.Instance.isHang&& !ModVideoPlayerCreater.Instance.isBury)
-            {
-                RaycastHit2D hit = Physics2D.Raycast(
-                    transform.position,  // 起点
-                    Vector2.down,        // 方向向下
-                    0.6f, groundLayer    // 检测距离
-                );
-
-                // 如果检测到地面，并且距离上次触发已超过0.5秒
-                if (hit.collider != null && Time.time - lastTriggerTime > 0.5f)
-                {
-                    rigidbody2D.AddForce(new Vector2(0f, 620));
-                    lastTriggerTime = Time.time; // 更新触发时间
-                }
-            }
-            yield return null;
-        }
-        isZombie = false;
-        ZombieMainTime = null;
-        OnShowModAnimation(-1);
-        OnSetPlayerIns(true);
-    }
     [SerializeField] private GameObject bulletPrefab; // 子弹预制体
     [SerializeField] private Transform firePoint; // 发射点
     [SerializeField] private float spreadAngle = 30f; // 扇形角度
@@ -701,7 +492,7 @@ public class PlayerModController : MonoBehaviour
         }
     }
 
-    public void OnChangScale(float value)
+    public void OnChangScale(float value,int index)
     {
         if (Config.playerScale<0.1f)
             Config.playerScale = 0.1f;
@@ -709,22 +500,28 @@ public class PlayerModController : MonoBehaviour
             Config.playerScale += value;
         PFunc.Log("OnChangScale", value, Config.playerScale);
         transform.localScale = new Vector3(Config.playerScale, Config.playerScale,1);
+        EventManager.Instance.SendMessage(Events.OnBarryExecutEnd, index);
     }
 
     float invincibleTime = 0;
-   public  bool isInvincible = false;
-
-    public void OnSetInvincible()
+    public  bool isInvincible = false;
+    int invincibleIndex = 0;
+    public void OnSetInvincible(int callIndex)
     {
         Sound.PlayMusic("wudixing");
         invincibleTime += 10;
      
         if (!isInvincible)
         {
+            invincibleIndex= callIndex;
             OnSetInvincileState();
             isInvincible = true;
   
             StartCoroutine(OnInvincible());
+        }
+        else
+        {
+            EventManager.Instance.SendMessage(Events.OnBarryExecutEnd, callIndex);
         }
     }
     public void OnSetInvincileState()
@@ -773,21 +570,29 @@ public class PlayerModController : MonoBehaviour
         }
         yield return new WaitForEndOfFrame();
         animator.SetFloat("UltimateDuration_f", 0);
+        EventManager.Instance.SendMessage(Events.OnBarryExecutEnd, invincibleIndex);
+        invincibleIndex = 0;
     }
 
     float invisibilityTime = 0;
     public bool isInvisibility = false;
+    int invisibilityIndex = 0;
 
-    public void OnSetInvisibilityState()
+    public void OnSetInvisibilityState(int callIndex)
     {
         Sound.PlaySound("smb_1-up");
         invisibilityTime += 10;
 
         if (!isInvisibility)
         {
+            invisibilityIndex = callIndex;
             OnSetPlayerIns(false);
             isInvisibility = true;
             StartCoroutine(OnInvisibility());
+        }
+        else
+        {
+            EventManager.Instance.SendMessage(Events.OnBarryExecutEnd, callIndex);
         }
     }
 
@@ -802,7 +607,9 @@ public class PlayerModController : MonoBehaviour
         OnSetPlayerIns(true);
         invisibilityTime = 0;
         isInvisibility = false;
+        EventManager.Instance.SendMessage(Events.OnBarryExecutEnd, invisibilityIndex);
     }
+
     private void OnDestroy()
     {
         isInvincible = false;

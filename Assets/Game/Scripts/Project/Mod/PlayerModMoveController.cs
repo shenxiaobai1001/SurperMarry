@@ -144,25 +144,14 @@ public class PlayerModMoveController : MonoBehaviour
     }
     public void TriggerModMove(MoveType type, Vector3 dir, float speed = 5f, float time = 2f,
         bool canFight = true, bool rotate = false, int effectId = 0,bool swim=false)
-    {
-        if (Config.isLoading) return;
-        if (ItemCreater.Instance != null && ItemCreater.Instance.isHang)
+    {      
+        // 播放特效
+        PlayEffect(effectId);
+        if (!BarrageFuncController.Instance.OnCheckHasHighControl())
         {
-            return;
+            OnChangeState(swim);
         }
-        if (!PlayerModController.Instance.isKinematic)
-        PlayerModController.Instance.OnChangeState(false);
-            PlayerController.Instance.OnChanleControl(true);
-        if (!ItemCreater.Instance.lockPlayer && !swim&&!ModVideoPlayerCreater.Instance.isBury)
-        {
-            PFunc.Log("跳跃");
-            PlayerModController.Instance.OnMoveShowIcon();
-        }
-        else
-        {
-            PFunc.Log("游泳");
-            PlayerModController.Instance.OnToHitPos();
-        }
+
         // 创建移动数据
         MoveEffectData newEffect = new MoveEffectData
         {
@@ -178,14 +167,23 @@ public class PlayerModMoveController : MonoBehaviour
         };
         newEffect.giftLevel = moveLevels[type];
 
-        // 播放特效
-        PlayEffect(newEffect.effectID);
-
         // 处理移动优先级
         HandleMovementPriority(newEffect);
-
     }
-
+    void OnChangeState(bool swim = false)
+    {
+        PlayerModController.Instance.OnSetPlayerContro(false, true, true);
+        if (!swim)
+        {
+            PFunc.Log("跳跃");
+            PlayerModController.Instance.OnMoveShowIcon();
+        }
+        else
+        {
+            PFunc.Log("游泳");
+            PlayerModController.Instance.OnToHitPos();
+        }
+    }
     /// <summary>所有移动都完成时调用的方法 </summary>
     private void OnAllMovementCompleted(MoveEffectData lastFinishedEffect = null)
     {
@@ -197,36 +195,10 @@ public class PlayerModMoveController : MonoBehaviour
             Debug.Log($"最后一个完成的移动效果: {lastFinishedEffect.moveType}");
         }
 
-        if (ItemCreater.Instance.lockPlayer||ModVideoPlayerCreater.Instance.isBury )
-        {
-            if (!PlayerModController.Instance.isKinematic)
-            {
-                PlayerModController.Instance.OnChangeState(false);
-            }
-            if(UIChain.Instance != null && UIChain.Instance.gameObject.activeSelf)
-                PlayerController.Instance.transform.position = ChainPlayer.Instance. animator.transform.position;
-            if(RopeSkip.Instance != null && RopeSkip.Instance.gameObject.activeSelf)
-            {
-                if (PlayerModController.Instance.isKinematic && !Config.isLoading && !GameStatusController.isDead)
-                {
-                    PlayerModController.Instance.OnChangeState(true);
-                    PlayerController.Instance.isHit = false;
-                    PlayerModController.Instance.OnEndHitPos();
-                }
-                PlayerModController.Instance.OnChanleModAni();
-            }
-        }
-        else
-        {
-            if (PlayerModController.Instance.isKinematic&&!Config.isLoading && !GameStatusController.isDead)
-            {
-                PlayerModController.Instance.OnChangeState(true);
-                PlayerController.Instance.isHit = false;
-                PlayerModController.Instance.OnEndHitPos();
-            }
-            PlayerModController.Instance.OnChanleModAni();
-        }
+        if (BarrageFuncController.Instance.OnCheckHasHighControl())
+            return;
 
+        PlayerModController.Instance.OnSetPlayerContro(true, true, true);
     }
 
     private void HandleMovementPriority(MoveEffectData newEffect)
@@ -341,20 +313,7 @@ public class PlayerModMoveController : MonoBehaviour
             yield return null;
             if (currentMoveEffect == null) continue;
 
-            if (!PlayerModController.Instance.isKinematic)
-            {
-                PlayerModController.Instance.OnChangeStateTrue();
-                if(ItemCreater.Instance != null && ItemCreater.Instance.lockPlayer)
-                {
-                    PlayerModController.Instance.OnShowModAnimation(-1);
-                    PlayerModController.Instance.OnSetPlayerIns(false);
-                }
-                else
-                {
-                    PlayerModController.Instance.OnSetPlayerIns(true);
-                }
-                yield return null;                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         
-            }
+
             if (Config.isLoading) ForceStopAllMovement();
 
             // 更新僵持状态
@@ -366,12 +325,22 @@ public class PlayerModMoveController : MonoBehaviour
 
             if(currentMoveEffect != null)
             {
-                PlayerController.Instance.OnChanleControl(true);
+                if (BarrageFuncController.Instance.OnCheckHasHighControl())
+                {
+                    pause = true;
+                    continue;
+                }
+                if (pause)
+                {
+                    pause = false;
+                    OnChangeState();
+                }
                 UpdateMovement();
             }
             
         }
     }
+    bool pause = false;
 
     private void UpdateMovement()
     {
@@ -424,12 +393,9 @@ public class PlayerModMoveController : MonoBehaviour
 
         }
 
-        if (ItemCreater.Instance != null && !ItemCreater.Instance.lockPlayer && !ModVideoPlayerCreater.Instance.isBury)
-        {
-            // 应用移动
-            playerTransform.position = newPosition;
-            //PFunc.Log("playerTransform.position ", playerTransform.position);
-        }
+        // 应用移动
+        playerTransform.position = newPosition;
+        //PFunc.Log("playerTransform.position ", playerTransform.position);
 
         // 处理旋转
         if (currentMoveEffect.shouldRotate && rotationTarget != null)

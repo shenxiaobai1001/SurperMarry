@@ -1,39 +1,37 @@
+using PlayerScripts;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class UIMask : MonoBehaviour
+public class UIMask : BarrageFuncBase
 {
-    public static UIMask Instance;
-    private void Awake()
-    {
-        if (Instance == null)
-        {
-            Instance = this;
-
-        }
-        else
-        {
-            Destroy(gameObject);
-            return;
-        }
-    }
     public GameObject Mask;
-    float maskTime = 0;
 
-
-    public void OnCloseLight()
+    public override void OnStart(BarrageValue barrageFuncData, int index)
     {
-        maskTime += 1;
+        base.OnStart(barrageFuncData, index);
+
+        barrageData.BarrageState = BarrageState.Underway;
     }
 
-    // Update is called once per frame
     void Update()
     {
-        if (maskTime > 0)
+        if (barrageData.BarrageState != BarrageState.Underway)
+            return;
+
+        Config.maskTime -= Time.deltaTime;
+
+        if (Mask) Mask.SetActive (Config.maskTime > 0);
+
+        if (Config.maskTime<=0)
         {
-            maskTime-=Time.deltaTime;
+            OnClose();
         }
-        if(Mask) Mask.SetActive(maskTime > 0);
+    }
+
+    public override void OnClose()
+    {
+        base.OnClose();
     }
 }
