@@ -253,7 +253,7 @@ public class RattanThrow : MonoBehaviour
         if (!BarrageFuncController.Instance.OnCheckHasHighControl())
         {
             PlayerModController.Instance.OnSetPlayerContro(true, true, true);
-            PlayerModMoveController.Instance.TriggerModMove(MoveType.Normal, new Vector3(-3f, 1f), 30, 0.5f, true, false);
+            PlayerModMoveController.Instance.TriggerModMove(MoveType.Normal, new Vector3(-9f, 1f), 30, 0.5f, true, false);
         }
         Invoke("OnClose",0.5f);
     }
