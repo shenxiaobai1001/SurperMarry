@@ -152,6 +152,7 @@ public class PlayerModMoveController : MonoBehaviour
             OnChangeState(swim);
         }
 
+        if (Config.isHang) return;
         // 创建移动数据
         MoveEffectData newEffect = new MoveEffectData
         {

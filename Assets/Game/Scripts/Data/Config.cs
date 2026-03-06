@@ -22,6 +22,7 @@ public static class Config
     public static float superManTime;
     public static float allZombieTime;
     public static float maskTime;
+    public static bool isHang = false;
 }
 
 /// <summary>事件合集 </summary>               

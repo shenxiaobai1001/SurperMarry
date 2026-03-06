@@ -39,7 +39,7 @@ public class GameModController : MonoBehaviour
         if(passDistance==null) passDistance = new Dictionary<string, float>();
         passDistance.Add("1-1", 206);
         passDistance.Add("1-2", 160);
-        passDistance.Add("1-3", 167);
+        passDistance.Add("1-3", 202);
         passDistance.Add("1-4", 139);
         passDistance.Add("2-1", 149);
         passDistance.Add("2-2", 294);

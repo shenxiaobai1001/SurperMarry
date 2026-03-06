@@ -54,12 +54,9 @@ public class BarrageMangseng : BarrageFuncBase
             if (BarrageFuncController.Instance.OnCheckBarrageFuncByName("Ã˙¡¥"))
             {
                 Config.chainCount++;
-                EventManager.Instance.SendMessage(Events.OnMangSengKick);
             }
-            else if (BarrageFuncController.Instance.OnCheckBarrageFuncByName("…œµı"))
-            {
-                EventManager.Instance.SendMessage(Events.HangSelfByKick, isLeft);
-            }
+            EventManager.Instance.SendMessage(Events.HangSelfByKick, isLeft);
+            
             int x = isLeft ? 1 : -1;
             PlayerModMoveController.Instance.TriggerModMove(MoveType.Normal, new Vector3(x, 0.5f), 15, 0.25f, true, false, 1);
             OnClose();

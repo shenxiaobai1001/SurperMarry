@@ -139,7 +139,7 @@ public class PlayerModController : MonoBehaviour
     public void OnAddFourePlayer(Vector3 vector)
     {
         rigidbody2D.velocity = new Vector2(0, 0); // 重置水平速度
-        rigidbody2D.AddForce(vector, ForceMode2D.Impulse); // 重置水平速度
+        rigidbody2D.AddForce(vector, ForceMode2D.Force); // 重置水平速度
     }
 
     private void OnCollisionEnter2D(Collision2D collision)
