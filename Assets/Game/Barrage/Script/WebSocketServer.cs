@@ -1,4 +1,4 @@
-using System;
+ï»¿using System;
 using System.Collections.Generic;
 using System.Net;
 using System.Net.Sockets;
@@ -10,7 +10,7 @@ using UnityEngine;
 
 
 /// <summary>
-/// ¼òÒ× WebSocket ·şÎñÆ÷£¨Ö»Ö§³Ö£ºÎÄ±¾Ö¡¡¢Ping/Pong¡¢Close£»²»Ö§³Ö·ÖÆ¬Óë³¬´óÖ¡£©¡£
+/// ç®€æ˜“ WebSocket æœåŠ¡å™¨ï¼ˆåªæ”¯æŒï¼šæ–‡æœ¬å¸§ã€Ping/Pongã€Closeï¼›ä¸æ”¯æŒåˆ†ç‰‡ä¸è¶…å¤§å¸§ï¼‰ã€‚
 /// </summary>
 public class WebSocketServer : MonoBehaviour
 {
@@ -22,49 +22,49 @@ public class WebSocketServer : MonoBehaviour
     private readonly List<TcpClient> _clients = new List<TcpClient>();
 
     private List<string> followUser = new List<string>();
-    [SerializeField] private BarrageBase barrageBase; // Í¨¹ı³¡¾°ÒıÓÃ»òÔËĞĞÊ±²éÕÒ£¬±ÜÃâ new MonoBehaviour
-    private UnityMainThreadDispatcher _dispatcher; // »º´æµ÷¶ÈÆ÷£¬±ÜÃâºóÌ¨Ïß³Ì·ÃÎÊ Instance ´¥·¢²éÕÒ
+    [SerializeField] private BarrageBase barrageBase; // é€šè¿‡åœºæ™¯å¼•ç”¨æˆ–è¿è¡Œæ—¶æŸ¥æ‰¾ï¼Œé¿å… new MonoBehaviour
+    private UnityMainThreadDispatcher _dispatcher; // ç¼“å­˜è°ƒåº¦å™¨ï¼Œé¿å…åå°çº¿ç¨‹è®¿é—® Instance è§¦å‘æŸ¥æ‰¾
 
     private void HandleMessage(string json)
     {
-        Debug.Log($"´¦ÀíÏûÏ¢: {json}");
+        Debug.Log($"å¤„ç†æ¶ˆæ¯: {json}");
  
         BarrageData barrage = JsonUtility.FromJson<BarrageData>(json);
-        Debug.Log($"ÀàĞÍ: {barrage.Type}");
+        Debug.Log($"ç±»å‹: {barrage.Type}");
         if (barrageBase == null)
         {
-            // ³¢ÊÔ²¹¾ÈĞÔ²éÕÒÒ»´Î
+            // å°è¯•è¡¥æ•‘æ€§æŸ¥æ‰¾ä¸€æ¬¡
             barrageBase = FindAnyObjectByType<BarrageBase>();
             if (barrageBase == null)
             {
-                Debug.LogWarning("BarrageBase Î´¾ÍĞ÷£¬¶ªÆú¸ÃÌõÏûÏ¢");
+                Debug.LogWarning("BarrageBase æœªå°±ç»ªï¼Œä¸¢å¼ƒè¯¥æ¡æ¶ˆæ¯");
                 return;
             }
         }
         switch (barrage.Type)
         {
-            case "½ø³¡":
-                Debug.Log($"{barrage.name} ½øÈëÁËÖ±²¥¼ä");
+            case "è¿›åœº":
+                Debug.Log($"{barrage.name} è¿›å…¥äº†ç›´æ’­é—´");
                 barrageBase.HandleJoin(json);
                 break;
-            case "¹Ø×¢":
-                Debug.Log($"{barrage.name} ¹Ø×¢ÁËÖ÷²¥");
+            case "å…³æ³¨":
+                Debug.Log($"{barrage.name} å…³æ³¨äº†ä¸»æ’­");
                 if (!followUser.Contains(barrage.name))
                 {
                     followUser.Add(barrage.name);
                     barrageBase.HandleAttention(json);
                 }
                 break;
-            case "ÁÄÌì":
-                Debug.Log($"{barrage.name} Ëµ£º {barrage.message}");
+            case "èŠå¤©":
+                Debug.Log($"{barrage.name} è¯´ï¼š {barrage.message}");
                 barrageBase.HandleBarrage(json);
                 break;
-            case "µãÔŞ":
-                Debug.Log($"{barrage.name} µãÁË {barrage.count} ¸öÔŞ");
-                barrageBase.handleLike(json);
+            case "ç‚¹èµ":
+                Debug.Log($"{barrage.name} ç‚¹äº† {barrage.count} ä¸ªèµ");
+                barrageBase.HandleLike(json);
                 break;
-            case "ÀñÎï":
-                Debug.Log($"{barrage.name} ËÍ³öÁË {barrage.message} X {barrage.num}");
+            case "ç¤¼ç‰©":
+                Debug.Log($"{barrage.name} é€å‡ºäº† {barrage.message} X {barrage.num}");
                 barrageBase.HandleGift(json);
                 break;
         }
@@ -73,13 +73,13 @@ public class WebSocketServer : MonoBehaviour
     void Start()
     {
         _dispatcher = UnityMainThreadDispatcher.Instance;
-        // ÈôÎ´ÔÚ Inspector ¸³Öµ£¬Ôò³¢ÊÔÔÚ³¡¾°ÖĞ²éÕÒ BarrageBase
+        // è‹¥æœªåœ¨ Inspector èµ‹å€¼ï¼Œåˆ™å°è¯•åœ¨åœºæ™¯ä¸­æŸ¥æ‰¾ BarrageBase
         if (barrageBase == null)
         {
             barrageBase = FindAnyObjectByType<BarrageBase>();
             if (barrageBase == null)
             {
-                Debug.LogWarning("WebSocketServer: Î´ÕÒµ½³¡¾°ÖĞµÄ BarrageBase£¬ÇëÔÚ³¡¾°ÖĞ¹ÒÔØ²¢ÔÚ Inspector ¸³Öµ");
+                Debug.LogWarning("WebSocketServer: æœªæ‰¾åˆ°åœºæ™¯ä¸­çš„ BarrageBaseï¼Œè¯·åœ¨åœºæ™¯ä¸­æŒ‚è½½å¹¶åœ¨ Inspector èµ‹å€¼");
             }
         }
         StartServer();
@@ -104,7 +104,7 @@ public class WebSocketServer : MonoBehaviour
             _tcpListener = new TcpListener(IPAddress.Any, port);
             _tcpListener.Start();
             _isRunning = true;
-            Debug.Log($"WebSocket·şÎñÆ÷Æô¶¯£¬¼àÌı¶Ë¿Ú: {port}");
+            Debug.Log($"WebSocketæœåŠ¡å™¨å¯åŠ¨ï¼Œç›‘å¬ç«¯å£: {port}");
 
             while (_isRunning)
             {
@@ -118,12 +118,12 @@ public class WebSocketServer : MonoBehaviour
                 clientThread.IsBackground = true;
                 clientThread.Start(client);
 
-                Debug.Log("ĞÂ¿Í»§¶ËÁ¬½Ó£¬×¼±¸ÎÕÊÖ");
+                Debug.Log("æ–°å®¢æˆ·ç«¯è¿æ¥ï¼Œå‡†å¤‡æ¡æ‰‹");
             }
         }
         catch (Exception e)
         {
-           Debug.LogError($"·şÎñÆ÷¼àÌıÒì³£: {e.Message}");
+           Debug.LogError($"æœåŠ¡å™¨ç›‘å¬å¼‚å¸¸: {e.Message}");
         }
     }
 
@@ -136,12 +136,12 @@ public class WebSocketServer : MonoBehaviour
         {
             if (!PerformHandshake(stream, client))
             {
-                Debug.LogWarning("ÎÕÊÖÊ§°Ü£¬¹Ø±ÕÁ¬½Ó");
+                Debug.LogWarning("æ¡æ‰‹å¤±è´¥ï¼Œå…³é—­è¿æ¥");
                 return;
             }
-            Debug.Log("ÎÕÊÖ³É¹¦£¬¿ªÊ¼½ÓÊÕÊı¾İ£¨ÎÄ±¾Ö¡£©");
+            Debug.Log("æ¡æ‰‹æˆåŠŸï¼Œå¼€å§‹æ¥æ”¶æ•°æ®ï¼ˆæ–‡æœ¬å¸§ï¼‰");
 
-            // ½øÈëÖ¡¶ÁÈ¡Ñ­»·£¨¼ò»¯°æ£ºÖ»´¦ÀíÎÄ±¾£©
+            // è¿›å…¥å¸§è¯»å–å¾ªç¯ï¼ˆç®€åŒ–ç‰ˆï¼šåªå¤„ç†æ–‡æœ¬ï¼‰
             while (client.Connected)
             {
                 if (stream.DataAvailable)
@@ -149,12 +149,12 @@ public class WebSocketServer : MonoBehaviour
                     string message = ReadTextFrame(stream);
                     if (message == null)
                     {
-                        // ¿Í»§¶Ë¿ÉÄÜÒÑ·¢ËÍ¹Ø±ÕÖ¡
+                        // å®¢æˆ·ç«¯å¯èƒ½å·²å‘é€å…³é—­å¸§
                         break;
                     }
                     if (!string.IsNullOrEmpty(message))
                     {
-                        var disp = _dispatcher; // ±¾µØÒıÓÃ·ÀÖ¹²¢·¢¸ü¸Ä
+                        var disp = _dispatcher; // æœ¬åœ°å¼•ç”¨é˜²æ­¢å¹¶å‘æ›´æ”¹
                         if (disp != null)
                         {
                             disp.Enqueue(() =>
@@ -164,17 +164,17 @@ public class WebSocketServer : MonoBehaviour
                         }
                         else
                         {
-                            Debug.LogWarning("Ö÷Ïß³Ìµ÷¶ÈÆ÷Î´³õÊ¼»¯£¬¶ªÆúÊÕµ½µÄÏûÏ¢¡£");
+                            Debug.LogWarning("ä¸»çº¿ç¨‹è°ƒåº¦å™¨æœªåˆå§‹åŒ–ï¼Œä¸¢å¼ƒæ”¶åˆ°çš„æ¶ˆæ¯ã€‚");
                         }
                     }
-                    SendText(stream, "·şÎñÆ÷ÊÕµ½: " + message);
+                    SendText(stream, "æœåŠ¡å™¨æ”¶åˆ°: " + message);
                 }
                 Thread.Sleep(5);
             }
         }
         catch (Exception e)
         {
-            Debug.LogError($"¿Í»§¶Ë´¦ÀíÒì³£: {e.Message}");
+            Debug.LogError($"å®¢æˆ·ç«¯å¤„ç†å¼‚å¸¸: {e.Message}");
         }
         finally
         {
@@ -183,14 +183,14 @@ public class WebSocketServer : MonoBehaviour
                 _clients.Remove(client);
             }
             try { client.Close(); } catch { }
-            Debug.Log("¿Í»§¶Ë¶Ï¿ªÁ¬½Ó");
+            Debug.Log("å®¢æˆ·ç«¯æ–­å¼€è¿æ¥");
         }
     }
 
 
     private bool PerformHandshake(NetworkStream stream, TcpClient client)
     {
-        // ¶ÁÈ¡ÍêÕû HTTP ÇëÇóÍ·£¬Ö±µ½³öÏÖ¿ÕĞĞ£¨\r\n\r\n£©
+        // è¯»å–å®Œæ•´ HTTP è¯·æ±‚å¤´ï¼Œç›´åˆ°å‡ºç°ç©ºè¡Œï¼ˆ\r\n\r\nï¼‰
         string request = ReadHttpHeaders(stream, 5000);
         if (string.IsNullOrEmpty(request)) return false;
 
@@ -263,7 +263,7 @@ public class WebSocketServer : MonoBehaviour
 
     private string ReadTextFrame(NetworkStream stream)
     {
-        // »ù±¾Ö¡½á¹¹£ºFIN+Opcode, Mask+PayloadLen, [À©Õ¹³¤¶È], MaskKey(4), Payload
+        // åŸºæœ¬å¸§ç»“æ„ï¼šFIN+Opcode, Mask+PayloadLen, [æ‰©å±•é•¿åº¦], MaskKey(4), Payload
         int b1 = stream.ReadByte();
         if (b1 == -1) return null;
         int b2 = stream.ReadByte();
@@ -276,20 +276,20 @@ public class WebSocketServer : MonoBehaviour
 
         if (opcode == 0x8) // Close
         {
-            // ¶ÁÈ¡²¢»ØÏÔ¹Ø±ÕÖ¡
+            // è¯»å–å¹¶å›æ˜¾å…³é—­å¸§
             byte[] closePayload = ReadArbitraryPayload(stream, masked, payloadLen);
             SendControlFrame(stream, 0x8, closePayload);
             return null;
         }
-        if (opcode == 0x9) // Ping -> ¶ÁÈ¡payload²¢Á¢¼´»Ø¸´ Pong
+        if (opcode == 0x9) // Ping -> è¯»å–payloadå¹¶ç«‹å³å›å¤ Pong
         {
             byte[] pingPayload = ReadArbitraryPayload(stream, masked, payloadLen);
             SendControlFrame(stream, 0xA, pingPayload); // Pong
-            return string.Empty; // ¼ÌĞøÑ­»·
+            return string.Empty; // ç»§ç»­å¾ªç¯
         }
         if (opcode == 0xA)
         {
-            // Pong ºöÂÔ
+            // Pong å¿½ç•¥
             byte[] _ = ReadArbitraryPayload(stream, masked, payloadLen);
             return string.Empty;
         }
@@ -300,7 +300,7 @@ public class WebSocketServer : MonoBehaviour
 
         if (!masked)
         {
-            // ¿Í»§¶ËÖ¡±ØĞëÓĞÑÚÂë
+            // å®¢æˆ·ç«¯å¸§å¿…é¡»æœ‰æ©ç 
             return null;
         }
 
@@ -326,7 +326,7 @@ public class WebSocketServer : MonoBehaviour
 
         if (payloadLen > int.MaxValue)
         {
-            Debug.LogWarning("Payload Ì«´ó£¬·ÅÆú");
+            Debug.LogWarning("Payload å¤ªå¤§ï¼Œæ”¾å¼ƒ");
             return null;
         }
         byte[] payload = new byte[payloadLen];
@@ -343,8 +343,8 @@ public class WebSocketServer : MonoBehaviour
         }
         if (!fin)
         {
-            // ¼ò»¯£º²»Ö§³Ö·ÖÆ¬
-            Debug.LogWarning("ÊÕµ½·ÖÆ¬Ö¡£¨FIN=0£©£¬µ±Ç°ÊµÏÖ²»Ö§³Ö");
+            // ç®€åŒ–ï¼šä¸æ”¯æŒåˆ†ç‰‡
+            Debug.LogWarning("æ”¶åˆ°åˆ†ç‰‡å¸§ï¼ˆFIN=0ï¼‰ï¼Œå½“å‰å®ç°ä¸æ”¯æŒ");
         }
         return Encoding.UTF8.GetString(payload);
     }
@@ -397,7 +397,7 @@ public class WebSocketServer : MonoBehaviour
     {
         if (payload == null) payload = Array.Empty<byte>();
         int len = payload.Length;
-        if (len > 125) len = 0; // ¼ò»¯£º²»·¢ËÍ³¬³¤¿ØÖÆÖ¡
+        if (len > 125) len = 0; // ç®€åŒ–ï¼šä¸å‘é€è¶…é•¿æ§åˆ¶å¸§
         byte[] frame = new byte[2 + payload.Length];
         frame[0] = (byte)(0x80 | (opcode & 0x0F));
         frame[1] = (byte)payload.Length;
@@ -421,12 +421,12 @@ public class WebSocketServer : MonoBehaviour
     {
         if (string.IsNullOrEmpty(message)) message = string.Empty;
         byte[] payload = Encoding.UTF8.GetBytes(message);
-        // ½öÖ§³Ö³¤¶È < 126 ¼ò»¯
+        // ä»…æ”¯æŒé•¿åº¦ < 126 ç®€åŒ–
         if (payload.Length < 126)
         {
             byte[] frame = new byte[2 + payload.Length];
-            frame[0] = 0x81; // FIN + ÎÄ±¾
-            frame[1] = (byte)payload.Length; // ·şÎñÆ÷·¢¸ø¿Í»§¶Ë²»ĞèÒªmask
+            frame[0] = 0x81; // FIN + æ–‡æœ¬
+            frame[1] = (byte)payload.Length; // æœåŠ¡å™¨å‘ç»™å®¢æˆ·ç«¯ä¸éœ€è¦mask
             Array.Copy(payload, 0, frame, 2, payload.Length);
             stream.Write(frame, 0, frame.Length);
         }
@@ -445,8 +445,8 @@ public class WebSocketServer : MonoBehaviour
         }
         else
         {
-            // ³¬³¤£¨>65535£©Ôİ²»Ö§³Ö£¬¼òµ¥²ğ·Ö·¢ËÍ
-            Debug.LogWarning("ÏûÏ¢¹ı³¤£¬µ±Ç°ÊµÏÖÎ´ÍêÕûÖ§³Ö£¬³¢ÊÔ½Ø¶Ï");
+            // è¶…é•¿ï¼ˆ>65535ï¼‰æš‚ä¸æ”¯æŒï¼Œç®€å•æ‹†åˆ†å‘é€
+            Debug.LogWarning("æ¶ˆæ¯è¿‡é•¿ï¼Œå½“å‰å®ç°æœªå®Œæ•´æ”¯æŒï¼Œå°è¯•æˆªæ–­");
             SendText(stream, Encoding.UTF8.GetString(payload, 0, 65535));
         }
     }
@@ -464,7 +464,7 @@ public class WebSocketServer : MonoBehaviour
     private void StopServer()
     {
         if (!_isRunning) return;
-        Debug.Log("ÕıÔÚÍ£Ö¹ WebSocket ·şÎñÆ÷...");
+        Debug.Log("æ­£åœ¨åœæ­¢ WebSocket æœåŠ¡å™¨...");
         _isRunning = false;
         try
         {
@@ -489,6 +489,6 @@ public class WebSocketServer : MonoBehaviour
             _clients.Clear();
         }
         try { _listenerThread?.Join(100); } catch { }
-        Debug.Log("WebSocket ·şÎñÆ÷ÒÑ¹Ø±Õ");
+        Debug.Log("WebSocket æœåŠ¡å™¨å·²å…³é—­");
     }
 }

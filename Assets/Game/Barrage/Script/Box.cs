@@ -1,4 +1,4 @@
-using System.Collections;
+ï»¿using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Threading.Tasks;
@@ -17,10 +17,6 @@ public class Box : MonoBehaviour
     public Dropdown videos;
 
     private BarrageController barrageConfig;
-    // TestCall ´®ĞĞ¶ÓÁĞÓë×´Ì¬
-    private readonly Queue<System.Action> _testQueue = new Queue<System.Action>();
-    private bool _testRunning = false;
-    private float _lastTestExecTime = -1f;
 
     private void Awake()
     {
@@ -37,7 +33,7 @@ public class Box : MonoBehaviour
         LayoutRebuilder.ForceRebuildLayoutImmediate(transform as RectTransform);
     }
 
-    // ¸ÄÎªÓÉ BarrageController Í³Ò»²¥·Å
+    // æ”¹ä¸ºç”± BarrageController ç»Ÿä¸€æ’­æ”¾
     IEnumerator PlayVideoAndWait()
     {
         if (barrageConfig == null)
@@ -45,12 +41,12 @@ public class Box : MonoBehaviour
             barrageConfig = FindAnyObjectByType<BarrageController>();
             if (barrageConfig == null)
             {
-                Debug.LogError("Î´ÕÒµ½ BarrageController£¬ÎŞ·¨²¥·ÅÊÓÆµ");
+                Debug.LogError("æœªæ‰¾åˆ° BarrageControllerï¼Œæ— æ³•æ’­æ”¾è§†é¢‘");
                 yield break;
             }
         }
 
-        if(videos.options[videos.value].text != "¿Õ")
+        if(videos.options[videos.value].text != "ç©º")
         {
             string boxPath = $"Box/{videos.options[videos.value].text}";
             yield return barrageConfig.PlayBoxVideoAndWait(boxPath, 2, false, ModVideoPlayerCreater.Instance != null ? ModVideoPlayerCreater.Instance.transform : null);
@@ -74,7 +70,7 @@ public class Box : MonoBehaviour
 
             if (boxIndex < 0 || boxIndex >= barrageConfig.barrageBoxSetting.Count)
             {
-                Debug.LogError($"Ë÷Òı {boxIndex} ³¬³ö·¶Î§");
+                Debug.LogError($"ç´¢å¼• {boxIndex} è¶…å‡ºèŒƒå›´");
                 return;
             }
 
@@ -82,7 +78,7 @@ public class Box : MonoBehaviour
 
             Dictionary<string, int> callCountDict = new Dictionary<string, int>();
 
-            // Í³¼ÆÃ¿¸öÃû³ÆµÄ³öÏÖ´ÎÊı
+            // ç»Ÿè®¡æ¯ä¸ªåç§°çš„å‡ºç°æ¬¡æ•°
             foreach (string name in currentBoxCalls)
             {
                 if (callCountDict.ContainsKey(name))
@@ -117,17 +113,17 @@ public class Box : MonoBehaviour
                         }
                         else
                         {
-                            // ´¦ÀíÎŞĞ§ÊäÈë
+                            // å¤„ç†æ— æ•ˆè¾“å…¥
                             ChangeCountInCall(name, 0);
                         }
                     });
                 }
             }
 
-            // ¼ÓÔØÎ´Ñ¡ÔñµÄ¹¦ÄÜ
+            // åŠ è½½æœªé€‰æ‹©çš„åŠŸèƒ½
             foreach (string name in barrageConfig.Calls)
             {
-                if (!callCountDict.ContainsKey(name)) // Ö»ÏÔÊ¾Î´Ñ¡ÔñµÄ
+                if (!callCountDict.ContainsKey(name)) // åªæ˜¾ç¤ºæœªé€‰æ‹©çš„
                 {
                     GameObject obj = Instantiate(selectCallObj, selectCalls);
                     Text text = obj.transform.GetChild(0).gameObject.GetComponent<Text>();
@@ -158,7 +154,7 @@ public class Box : MonoBehaviour
     }
 
     /// <summary>
-    /// Ñ¡Èë
+    /// é€‰å…¥
     /// </summary>
     public void JoinCall(GameObject call)
     {
@@ -180,7 +176,7 @@ public class Box : MonoBehaviour
                     }
                     else
                     {
-                        // ´¦ÀíÎŞĞ§ÊäÈë
+                        // å¤„ç†æ— æ•ˆè¾“å…¥
                         ChangeCountInCall(name, 0);
                     }
                 });
@@ -190,7 +186,7 @@ public class Box : MonoBehaviour
     }
 
     /// <summary>
-    /// ĞŞ¸Ä¹¦ÄÜÊıÁ¿
+    /// ä¿®æ”¹åŠŸèƒ½æ•°é‡
     /// </summary>
     public void ChangeCountInCall(string callName, int value)
     {
@@ -198,7 +194,7 @@ public class Box : MonoBehaviour
 
         if (boxIndex < 0 || boxIndex >= barrageConfig.barrageBoxSetting.Count)
         {
-            Debug.LogError($"BoxË÷Òı {boxIndex} ³¬³ö·¶Î§");
+            Debug.LogError($"Boxç´¢å¼• {boxIndex} è¶…å‡ºèŒƒå›´");
             return;
         }
 
@@ -212,17 +208,17 @@ public class Box : MonoBehaviour
             }
         }
 
-        // 2. Ìí¼ÓÖ¸¶¨ÊıÁ¿
+        // 2. æ·»åŠ æŒ‡å®šæ•°é‡
         for (int i = 0; i < value; i++)
         {
             calls.Add(callName);
         }
 
-        Debug.Log($"¹¦ÄÜ '{callName}' ÉèÖÃÎª {value} ¸ö");
+        Debug.Log($"åŠŸèƒ½ '{callName}' è®¾ç½®ä¸º {value} ä¸ª");
     }
 
     /// <summary>
-    /// ĞŞ¸ÄÅäÖÃ
+    /// ä¿®æ”¹é…ç½®
     /// </summary>
     public void ChangeConfig()
     {
@@ -248,7 +244,7 @@ public class Box : MonoBehaviour
                     else
                     {
                         barrageBoxSetting.Count = 1;
-                        Debug.Log("½âÎö±¶ÂÊÊ§°Ü£¬Ê¹ÓÃÄ¬ÈÏÖµ.");
+                        Debug.Log("è§£æå€ç‡å¤±è´¥ï¼Œä½¿ç”¨é»˜è®¤å€¼.");
                     }
                 }
                 if (child.gameObject.name == "InputField5")
@@ -261,7 +257,7 @@ public class Box : MonoBehaviour
                     else
                     {
                         barrageBoxSetting.Delay = 0;
-                        Debug.Log("½âÎöÑÓ³ÙÊ§°Ü£¬Ê¹ÓÃÄ¬ÈÏÖµ.");
+                        Debug.Log("è§£æå»¶è¿Ÿå¤±è´¥ï¼Œä½¿ç”¨é»˜è®¤å€¼.");
                     }
                 }
                 if (child.gameObject.name == "Dropdown2") barrageBoxSetting.videoName = child.gameObject.GetComponent<Dropdown>().options[child.gameObject.GetComponent<Dropdown>().value].text;
@@ -270,62 +266,55 @@ public class Box : MonoBehaviour
     }
 
     /// <summary>
-    /// ²âÊÔ¹¦ÄÜ£ºÏÈ²¥·ÅÊÓÆµ£¬µÈ´ıÊÓÆµ½áÊøºóÔÙ´¥·¢¹¦ÄÜ
+    /// æµ‹è¯•åŠŸèƒ½
     /// </summary>
     public void TestCall()
     {
-        // Èë¶ÓÒ»¸ö²âÊÔÇëÇó£¬´®ĞĞ´¦Àí
-        _testQueue.Enqueue(() => { });
-        if (!_testRunning)
+        BarrageBase barrageBase = FindAnyObjectByType<BarrageBase>();
+        if (barrageBase == null)
         {
-            _testRunning = true;
-            StartCoroutine(ProcessTestQueue());
+            Debug.LogWarning("æœªæ‰¾åˆ° BarrageBaseï¼Œæ— æ³•æ¨¡æ‹Ÿå¼¹å¹•è§¦å‘");
+            return;
         }
-    }
 
-    private IEnumerator ProcessTestQueue()
-    {
-        while (_testQueue.Count > 0)
-        {
-            _testQueue.Dequeue(); // ´ú±íÒ»¸öÇëÇó
-            // ÔÚ¿ªÊ¼Ç°¸ù¾İÉÏ´ÎÖ´ĞĞÊ±¼äÓ¦ÓÃÊ£Óà¼ä¸ô£¬È·±£Á¬Ğøµã»÷²»»áÁ¢¿ÌµÚ¶ş´Î²¥·Å
-            int boxIndex = transform.GetSiblingIndex();
-            var settings = BarrageController.Instance.barrageBoxSetting[boxIndex];
-            if (settings != null && settings.Delay > 0f && _lastTestExecTime >= 0f)
-            {
-                float elapsed = Time.time - _lastTestExecTime;
-                float remain = settings.Delay - elapsed;
-                if (remain > 0f)
-                {
-                    yield return new WaitForSeconds(remain);
-                }
-            }
-
-            // Ö´ĞĞÒ»´Î²âÊÔÀı³Ì£º±¶ÂÊÎª Count£»Ã¿ÂÖ ²¥ÊÓÆµ->Ëæ»ú¹¦ÄÜÒ»´Î->ÈôÎ´µ½×îºóÒ»ÂÖµÈ´ı Delay
-            yield return TestCallRoutineOnce();
-            _lastTestExecTime = Time.time;
-        }
-        _testRunning = false;
-    }
-
-    private IEnumerator TestCallRoutineOnce()
-    {
+        // ç›²ç›’å¼¹å¹•è§¦å‘åªä¾èµ– Message åŒ¹é…ï¼Œå› æ­¤è¿™é‡Œç”¨å½“å‰é…ç½®çš„ Message åšä¸€æ¬¡æ¨¡æ‹Ÿ
         int boxIndex = transform.GetSiblingIndex();
-        var settings = BarrageController.Instance.barrageBoxSetting[boxIndex];
-        int cycles = Mathf.Max(1, settings.Count);
-        for (int i = 0; i < cycles; i++)
+        if (barrageConfig == null) barrageConfig = FindAnyObjectByType<BarrageController>();
+        if (barrageConfig == null || boxIndex < 0 || boxIndex >= barrageConfig.barrageBoxSetting.Count)
         {
-            yield return PlayVideoAndWait();
+            Debug.LogWarning("BarrageController/ç›²ç›’ç´¢å¼•æ— æ•ˆï¼Œæ— æ³•æ¨¡æ‹Ÿå¼¹å¹•è§¦å‘");
+            return;
+        }
 
-            int index = UnityEngine.Random.Range(0, settings.Calls.Count);
-            string callName = settings.Calls[index];
-            float delay = settings.Delay;
-            BarrageController.Instance.EnqueueAction("²âÊÔÓÃ»§", "", callName, 1, 1, delay);
+        string msg = barrageConfig.barrageBoxSetting[boxIndex].Message;
+        var data = new BarrageData
+        {
+            Type = barrageConfig.barrageBoxSetting[boxIndex].Type,
+            name = "æµ‹è¯•ç”¨æˆ·",
+            message = msg,
+            userAvatar = "",
+            num = 1,
+            count = 1
+        };
+        string json = JsonUtility.ToJson(data);
 
-            if (settings.Delay > 0f && i < cycles - 1)
-            {
-                yield return new WaitForSeconds(settings.Delay);
-            }
+        switch(data.Type)
+        {
+            case "ç¤¼ç‰©":
+                barrageBase.HandleGift(json);
+            break;
+            case "å¼¹å¹•":
+                barrageBase.HandleBarrage(json);
+            break;
+            case "å…³æ³¨":
+                barrageBase.HandleAttention(json);
+            break;
+            case "è¿›å…¥":
+                barrageBase.HandleJoin(json);
+            break;
+            case "ç‚¹èµ":
+                barrageBase.HandleLike(json);
+            break;
         }
     }
 }

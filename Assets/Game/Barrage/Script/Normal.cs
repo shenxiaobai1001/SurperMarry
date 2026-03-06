@@ -1,4 +1,4 @@
-using System.Collections;
+ï»¿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
@@ -25,7 +25,7 @@ public class Normal : MonoBehaviour
     }
 
     /// <summary>
-    /// ĞŞ¸ÄÅäÖÃ
+    /// ä¿®æ”¹é…ç½®
     /// </summary>
     public void ChangeConfig()
     {
@@ -49,7 +49,7 @@ public class Normal : MonoBehaviour
                     else
                     {
                         barrageNormalSetting.Count = 1;
-                        Debug.Log("½âÎö±¶ÂÊÊ§°Ü£¬Ê¹ÓÃÄ¬ÈÏÖµ.");
+                        Debug.Log("è§£æå€ç‡å¤±è´¥ï¼Œä½¿ç”¨é»˜è®¤å€¼.");
                     }
 
                 }
@@ -63,7 +63,7 @@ public class Normal : MonoBehaviour
                     else
                     {
                         barrageNormalSetting.Delay = 0;
-                        Debug.Log("½âÎöÑÓ³ÙÊ§°Ü£¬Ê¹ÓÃÄ¬ÈÏÖµ.");
+                        Debug.Log("è§£æå»¶è¿Ÿå¤±è´¥ï¼Œä½¿ç”¨é»˜è®¤å€¼.");
                     }
                 }
             }
@@ -71,7 +71,7 @@ public class Normal : MonoBehaviour
     }
 
     /// <summary>
-    /// ²âÊÔ¹¦ÄÜ
+    /// æµ‹è¯•åŠŸèƒ½
     /// </summary>
     public void TestCall()
     {
@@ -79,6 +79,6 @@ public class Normal : MonoBehaviour
         int times = BarrageController.Instance.barrageNormalSetting[transform.GetSiblingIndex()].Count;
         float delay = BarrageController.Instance.barrageNormalSetting[transform.GetSiblingIndex()].Delay;
 
-        BarrageController.Instance.EnqueueAction("²âÊÔÓÃ»§", "", callName, 1, times, delay);
+        BarrageController.Instance.EnqueueAction("æµ‹è¯•ç”¨æˆ·", "", callName, 1, times, delay);
     }
 }

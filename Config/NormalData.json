@@ -3,7 +3,7 @@
         {
             "CallName": "抓乌龟",
             "Type": "礼物",
-            "Message": "",
+            "Message": "XXX",
             "Tip": "",
             "Count": 1,
             "Delay": 0.0
@@ -49,8 +49,8 @@
             "Delay": 0.0
         },
         {
-            "CallName": "顶乌龟",
-            "Type": "礼物",
+            "CallName": "乌龟一只",
+            "Type": "",
             "Message": "",
             "Tip": "",
             "Count": 1,

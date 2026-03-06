@@ -1,56 +1,74 @@
-using System;
+ï»¿using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
-using PlayerScripts;
-using SystemScripts;
 using UnityEngine;
 using UnityEngine.UI;
+using static Lottery;
 
 [Serializable]
 public class BarrageNormalSetting
 {
-    public string CallName; // ¹¦ÄÜÃû³Æ
-    public string Type; // Êı¾İÀàĞÍÃû³Æ
-    public string Message; // ´¥·¢ÄÚÈİ
-    public string Tip; // ÌáÊ¾
-    public int Count; // ±¶ÂÊ
-    public float Delay; // ÑÓ³Ù
+    public string CallName; // åŠŸèƒ½åç§°
+    public string Type; // æ•°æ®ç±»å‹åç§°
+    public string Message; // è§¦å‘å†…å®¹
+    public string Tip; // æç¤º
+    public int Count; // å€ç‡
+    public float Delay; // å»¶è¿Ÿ
 }
 
 [Serializable]
 public class BarrageBoxSetting
 {
-    public string BoxName; // Ã¤ºĞÃû³Æ
-    public string Type; // Êı¾İÀàĞÍÃû³Æ
-    public string Message; // ´¥·¢ÄÚÈİ
-    public string Tip; // ÌáÊ¾
-    public int Count; // ±¶ÂÊ
-    public float Delay; // ÑÓ³Ù
-    public string videoName; // Ñ¡ÔñµÄÊÓÆµ
+    public string BoxName; // ç›²ç›’åç§°
+    public string Type; // æ•°æ®ç±»å‹åç§°
+    public string Message; // è§¦å‘å†…å®¹
+    public string Tip; // æç¤º
+    public int Count; // å€ç‡
+    public float Delay; // å»¶è¿Ÿ
+    public string videoName; // é€‰æ‹©çš„è§†é¢‘
 
-    public List<string> Calls = new List<string>(); // Ã¤ºĞËùÓĞ¹¦ÄÜ
+    public List<string> Calls = new List<string>(); // ç›²ç›’æ‰€æœ‰åŠŸèƒ½
 }
 
 [Serializable]
 public class BarrageSpecialBoxSetting
 {
-    public string BoxName; // Ã¤ºĞÃû³Æ
-    public string Type; // Êı¾İÀàĞÍÃû³Æ
-    public string Message; // ´¥·¢ÄÚÈİ
-    public string Tip; // ÌáÊ¾
-    public int Count; // ±¶ÂÊ
-    public float Delay; // ÑÓ³Ù
-    public string videoName; // Ñ¡ÔñµÄÊÓÆµ
+    public string BoxName; // ç›²ç›’åç§°
+    public string Type; // æ•°æ®ç±»å‹åç§°
+    public string Message; // è§¦å‘å†…å®¹
+    public string Tip; // æç¤º
+    public int Count; // å€ç‡
+    public float Delay; // å»¶è¿Ÿ
+    public string videoName; // é€‰æ‹©çš„è§†é¢‘
 
-    public List<string> Calls = new List<string>(); // Ã¤ºĞËùÓĞ¹¦ÄÜ
+    public List<string> Calls = new List<string>(); // ç›²ç›’æ‰€æœ‰åŠŸèƒ½
+}
+
+[Serializable]
+public class BarrageLotterySetting
+{
+    public string Title; // æŠ½å¥–æ ‡é¢˜
+    public string Type; // æ•°æ®ç±»å‹åç§°
+    public string Message; // è§¦å‘å†…å®¹
+    public string Tip; // æç¤º
+    public int Count; // å€ç‡
+    public float Delay; // å»¶è¿Ÿ
+
+    public string LotteryCount; // æŠ½å¥–ä¸ªæ•°
+
+    public string avatarPath; // å¤´åƒåœ°å€
+
+    public List<LotteryItemSetting> LotteryItem = new List<LotteryItemSetting>(); // æŠ½å¥–é¡¹
+
 }
 
 public enum PrankType
 {
     normal,
     box,
-    special
+    special,
+    lottery
 }
 
 public class BarrageNormalWrapper
@@ -68,25 +86,37 @@ public class BarrageSpecialWrapper
     public List<BarrageSpecialBoxSetting> SpecialConfigs;
 }
 
+public class BarrageLottoryWrapper
+{
+    public List<BarrageLotterySetting> LottoryConfigs;
+}
+
 public class BarrageController : MonoBehaviour
 {
     public static BarrageController Instance { get; set; }
 
-    // ¹¦ÄÜÃû³Æ
-    public List<string> Calls = new List<string>();
+    // åŠŸèƒ½åç§°
+    public List<string> Calls = new List<string> ();
 
-    [Tooltip("µ±Ç°Õû¹ÆÅäÖÃÀàĞÍ")]
+    [Tooltip("å½“å‰æ•´è›Šé…ç½®ç±»å‹")]
     public PrankType prankType;
 
+    public InputField searchInput;
     public GameObject content;
     public GameObject item;
     public GameObject box;
     public GameObject special;
+    public GameObject lottery;
+    [Header("è§†é¢‘æ’­æ”¾å™¨")]
+    public GameObject videoPlayerPrefab;
 
     public List<BarrageNormalSetting> barrageNormalSetting = new List<BarrageNormalSetting>();
     public List<BarrageBoxSetting> barrageBoxSetting = new List<BarrageBoxSetting>();
     public List<BarrageSpecialBoxSetting> barrageSpecialBoxSetting = new List<BarrageSpecialBoxSetting>();
+    public List<BarrageLotterySetting> barrageLotterySettings = new List<BarrageLotterySetting> ();
     public bool isInit;
+
+
 
     private class ActionTask
     {
@@ -147,7 +177,7 @@ public class BarrageController : MonoBehaviour
     }
 
     /// <summary>
-    /// ´Ó Box ²¥·ÅÊÓÆµ²¢µÈ´ı²¥·Å½áÊø£¨VideoManager ²¥·ÅÍê»á Despawn ×Ô¼º£©
+    /// ä» Box æ’­æ”¾è§†é¢‘å¹¶ç­‰å¾…æ’­æ”¾ç»“æŸï¼ˆVideoManager æ’­æ”¾å®Œä¼š Despawn è‡ªå·±ï¼‰
     /// </summary>
     public IEnumerator PlayBoxVideoAndWait(string boxPath, int playerType = 2, bool snake = false, Transform parent = null)
     {
@@ -155,296 +185,17 @@ public class BarrageController : MonoBehaviour
 
         GameObject obj = ModVideoPlayerCreater.Instance.OnCreateModVideoPlayer(Vector3.zero, Vector3.one, Vector3.zero, boxPath, 2, "Default", false, -10);
 
-        // µÈ´ı¶ÔÏó±»»ØÊÕ»òÊ§»î
         yield return new WaitUntil(() => obj == null || !obj.activeInHierarchy);
     }
 
     /// <summary>
-    /// Ö´ĞĞ¹¦ÄÜ
+    /// æ‰§è¡ŒåŠŸèƒ½
     /// </summary>
     /// <param name="task"></param>
     private void ExecuteAction(ActionTask task)
     {
         BarrageFuncController.Instance.OnAddReadyFunc(task.callName);
         return;
-        //switch (task.callName)
-        //{
-        //    case "ÎÚ¹êÒ»Ö»":
-        //        MonsterCreater.Instance.OnCreateTortoise(1);
-        //        break;
-        //    case "ÎÚ¹êÊ®Ö»":
-        //        MonsterCreater.Instance.OnCreateTortoise(10);
-        //        break;
-        //    case "ÎÚ¹êÒ»°ÙÖ»":
-        //        MonsterCreater.Instance.OnCreateTortoise(100);
-        //        break;
-        //    case "Ä¢¹½Ò»Ö»":
-        //        MonsterCreater.Instance.OnCreateMushroom(1);
-        //        break;
-        //    case "Ä¢¹½Ê®Ö»":
-        //        MonsterCreater.Instance.OnCreateMushroom(10);
-        //        break;
-        //    case "Ä¢¹½Ò»°ÙÖ»":
-        //        MonsterCreater.Instance.OnCreateMushroom(100);
-        //        break;
-        //    case "·É¹êÒ»Ö»":
-        //        MonsterCreater.Instance.OnCreateFlyKoopa(1);
-        //        break;
-        //    case "·É¹êÊ®Ö»":
-        //        MonsterCreater.Instance.OnCreateFlyKoopa(10);
-        //        break;
-        //    case "·É¹êÒ»°ÙÖ»":
-        //        MonsterCreater.Instance.OnCreateFlyKoopa(100);
-        //        break;
-        //    case "·ÉÓãÒ»Ö»":
-        //        MonsterCreater.Instance.OnCreateFlyFish(1);
-        //        break;
-        //    case "·ÉÓãÊ®Ö»":
-        //        MonsterCreater.Instance.OnCreateFlyFish(10);
-        //        break;
-        //    case "·ÉÓãÒ»°ÙÖ»":
-        //        MonsterCreater.Instance.OnCreateFlyFish(100);
-        //        break;
-        //    case "¼×¿Ç³æÒ»Ö»":
-        //        MonsterCreater.Instance.OnCreateBeatles(1);
-        //        break;
-        //    case "¼×¿Ç³æÊ®Ö»":
-        //        MonsterCreater.Instance.OnCreateBeatles(10);
-        //        break;
-        //    case "¼×¿Ç³æÒ»°ÙÖ»":
-        //        MonsterCreater.Instance.OnCreateBeatles(100);
-        //        break;
-        //    case "ÓÎÏ·Ê±¼ä+10s":
-        //        GameStatusController.IsGameFinish = false;
-        //        Sound.PlaySound("smb_1-up");
-        //        GameManager.Instance.time += 10;
-        //        break;
-        //    case "ÓÎÏ·Ê±¼ä-10s":
-        //        Sound.PlaySound("smb_1-up");
-        //        GameManager.Instance.time -= 10;
-        //        break;
-        //    case "ÉúÃü+10%":
-        //        Sound.PlaySound("smb_1-up");
-        //        ModData.mLife += (int)(ModData.mLife * 0.1f);
-        //        EventManager.Instance.SendMessage(Events.OnChangeLife);
-        //        break;
-        //    case "ÉúÃü-10%":
-        //        Sound.PlaySound("smb_1-up");
-        //        ModData.mLife -= (int)(ModData.mLife * 0.1f);
-        //        EventManager.Instance.SendMessage(Events.OnChangeLife);
-        //        break;
-        //    case "ÉúÃü+1":
-        //        Sound.PlaySound("smb_1-up");
-        //        ModData.mLife += 1;
-        //        EventManager.Instance.SendMessage(Events.OnChangeLife);
-        //        break;
-        //    case "ÉúÃü-1":
-        //        Sound.PlaySound("smb_1-up");
-        //        ModData.mLife -= 1;
-        //        EventManager.Instance.SendMessage(Events.OnChangeLife);
-        //        break;
-        //    case "ÈÓÏã½¶":
-        //        ItemCreater.Instance.OnCreateBanana(1);
-        //        break;
-        //    case "¶¯¸ĞDJ":
-        //        ModVideoPlayerCreater.Instance.OnPlayDJ();
-        //        break;
-        //    case "Íò¼ıÆë·¢":
-        //        ItemCreater.Instance.OnCreateManyArrow(1);
-        //        break;
-        //    case "×¥Ñ¼×Ó":
-        //        ModVideoPlayerCreater.Instance.OnCreateDuckVideoPlayer();
-        //        break;
-        //    case "×¥¿É´ïÑ¼":
-        //        ModVideoPlayerCreater.Instance.OnCreatePsyDuckVideoPlayer();
-        //        break;
-        //    case "×¥ÎÚ¹ê":
-        //        ModVideoPlayerCreater.Instance.OnCreateKoopaVideoPlayer();
-        //        break;
-        //    case "ÎÚÈøÆæ":
-        //        ModVideoPlayerCreater.Instance.OnPlayWuSaQi();
-        //        break;
-        //    case "Áé»ê¿½ÎÊ":
-        //        ModVideoPlayerCreater.Instance.OnPlayMenace();
-        //        break;
-        //    case "ÎÚÈøÆæÓ²¿Ø":
-        //        ModVideoPlayerCreater.Instance.OnPlayWuSaQi(true);
-        //        break;
-        //    case "Áé»ê¿½ÎÊÓ²¿Ø":
-        //        ModVideoPlayerCreater.Instance.OnPlayMenace(true);
-        //        break;
-        //    case "ÉÏµõ":
-        //        ItemCreater.Instance.OnCreateHangSelf();
-        //        break;
-        //    case "Ò»¿â":
-        //        ItemCreater.Instance.OnCreateMangSeng(1);
-        //        break;
-        //    case "¹öÊ¯":
-        //        ItemCreater.Instance.OnCreateRollStone(1);
-        //        break;
-        //    case "¹ö´Ì":
-        //        ItemCreater.Instance.OnCreateRollArrow(1);
-        //        break;
-        //    case "ÔÉÊ¯":
-        //        ItemCreater.Instance.OnCreateMeteorite(1);
-        //        break;
-        //    case "÷è÷ë±Û":
-        //        ItemCreater.Instance.OnCreateQiLinBi(1);
-        //        break;
-        //    case "Ìì²Ğ½Å":
-        //        ItemCreater.Instance.OnCreateTCJiao(1);
-        //        break;
-        //    case "Ëæ»úÌì»ğ":
-        //        ItemCreater.Instance.OnCreateSingleUPFire(1);
-        //        break;
-        //    case "È«ÆÁÌì»ğ":
-        //        ItemCreater.Instance.OnCreateUPFire(1);
-        //        break;
-        //    case "Ëæ»úµØ»ğ":
-        //        ItemCreater.Instance.OnCreateDownFire(1);
-        //        break;
-        //    case "È«ÆÁµØ»ğ":
-        //        ItemCreater.Instance.OnCreateDownFire(66);
-        //        break;
-        //    case "Ëæ»ú´«ËÍ":
-        //        GameModController.Instance.OnRandromPlayerPos();
-        //        break;
-        //    case "Ëæ»ú¹Ø¿¨":
-        //        GameModController.Instance.OnRandromPass();
-        //        break;
-        //    case "ÌúÁ´":
-        //        ItemCreater.Instance.OnCreateChainPlayer(1);
-        //        break;
-        //    case "À×µç":
-        //        ItemCreater.Instance.OnCreateLazzer(1);
-        //        break;
-        //    case "×©¿é+10":
-        //        CreateWallManager.Instance.wallCount += 10;
-        //        break;
-        //    case "Ê¯Í·+10":
-        //        CreateWallManager.Instance.stonesCount += 10;
-        //        break;
-        //    case "ÃÀÅ®Ã¤ºĞ":
-        //        ModVideoPlayerCreater.Instance.OnPlayGrilVideo();
-        //        break;
-        //    case "»ğÑæÂíÀï°Â":
-        //        PlayerModController.Instance.OnRandromPlayer(2);
-        //        break;
-        //    case "ÉÏÒ»¹Ø":
-        //        if (GameModController.Instance != null) GameModController.Instance.OnEnterNextPass(-1);
-        //        break;
-        //    case "ÏÂÒ»¹Ø":
-        //        if (GameModController.Instance != null) GameModController.Instance.OnEnterNextPass(1);
-        //        break;
-        //    case "´óÄ¢¹½":
-        //        ItemCreater.Instance.OnCreateBigMG(1);
-        //        break;
-        //    case "³¬ÈË+10Ãë":
-        //        PlayerModController.Instance.OnSuperMan(10);
-        //        break;
-        //    case "³¬ÈË-10Ãë":
-        //        PlayerModController.Instance.OnSuperMan(-10);
-        //        break;
-        //    case "½©Ê¬+10Ãë":
-        //        PlayerModController.Instance.OnShowZomBie(10);
-        //        break;
-        //    case "½©Ê¬-10Ãë":
-        //        PlayerModController.Instance.OnShowZomBie(-10);
-        //        break;
-        //    case "¹ã²¥Ìå²Ù":
-        //        ItemCreater.Instance.OnDance();
-        //        break;
-        //    case "µ¶Âí":
-        //        PlayerModController.Instance.OnDMDance();
-        //        break;
-        //    case "ÔäÍ·":
-        //        PlayerModController.Instance.OnKickHead();
-        //        break;
-        //    case "¿³µ¶ĞÎÌ¬":
-        //        PlayerModController.Instance.OnRandromPlayer(0);
-        //        break;
-        //    case "ÄÃÇ¹ĞÎÌ¬":
-        //        PlayerModController.Instance.OnRandromPlayer(1);
-        //        break;
-        //    case "Ëæ»úĞÎÌ¬":
-        //        PlayerModController.Instance.OnRandromPlayer(5);
-        //        break;
-        //    case "´ó³İÂÖ":
-        //        ItemCreater.Instance.OnCreateBigGear(1);
-        //        break;
-        //    case "×²´óÔË":
-        //        ItemCreater.Instance.OnCreateTrunck(1);
-        //        break;
-        //    case "´ò°å×ÓÃ¤ºĞ":
-        //        ModVideoPlayerCreater.Instance.OnCreateFlog();
-        //        break;
-        //    case "±ä´ó":
-        //        if (Config.isLoading) return;
-        //        ModVideoPlayerCreater.Instance.OnPlayBig();
-        //        PlayerModController.Instance.OnChangScale(0.01f);
-        //        break;
-        //    case "±äĞ¡":
-        //        if (Config.isLoading) return;
-        //        ModVideoPlayerCreater.Instance.OnPlaySmall();
-        //        PlayerModController.Instance.OnChangScale(-0.01f);
-        //        break;
-        //    case "¹ØµÆ":
-        //        if (Config.isLoading) return;
-        //        Sound.PlaySound("smb_1-up");
-        //        UIMask.Instance.OnCloseLight();
-        //        break;
-        //    case "ÖØĞÂ¿ªÊ¼":
-        //        if (Config.isLoading) return;
-        //        if (GameModController.Instance != null) GameModController.Instance.OnLoadScene("1-1");
-        //        break;
-        //    case "ÏİÚåÊıÁ¿+1":
-        //        Sound.PlaySound("smb_1-up");
-        //        if (ModData.canTrapCount< ModData.allTrapCount)
-        //            ModData.canTrapCount += 1;
-        //        break;
-        //    case "ÏİÚåÊıÁ¿-1":
-        //        Sound.PlaySound("smb_1-up");
-        //        if (ModData.canTrapCount >0)
-        //            ModData.canTrapCount -= 1;
-        //        break;
-        //    case "È«²¿ÏİÚå¼¤»î":
-        //        Sound.PlaySound("smb_1-up");
-        //        ModData.canTrapCount = ModData.allTrapCount;
-        //        break;
-        //    case "È«²¿ÏİÚå¹Ø±Õ":
-        //        Sound.PlaySound("smb_1-up");
-        //        ModData.canTrapCount = 0;
-        //        break;
-        //    case "ÎŞµĞĞÇ":
-        //        PlayerModController.Instance.OnSetInvincible();
-        //        break;
-        //    case "ÒşÉí":
-        //        PlayerModController.Instance.OnSetInvisibilityState();
-        //        break;
-        //    case "»ğÈ¦":
-        //        Sound.PlaySound("smb_1-up");
-        //        ItemCreater.Instance.OnCreatehuoQuan(1);
-        //        break;
-        //    case "ÉìËõÌÙÌõ":
-        //        ItemCreater.Instance.OnCreateRattan(1);
-        //        break;
-        //    case "¿Ş·Ø":
-        //        ModVideoPlayerCreater.Instance.OnKuFen();
-        //        break;
-        //    case "²ÁÆ¤Ğ¬":
-        //        ItemCreater.Instance.OnCreateShoeShine(1);
-        //        break;
-        //    case "ÌøÉş":
-        //        Config.ropeCount += 1;
-        //        ItemCreater.Instance.OnCreateRopeSkip(1);
-        //        break;
-        //    case "ÌøÉşÃ¤ºĞ":
-        //        ModVideoPlayerCreater.Instance.OnCreateRopeVideoPlayer();
-        //        break;
-        //    case "¶¥ÎÚ¹ê":
-        //        ItemCreater.Instance.OnCreatePeakKuba(1);
-        //        break;
-        //}
     }
 
     void Awake()
@@ -458,6 +209,13 @@ public class BarrageController : MonoBehaviour
     void Start()
     {
         InitializeAllConfigs();
+
+        // å¿«æ·æœç´¢ï¼šå®æ—¶æŒ‰å…³é”®å­—è¿‡æ»¤å½“å‰åˆ—è¡¨
+        if (searchInput != null)
+        {
+            searchInput.onValueChanged.RemoveListener(OnSearchChanged);
+            searchInput.onValueChanged.AddListener(OnSearchChanged);
+        }
     }
 
     void Update()
@@ -466,19 +224,26 @@ public class BarrageController : MonoBehaviour
     }
 
     /// <summary>
-    /// ÇĞ»»ÅäÖÃÀàĞÍ
+    /// åˆ‡æ¢é…ç½®ç±»å‹
     /// </summary>
     /// <param name="type"></param>
     public void ChangePrankType(int type)
     {
         isInit = false;
         prankType = (PrankType)type;
+        // åˆ‡æ¢ç±»å‹æ—¶æ¸…æ‰æœç´¢ï¼Œé¿å…æ®‹ç•™è¿‡æ»¤å¯¼è‡´â€œå•¥éƒ½æ²¡æœ‰â€
+        if (searchInput != null)
+        {
+            searchInput.onValueChanged.RemoveListener(OnSearchChanged);
+            searchInput.text = string.Empty;
+            searchInput.onValueChanged.AddListener(OnSearchChanged);
+        }
         if (type == (int)PrankType.normal)
         {
             RemoveAllItem();
             InitNormalConfig();
         }
-        else if (type == (int)PrankType.box)
+        else if(type == (int)PrankType.box)
         {
             RemoveAllItem();
             InitBoxConfig();
@@ -488,14 +253,90 @@ public class BarrageController : MonoBehaviour
             RemoveAllItem();
             InitSpecialConfig();
         }
+        else if (type == (int)PrankType.lottery)
+        {
+            RemoveAllItem();
+            InitLottoryConfig();
+        }
+
+        // åˆå§‹åŒ–å®Œåç«‹å³åº”ç”¨ä¸€æ¬¡è¿‡æ»¤
+        ApplySearchFilter(searchInput != null ? searchInput.text : string.Empty);
+    }
+
+    private void OnSearchChanged(string keyword)
+    {
+        ApplySearchFilter(keyword);
+    }
+
+    private void ApplySearchFilter(string keyword)
+    {
+        if (content == null) return;
+
+        keyword = (keyword ?? string.Empty).Trim();
+        if (string.IsNullOrEmpty(keyword))
+        {
+            foreach (Transform child in content.transform)
+            {
+                if (child != null) child.gameObject.SetActive(true);
+            }
+            return;
+        }
+
+        for (int i = 0; i < content.transform.childCount; i++)
+        {
+            var child = content.transform.GetChild(i);
+            if (child == null) continue;
+
+            bool match = IsItemMatch(child, keyword);
+            child.gameObject.SetActive(match);
+        }
+    }
+
+    private bool IsItemMatch(Transform itemTransform, string keyword)
+    {
+        // åŒ¹é…å…³é”®å­—æ®µï¼ˆåç§°/æ ‡é¢˜/è§¦å‘å†…å®¹/æç¤ºï¼‰
+        StringComparison cmp = StringComparison.OrdinalIgnoreCase;
+
+        bool Contains(string s)
+        {
+            return !string.IsNullOrEmpty(s) && s.IndexOf(keyword, cmp) >= 0;
+        }
+
+        // InputFieldï¼šæ ‡é¢˜/åç§°ã€è§¦å‘æ¶ˆæ¯ã€æç¤ºã€å€ç‡ã€å»¶è¿Ÿ
+        var fields = itemTransform.GetComponentsInChildren<InputField>(true);
+        foreach (var f in fields)
+        {
+            if (f == null) continue;
+            // æ ‡é¢˜/åç§°ã€è§¦å‘æ¶ˆæ¯ã€æç¤º éƒ½åœ¨ InputField å†…
+            if (Contains(f.text)) return true;
+        }
+
+        // å¦‚æœæœ‰ Textï¼ˆæ¯”å¦‚æŒ‰é’® labelï¼‰ï¼Œä¹Ÿå‚ä¸æœç´¢
+        var texts = itemTransform.GetComponentsInChildren<Text>(true);
+        foreach (var t in texts)
+        {
+            if (t == null) continue;
+            if (Contains(t.text)) return true;
+        }
+
+        // ä¸‹æ‹‰æ¡†å½“å‰é€‰ä¸­é¡¹ä¹Ÿå‚ä¸æœç´¢ï¼ˆç±»å‹ã€è§†é¢‘åã€æŠ½å¥–ä¸ªæ•°ç­‰ï¼‰
+        var dropdowns = itemTransform.GetComponentsInChildren<Dropdown>(true);
+        foreach (var d in dropdowns)
+        {
+            if (d == null || d.options == null || d.options.Count == 0) continue;
+            int idx = Mathf.Clamp(d.value, 0, d.options.Count - 1);
+            if (Contains(d.options[idx].text)) return true;
+        }
+
+        return false;
     }
 
     /// <summary>
-    /// Ìí¼ÓÅäÖÃ
+    /// æ·»åŠ é…ç½®
     /// </summary>
     public void AddItem()
     {
-        if (prankType == PrankType.normal)
+        if(prankType == PrankType.normal)
         {
             GameObject obj = Instantiate(item, content.transform);
             Dropdown dropdown = obj.transform.GetChild(1).GetComponent<Dropdown>();
@@ -508,7 +349,7 @@ public class BarrageController : MonoBehaviour
             config.Count = 1;
             barrageNormalSetting.Add(config);
         }
-        else if (prankType == PrankType.box)
+        else if(prankType == PrankType.box)
         {
             GameObject obj = Instantiate(box, content.transform);
 
@@ -524,25 +365,34 @@ public class BarrageController : MonoBehaviour
             config.Count = 1;
             barrageSpecialBoxSetting.Add(config);
         }
+        else if (prankType == PrankType.lottery)
+        {
+            GameObject obj = Instantiate(lottery, content.transform);
+
+            BarrageLotterySetting config = new BarrageLotterySetting();
+            config.Count = 1;
+
+            barrageLotterySettings.Add(config);
+        }
     }
 
     /// <summary>
-    /// Çå¿ÕÅäÖÃ
+    /// æ¸…ç©ºé…ç½®
     /// </summary>
     public void RemoveAllItem()
     {
-        foreach (Transform obj in content.transform)
+        foreach(Transform obj in content.transform)
         {
             Destroy(obj.gameObject);
         }
     }
 
     /// <summary>
-    /// ³õÊ¼»¯ËùÓĞÅäÖÃ£¨¼ÓÔØ»ò´´½¨Ä¬ÈÏÅäÖÃ£©
+    /// åˆå§‹åŒ–æ‰€æœ‰é…ç½®ï¼ˆåŠ è½½æˆ–åˆ›å»ºé»˜è®¤é…ç½®ï¼‰
     /// </summary>
     public void InitializeAllConfigs()
     {
-        Debug.Log("¿ªÊ¼³õÊ¼»¯ÅäÖÃ...");
+        Debug.Log("å¼€å§‹åˆå§‹åŒ–é…ç½®...");
 
         try
         {
@@ -550,38 +400,38 @@ public class BarrageController : MonoBehaviour
             if (!Directory.Exists(configDir))
             {
                 Directory.CreateDirectory(configDir);
-                Debug.Log($"´´½¨ÅäÖÃÄ¿Â¼: {configDir}");
+                Debug.Log($"åˆ›å»ºé…ç½®ç›®å½•: {configDir}");
             }
 
-            //// 2. ³õÊ¼»¯ÆÕÍ¨ÅäÖÃ
+            //// 2. åˆå§‹åŒ–æ™®é€šé…ç½®
             //InitializeNormalConfig(configDir);
 
-            //// 3. ³õÊ¼»¯Ã¤ºĞÅäÖÃ
+            //// 3. åˆå§‹åŒ–ç›²ç›’é…ç½®
             //InitializeBoxConfig(configDir);
 
-            Debug.Log("ËùÓĞÅäÖÃ³õÊ¼»¯Íê³É");
+            Debug.Log("æ‰€æœ‰é…ç½®åˆå§‹åŒ–å®Œæˆ");
         }
         catch (Exception ex)
         {
-            Debug.LogError($"³õÊ¼»¯ÅäÖÃÊ§°Ü: {ex.Message}");
+            Debug.LogError($"åˆå§‹åŒ–é…ç½®å¤±è´¥: {ex.Message}");
         }
     }
 
     /// <summary>
-    /// ±£´æÅäÖÃµ½±¾µØJSON
+    /// ä¿å­˜é…ç½®åˆ°æœ¬åœ°JSON
     /// </summary>
     public void SaveDataToJson()
     {
         BarrageNormalWrapper wrapper = new BarrageNormalWrapper();
         wrapper.NormalConfigs = barrageNormalSetting;
 
-        string filePath1 = Path.Combine(Directory.GetCurrentDirectory(), "Config", "NormalData.json");
+        string filePath1 = Path.Combine(Directory.GetCurrentDirectory(),"Config" , "NormalData.json");
 
-        string jsonData1 = JsonUtility.ToJson(wrapper, true);
+        string jsonData1 = JsonUtility.ToJson(wrapper, true); 
 
         File.WriteAllText(filePath1, jsonData1);
 
-        Debug.Log("ÆÕÍ¨ÅäÖÃÊı¾İÒÑ±£´æµ½: " + filePath1);
+        Debug.Log("æ™®é€šé…ç½®æ•°æ®å·²ä¿å­˜åˆ°: " + filePath1);
 
         BarrageBoxWrapper barrageBoxWrapper = new BarrageBoxWrapper();
         barrageBoxWrapper.BoxConfigs = barrageBoxSetting;
@@ -591,7 +441,7 @@ public class BarrageController : MonoBehaviour
 
         File.WriteAllText(filePath2, jsonData2);
 
-        Debug.Log("Ã¤ºĞÅäÖÃÊı¾İÒÑ±£´æµ½: " + filePath2);
+        Debug.Log("ç›²ç›’é…ç½®æ•°æ®å·²ä¿å­˜åˆ°: " + filePath2);
 
         BarrageSpecialWrapper barrageSpecialWrapper = new BarrageSpecialWrapper();
         barrageSpecialWrapper.SpecialConfigs = barrageSpecialBoxSetting;
@@ -601,20 +451,30 @@ public class BarrageController : MonoBehaviour
 
         File.WriteAllText(filePath3, jsonData3);
 
-        Debug.Log("¶àÌØĞ§ÅäÖÃÊı¾İÒÑ±£´æµ½: " + filePath3);
+        Debug.Log("å¤šç‰¹æ•ˆé…ç½®æ•°æ®å·²ä¿å­˜åˆ°: " + filePath3);
+
+        BarrageLottoryWrapper barrageLottoryWrapper = new BarrageLottoryWrapper();
+        barrageLottoryWrapper.LottoryConfigs = barrageLotterySettings;
+
+        string filePath4 = Path.Combine(Directory.GetCurrentDirectory(), "Config", "LottoryData.json");
+        string jsonData4 = JsonUtility.ToJson(barrageLottoryWrapper, true);
+
+        File.WriteAllText(filePath4, jsonData4);
+
+        Debug.Log("æŠ½å¥–é…ç½®æ•°æ®å·²ä¿å­˜åˆ°: " + filePath4);
     }
 
     /// <summary>
-    /// ¶ÁÈ¡±¾µØJSONÊı¾İ
+    /// è¯»å–æœ¬åœ°JSONæ•°æ®
     /// </summary>
     public void LoadDataFromJson()
     {
-
+ 
         string filePath1 = Path.Combine(Directory.GetCurrentDirectory(), "Config", "NormalData.json");
 
         if (!File.Exists(filePath1))
         {
-            Debug.LogWarning("Î´ÕÒµ½ÅäÖÃÎÄ¼ş: " + filePath1);
+            Debug.LogWarning("æœªæ‰¾åˆ°é…ç½®æ–‡ä»¶: " + filePath1);
             return;
         }
 
@@ -625,18 +485,18 @@ public class BarrageController : MonoBehaviour
             BarrageNormalWrapper wrapper = JsonUtility.FromJson<BarrageNormalWrapper>(jsonData);
             barrageNormalSetting = wrapper.NormalConfigs;
 
-            Debug.Log($"³É¹¦¼ÓÔØ {wrapper.NormalConfigs.Count} ÌõÆÕÍ¨ÅäÖÃÊı¾İ");
+            Debug.Log($"æˆåŠŸåŠ è½½ {wrapper.NormalConfigs.Count} æ¡æ™®é€šé…ç½®æ•°æ®");
         }
         catch (System.Exception e)
         {
-            Debug.LogError($"¼ÓÔØÊ§°Ü: {e.Message}");
+            Debug.LogError($"åŠ è½½å¤±è´¥: {e.Message}");
         }
-
+        
 
         string filePath2 = Path.Combine(Directory.GetCurrentDirectory(), "Config", "BoxData.json");
         if (!File.Exists(filePath2))
         {
-            Debug.LogWarning("Î´ÕÒµ½ÅäÖÃÎÄ¼ş: " + filePath2);
+            Debug.LogWarning("æœªæ‰¾åˆ°é…ç½®æ–‡ä»¶: " + filePath2);
             return;
         }
 
@@ -647,17 +507,18 @@ public class BarrageController : MonoBehaviour
             BarrageBoxWrapper wrapper = JsonUtility.FromJson<BarrageBoxWrapper>(jsonData);
             barrageBoxSetting = wrapper.BoxConfigs;
 
-            Debug.Log($"³É¹¦¼ÓÔØ {wrapper.BoxConfigs.Count} ÌõÃ¤ºĞÅäÖÃÊı¾İ");
+            Debug.Log($"æˆåŠŸåŠ è½½ {wrapper.BoxConfigs.Count} æ¡ç›²ç›’é…ç½®æ•°æ®");
         }
         catch (System.Exception e)
         {
-            Debug.LogError($"¼ÓÔØÊ§°Ü: {e.Message}");
+            Debug.LogError($"åŠ è½½å¤±è´¥: {e.Message}");
         }
+
 
         string filePath3 = Path.Combine(Directory.GetCurrentDirectory(), "Config", "SpecialData.json");
         if (!File.Exists(filePath3))
         {
-            Debug.LogWarning("Î´ÕÒµ½ÅäÖÃÎÄ¼ş: " + filePath3);
+            Debug.LogWarning("æœªæ‰¾åˆ°é…ç½®æ–‡ä»¶: " + filePath3);
             return;
         }
 
@@ -668,18 +529,38 @@ public class BarrageController : MonoBehaviour
             BarrageSpecialWrapper wrapper = JsonUtility.FromJson<BarrageSpecialWrapper>(jsonData);
             barrageSpecialBoxSetting = wrapper.SpecialConfigs;
 
-            Debug.Log($"³É¹¦¼ÓÔØ {wrapper.SpecialConfigs.Count} Ìõ¶àÌØĞ§ÅäÖÃÊı¾İ");
+            Debug.Log($"æˆåŠŸåŠ è½½ {wrapper.SpecialConfigs.Count} æ¡å¤šç‰¹æ•ˆé…ç½®æ•°æ®");
         }
         catch (System.Exception e)
         {
-            Debug.LogError($"¼ÓÔØÊ§°Ü: {e.Message}");
+            Debug.LogError($"åŠ è½½å¤±è´¥: {e.Message}");
         }
 
 
+        string filePath4 = Path.Combine(Directory.GetCurrentDirectory(), "Config", "LottoryData.json");
+        if (!File.Exists(filePath4))
+        {
+            Debug.LogWarning("æœªæ‰¾åˆ°é…ç½®æ–‡ä»¶: " + filePath4);
+            return;
+        }
+
+        try
+        {
+            string jsonData = File.ReadAllText(filePath4);
+
+            BarrageLottoryWrapper wrapper = JsonUtility.FromJson<BarrageLottoryWrapper>(jsonData);
+            barrageLotterySettings = wrapper.LottoryConfigs;
+
+            Debug.Log($"æˆåŠŸåŠ è½½ {wrapper.LottoryConfigs.Count} æ¡æŠ½å¥–é…ç½®æ•°æ®");
+        }
+        catch (System.Exception e)
+        {
+            Debug.LogError($"åŠ è½½å¤±è´¥: {e.Message}");
+        }
     }
 
     /// <summary>
-    /// ³õÊ¼»¯ÆÕÍ¨ÅäÖÃitem
+    /// åˆå§‹åŒ–æ™®é€šé…ç½®item
     /// </summary>
     public void InitNormalConfig()
     {
@@ -705,7 +586,7 @@ public class BarrageController : MonoBehaviour
     }
 
     /// <summary>
-    /// ³õÊ¼»¯Ã¤ºĞÅäÖÃbox
+    /// åˆå§‹åŒ–ç›²ç›’é…ç½®box
     /// </summary>
     public void InitBoxConfig()
     {
@@ -730,7 +611,7 @@ public class BarrageController : MonoBehaviour
     }
 
     /// <summary>
-    /// ³õÊ¼»¯¶àÌØĞ§ÅäÖÃbox
+    /// åˆå§‹åŒ–å¤šç‰¹æ•ˆé…ç½®box
     /// </summary>
     public void InitSpecialConfig()
     {
@@ -754,12 +635,37 @@ public class BarrageController : MonoBehaviour
         isInit = true;
     }
 
+    /// <summary>
+    /// åˆå§‹åŒ–æŠ½å¥–é…ç½®box
+    /// </summary>
+    public void InitLottoryConfig()
+    {
+        RemoveAllItem();
+        for (int i = 0; i < barrageLotterySettings.Count; i++)
+        {
+            GameObject itemObj = Instantiate(lottery, content.transform);
+            GameObject lineObj = itemObj.transform.GetChild(0).gameObject;
+            Dropdown dropdown1 = lineObj.transform.GetChild(2).GetComponent<Dropdown>();
+            Dropdown dropdown2 = lineObj.transform.GetChild(11).GetComponent<Dropdown>();
+
+            lineObj.transform.GetChild(1).GetComponent<InputField>().text = barrageLotterySettings[i].Title;
+            lineObj.transform.GetChild(3).GetComponent<InputField>().text = barrageLotterySettings[i].Message;
+            lineObj.transform.GetChild(5).GetComponent<InputField>().text = barrageLotterySettings[i].Tip;
+            lineObj.transform.GetChild(7).GetComponent<InputField>().text = barrageLotterySettings[i].Count.ToString();
+            lineObj.transform.GetChild(9).GetComponent<InputField>().text = barrageLotterySettings[i].Delay.ToString();
+
+            ChoiceCall(dropdown1, barrageLotterySettings[i].Type);
+            ChoiceCall(dropdown2, barrageLotterySettings[i].LotteryCount);
+        }
+        isInit = true;
+    }
+
 
     public void ChoiceCall(Dropdown dropdown, string name)
     {
         for (int i = 0; i < dropdown.options.Count; i++)
         {
-            if (dropdown.options[i].text == name)
+            if(dropdown.options[i].text == name)
             {
                 dropdown.value = i;
                 return;
@@ -767,166 +673,4 @@ public class BarrageController : MonoBehaviour
         }
     }
 
-
-    /// <summary>
-    /// Ö´ĞĞ¹¦ÄÜ
-    /// </summary>
-    /// <param name="callName"></param>
-    public void CallFunction(string user, string avatar, string callName, int giftCount, int times, float delay)
-    {
-        for (int i = 0; i < giftCount * times; i++)
-        {
-            //switch (callName)
-            //{
-            //    case "ÎÚ¹êÒ»Ö»":
-            //        MonsterCreater.Instance.OnCreateTortoise(1);
-            //        break;
-            //    case "ÎÚ¹êÊ®Ö»":
-            //        MonsterCreater.Instance.OnCreateTortoise(10);
-            //        break;
-            //    case "ÎÚ¹êÒ»°ÙÖ»":
-            //        MonsterCreater.Instance.OnCreateTortoise(100);
-            //        break;
-            //    case "Ä¢¹½Ò»Ö»":
-            //        MonsterCreater.Instance.OnCreateMushroom(1);
-            //        break;
-            //    case "Ä¢¹½Ê®Ö»":
-            //        MonsterCreater.Instance.OnCreateMushroom(10);
-            //        break;
-            //    case "Ä¢¹½Ò»°ÙÖ»":
-            //        MonsterCreater.Instance.OnCreateMushroom(100);
-            //        break;
-            //    case "·É¹êÒ»Ö»":
-            //        MonsterCreater.Instance.OnCreateFlyKoopa(1);
-            //        break;
-            //    case "·É¹êÊ®Ö»":
-            //        MonsterCreater.Instance.OnCreateFlyKoopa(10);
-            //        break;
-            //    case "·É¹êÒ»°ÙÖ»":
-            //        MonsterCreater.Instance.OnCreateFlyKoopa(100);
-            //        break;
-            //    case "·ÉÓãÒ»Ö»":
-            //        MonsterCreater.Instance.OnCreateFlyFish(1);
-            //        break;
-            //    case "·ÉÓãÊ®Ö»":
-            //        MonsterCreater.Instance.OnCreateFlyFish(10);
-            //        break;
-            //    case "·ÉÓãÒ»°ÙÖ»":
-            //        MonsterCreater.Instance.OnCreateFlyFish(100);
-            //        break;
-            //    case "¼×¿Ç³æÒ»Ö»":
-            //        MonsterCreater.Instance.OnCreateBeatles(1);
-            //        break;
-            //    case "¼×¿Ç³æÊ®Ö»":
-            //        MonsterCreater.Instance.OnCreateBeatles(10);
-            //        break;
-            //    case "¼×¿Ç³æÒ»°ÙÖ»":
-            //        MonsterCreater.Instance.OnCreateBeatles(100);
-            //        break;
-            //    case "ÓÎÏ·Ê±¼ä+10s":
-            //        GameManager.Instance.time += 10;
-            //        break;
-            //    case "ÓÎÏ·Ê±¼ä-10s":
-            //        GameManager.Instance.time -= 10;
-            //        break;
-            //    case "ÉúÃü+10%":
-            //        ModData.mLife += (int)(ModData.mLife * 0.1f);
-            //        EventManager.Instance.SendMessage(Events.OnChangeLife);
-            //        break;
-            //    case "ÉúÃü-10%":
-            //        ModData.mLife -= (int)(ModData.mLife * 0.1f);
-            //        EventManager.Instance.SendMessage(Events.OnChangeLife);
-            //        break;
-            //    case "ÉúÃü+1":
-            //        ModData.mLife += 1;
-            //        EventManager.Instance.SendMessage(Events.OnChangeLife);
-            //        break;
-            //    case "ÉúÃü-1":
-            //        ModData.mLife -= 1;
-            //        EventManager.Instance.SendMessage(Events.OnChangeLife);
-            //        break;
-            //    case "ÈÓÏã½¶":
-            //        ItemCreater.Instance.OnCreateBanana(1);
-            //        break;
-            //    case "¶¯¸ĞDJ":
-            //        ModVideoPlayerCreater.Instance.OnPlayDJ();
-            //        break;
-            //    case "Íò¼ıÆë·¢":
-            //        ItemCreater.Instance.OnCreateManyArrow(1);
-            //        break;
-            //    case "×¥Ñ¼×Ó":
-            //        ModVideoPlayerCreater.Instance.OnCreateDuckVideoPlayer();
-            //        break;
-            //    case "×¥ÎÚ¹ê":
-            //        ModVideoPlayerCreater.Instance.OnCreateKoopaVideoPlayer();
-            //        break;
-            //    case "ÎÚÈøÆæ":
-            //        ModVideoPlayerCreater.Instance.OnPlayWuSaQi();
-            //        break;
-            //    case "Áé»ê¿½ÎÊ":
-            //        ModVideoPlayerCreater.Instance.OnPlayMenace();
-            //        break;
-            //    case "ÎÚÈøÆæÓ²¿Ø":
-            //        ModVideoPlayerCreater.Instance.OnPlayWuSaQi(true);
-            //        break;
-            //    case "Áé»ê¿½ÎÊÓ²¿Ø":
-            //        ModVideoPlayerCreater.Instance.OnPlayMenace(true);
-            //        break;
-            //    case "ÉÏµõ":
-            //        ItemCreater.Instance.OnCreateHangSelf();
-            //        break;
-            //    case "Ò»¿â":
-            //        ItemCreater.Instance.OnCreateMangSeng(1);
-            //        break;
-            //    case "¹öÊ¯":
-            //        ItemCreater.Instance.OnCreateRollStone(1);
-            //        break;
-            //    case "¹ö´Ì":
-            //        ItemCreater.Instance.OnCreateRollArrow(1);
-            //        break;
-            //    case "ÔÉÊ¯":
-            //        ItemCreater.Instance.OnCreateMeteorite(1);
-            //        break;
-            //    case "÷è÷ë±Û":
-            //        ItemCreater.Instance.OnCreateQiLinBi(1);
-            //        break;
-            //    case "Ìì²Ğ½Å":
-            //        ItemCreater.Instance.OnCreateTCJiao(1);
-            //        break;
-            //    case "Ëæ»úÌì»ğ":
-            //        ItemCreater.Instance.OnCreateUPFire(1);
-            //        break;
-            //    case "È«ÆÁÌì»ğ":
-            //        ItemCreater.Instance.OnCreateUPFire(66);
-            //        break;
-            //    case "Ëæ»úµØ»ğ":
-            //        ItemCreater.Instance.OnCreateDownFire(1);
-            //        break;
-            //    case "È«ÆÁµØ»ğ":
-            //        ItemCreater.Instance.OnCreateDownFire(66);
-            //        break;
-            //    case "Ëæ»ú´«ËÍ":
-            //        GameModController.Instance.OnRandromPlayerPos();
-            //        break;
-            //    case "Ëæ»ú¹Ø¿¨":
-            //        GameModController.Instance.OnRandromPass();
-            //        break;
-            //    case "ÌúÁ´":
-            //        ItemCreater.Instance.OnCreateChainPlayer(1);
-            //        break;
-            //    case "À×µç":
-            //        ItemCreater.Instance.OnCreateLazzer(1);
-            //        break;
-            //    case "×©¿é+10":
-            //        CreateWallManager.Instance.wallCount += 10;
-            //        break;
-            //    case "Ê¯Í·+10":
-            //        CreateWallManager.Instance.stonesCount += 10;
-            //        break;
-            //    case "ÃÀÅ®Ã¤ºĞ":
-            //        ModVideoPlayerCreater.Instance.OnPlayGrilVideo();
-            //        break;
-            //}
-        }
-    }
 }
