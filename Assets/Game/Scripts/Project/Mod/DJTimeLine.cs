@@ -162,4 +162,13 @@ public class DJTimeLine
         };
        
     }
+
+    public static  List<float> rattanThrow = new List<float>
+    {
+        0.08f,01.06f,01.20f,02.07f,02.16f,02.24f,03.06f,03.13f,03.20f,
+        04.01f,04.06f,04.11f,04.16f,04.21f,05.00f,05.05f,05.09f,05.13f,
+        05.17f,05.21f,05.24f,06.03f,06.07f,06.10f,06.13f
+
+    };
+
 }

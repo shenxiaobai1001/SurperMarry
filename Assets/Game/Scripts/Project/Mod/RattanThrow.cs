@@ -2,6 +2,7 @@ using DG.Tweening;
 using PlayerScripts;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using SystemScripts;
 using UnityEngine;
 
@@ -25,6 +26,8 @@ public class RattanThrow : MonoBehaviour
     public GameObject rattanObj;
     public GameObject hangObj;
     public GameObject player;
+    public AudioSource audioSource;
+    public AudioClip tuoLaji;
 
     // 状态变量
     private float currentHeight;
@@ -56,6 +59,7 @@ public class RattanThrow : MonoBehaviour
             modAnimations[i].gameObject.SetActive(false);
         }
         currentState = RattanState.None;
+        beatTimes = DJTimeLine.rattanThrow;
     }
 
     private void Update()
@@ -170,18 +174,77 @@ public class RattanThrow : MonoBehaviour
         rattanObj.SetActive(false);
         hangObj.SetActive(true);
         currentState = RattanState.Pulling;
-        OnRotatePlayer();
-        Invoke("OnThrowPlayer",0.4f);
+        //OnRotatePlayer();
+        //audioSource.Play();
+        Sound.PlaySound("Mod/rattanThrow");
+        if (!isPlayMusic)
+        {
+            isPlayMusic = true;
+            StartCoroutine(OnThrowPlayerIE());
+        }
     }
-
+    bool isPlayMusic = false;
     void OnRotatePlayer()
     {
-        hangObj. transform.DORotate(-new Vector3(0, 0, 780), 0.75f, RotateMode.LocalAxisAdd).SetEase(Ease.OutQuart)
-        .onComplete += () =>
+        hangObj. transform.DORotate(-new Vector3(0, 0, 360), 0.25f, RotateMode.LocalAxisAdd).SetEase(Ease.OutQuart) ;
+    }
+    float soundTime;
+    float maxSoundTime=12.5F;
+    float rotateSpeed = 0;
+    List<float> beatTimes;
+    WaitForEndOfFrame wait = new WaitForEndOfFrame();
+    IEnumerator OnThrowPlayerIE()
+    {
+        while (soundTime < maxSoundTime)
         {
-            player.SetActive(false); 
-            Invoke("OnClose",2);
-        };
+            if (soundTime <= 1.23f) {
+                rotateSpeed = 2;
+            }
+            else if (soundTime > 1.23f && soundTime <= 6.12f)
+            {
+                rotateSpeed = 4;
+            }
+            else
+            {
+                rotateSpeed = 6;
+            }
+            soundTime += Time.deltaTime;
+            hangObj.transform.Rotate(new Vector3(0, 0, 360) * rotateSpeed * Time.deltaTime);
+           yield return null;
+        }
+        isPlayMusic = false;
+        OnThrowPlayer();
+    }
+    IEnumerator BeatShakeCoroutine()
+    {
+        if (Config.isLoading && PlayerController.Instance._isFinish) yield break;
+
+        // 预处理：转换所有时间戳
+        List<float> correctedTimes = beatTimes.Select(t =>
+        {
+            int sec = (int)t;
+            int frames = Mathf.RoundToInt((t - sec) * 100);
+            return sec + frames / 60f;
+        }).ToList();
+        int currentIndex = 0;
+
+        while (currentIndex < correctedTimes.Count)
+        {
+            if (Config.isLoading && PlayerController.Instance._isFinish) yield break;
+
+            yield return wait;
+            //
+           double currentTime = audioSource.time;
+
+            if (currentTime >= correctedTimes[currentIndex])
+            {
+                PFunc.Log($"卡点: 原始{beatTimes[currentIndex]:F2}, 转换后{correctedTimes[currentIndex]:F3}, 实际{currentTime:F3}");
+                OnRotatePlayer();
+                currentIndex++;
+            }
+        }
+        isPlayMusic = false;
+        OnThrowPlayer();
     }
     void OnThrowPlayer()
     {
@@ -192,6 +255,7 @@ public class RattanThrow : MonoBehaviour
             PlayerModController.Instance.OnSetPlayerContro(true, true, true);
             PlayerModMoveController.Instance.TriggerModMove(MoveType.Normal, new Vector3(-3f, 1f), 30, 0.5f, true, false);
         }
+        Invoke("OnClose",0.5f);
     }
 
     public void OnClose()
