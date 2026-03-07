@@ -135,6 +135,7 @@ public class ItemCreater : MonoBehaviour
         {
             data.endAction.Invoke(false);
         }
+        EventManager.Instance.SendMessage(Events.OnBarryExecutEnd, data.barrageIndex);
     }
     bool mangleft;
     Vector3 OnGetCreatePos(ItemSpawnData data)
@@ -170,7 +171,7 @@ public class ItemCreater : MonoBehaviour
             case "rollArrow":
                 int x = (int)vector.x - 12;
                 if (x < -7) x = -7;
-                createPos = new Vector3(x, 0, valueZ);
+                createPos = new Vector3(x, valueZ, valueZ);
                 break;
             case "Meteorite":
                 value = UnityEngine.Random.Range(-8, 8);
@@ -185,16 +186,16 @@ public class ItemCreater : MonoBehaviour
                 break;
             case "DownFire":
                 value = UnityEngine.Random.Range(-7, 7);
-                createPos = new Vector3(vector.x + value, -5, 0);
+                createPos = new Vector3(vector.x + value, vector.y-5, 0);
                 break;
             case "chainPlayer":
-                createPos = new Vector3(Camera.main.transform.position.x, 5, valueZ);
+                createPos = new Vector3(Camera.main.transform.position.x, Camera.main.transform.position.y, valueZ);
                 break;
             case "shoeShine":
-                createPos = new Vector3(Camera.main.transform.position.x, 4, valueZ);
+                createPos = new Vector3(Camera.main.transform.position.x, Camera.main.transform.position.y, valueZ);
                 break;
             case "ropeSkip":
-                createPos = new Vector3(Camera.main.transform.position.x, 4, valueZ);
+                createPos = new Vector3(Camera.main.transform.position.x, Camera.main.transform.position.y, valueZ);
                 break;
             case "Electricity":
             case "peakKuba":
@@ -205,7 +206,7 @@ public class ItemCreater : MonoBehaviour
                 break;
             case "bigGear":
                 int xValue = PlayerController.Instance._isFacingRight ? 10 : -10;
-               createPos = new Vector3(vector.x- xValue, 0, valueZ);
+               createPos = new Vector3(vector.x- xValue, vector.y, valueZ);
                 break;
             case "trunck":
                 createPos = new Vector3(vector.x + 30, vector.y, valueZ);

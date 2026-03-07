@@ -1,11 +1,35 @@
 {
     "NormalConfigs": [
         {
-            "CallName": "抓乌龟",
+            "CallName": "灵魂拷问",
+            "Type": "礼物",
+            "Message": "",
+            "Tip": "",
+            "Count": 2,
+            "Delay": 0.0
+        },
+        {
+            "CallName": "铁链",
             "Type": "礼物",
             "Message": "",
             "Tip": "",
             "Count": 1,
+            "Delay": 0.0
+        },
+        {
+            "CallName": "乌萨奇硬控",
+            "Type": "礼物",
+            "Message": "",
+            "Tip": "",
+            "Count": 5,
+            "Delay": 1.0
+        },
+        {
+            "CallName": "上吊",
+            "Type": "礼物",
+            "Message": "",
+            "Tip": "",
+            "Count": 2,
             "Delay": 0.0
         },
         {
@@ -13,11 +37,59 @@
             "Type": "礼物",
             "Message": "",
             "Tip": "",
+            "Count": 20,
+            "Delay": 1.0
+        },
+        {
+            "CallName": "抓乌龟",
+            "Type": "礼物",
+            "Message": "",
+            "Tip": "",
+            "Count": 3,
+            "Delay": 1.0
+        },
+        {
+            "CallName": "陨石",
+            "Type": "礼物",
+            "Message": "",
+            "Tip": "",
+            "Count": 4,
+            "Delay": 2.0
+        },
+        {
+            "CallName": "麒麟臂",
+            "Type": "礼物",
+            "Message": "",
+            "Tip": "",
+            "Count": 10,
+            "Delay": 0.5
+        },
+        {
+            "CallName": "铁链",
+            "Type": "礼物",
+            "Message": "",
+            "Tip": "",
             "Count": 1,
             "Delay": 0.0
         },
         {
-            "CallName": "上吊",
+            "CallName": "雷电",
+            "Type": "礼物",
+            "Message": "",
+            "Tip": "",
+            "Count": 10,
+            "Delay": 1.5
+        },
+        {
+            "CallName": "打板子盲盒",
+            "Type": "礼物",
+            "Message": "",
+            "Tip": "",
+            "Count": 3,
+            "Delay": 1.0
+        },
+        {
+            "CallName": "哭坟",
             "Type": "礼物",
             "Message": "",
             "Tip": "",
@@ -29,8 +101,8 @@
             "Type": "礼物",
             "Message": "",
             "Tip": "",
-            "Count": 1,
-            "Delay": 0.0
+            "Count": 2,
+            "Delay": 1.0
         },
         {
             "CallName": "跳绳",
@@ -41,19 +113,11 @@
             "Delay": 0.0
         },
         {
-            "CallName": "跳绳盲盒",
-            "Type": "礼物",
-            "Message": "",
-            "Tip": "",
-            "Count": 1,
-            "Delay": 0.0
-        },
-        {
             "CallName": "顶乌龟",
             "Type": "礼物",
             "Message": "",
             "Tip": "",
-            "Count": 1,
+            "Count": 10,
             "Delay": 0.0
         }
     ]

@@ -151,6 +151,10 @@ public class PlayerModMoveController : MonoBehaviour
         {
             OnChangeState(swim);
         }
+        else
+        {
+            return;
+        }
 
         if (Config.isHang) return;
         // 创建移动数据
@@ -329,7 +333,8 @@ public class PlayerModMoveController : MonoBehaviour
                 if (BarrageFuncController.Instance.OnCheckHasHighControl())
                 {
                     pause = true;
-                    continue;
+                    ForceStopAllMovement();
+                    yield break;
                 }
                 if (pause)
                 {

@@ -201,17 +201,17 @@ public class BarrageFuncCreater : MonoBehaviour
                 createPos = new Vector3(0, vectorPlayer.y + 15, 0);
                 break;
             case "ÌúÁ´":
-                createPos = new Vector3(Camera.main.transform.position.x, 5, 0);
+                createPos = new Vector3(Camera.main.transform.position.x, Camera.main.transform.position.y, 0);
                 break;
             case "´ò°å×ÓÃ¤ºÐ":
                 createPos = new Vector3(Camera.main.transform.position.x, Camera.main.transform.position.y, 0);
                 break;
             case "²ÁÆ¤Ð¬":
-                createPos = new Vector3(Camera.main.transform.position.x, 4, 0);
+                createPos = new Vector3(Camera.main.transform.position.x, Camera.main.transform.position.y, 0);
                 break;
             case "ÌøÉþ":
             case "ÌøÉþÃ¤ºÐ":
-                createPos = new Vector3(Camera.main.transform.position.x, 5, 0);
+                createPos = new Vector3(Camera.main.transform.position.x, Camera.main.transform.position.y, 0);
                 break;
             case "¶¥ÎÚ¹ê":
                 createPos = vectorPlayer;

@@ -19,29 +19,33 @@ public class BarrageWuSaqi : BarrageFuncBase
 
     public override void OnEnterResult()
     {
-        if (barrageController.OnCheckHasHighControl(barrageData.barrageFuncData))
+        PFunc.Log(OnCheckHasLevel(), BarrageFuncController.Instance.OnCheckHighLevelFunc(barrageData.barrageFuncData));
+        if (!OnCheckHasLevel()
+              && !BarrageFuncController.Instance.OnCheckHighLevelFunc(barrageData.barrageFuncData))
         {
-            OnClose();
-        }
-        else
-        {
+            PFunc.Log("OnEnterResult");
             PlayerModController.Instance.OnTiggerDao();
-            if (barrageData.name != "ÎÚÈøÆæ")
-            {
-                PlayerModController.Instance.OnSetPlayerContro(false,true, true);
-            }
+            if(barrageData.name != "ÎÚÈøÆæ")
+                PlayerModController.Instance.OnSetPlayerContro(false, true, true);
             Invoke("OnClose", 1.5f);
+        }
+        else {
+            PFunc.Log("ÎÚÈøÆæÖ±½Ó½áÊøOnClose");
+            OnClose();
         }
     }
 
     public override void OnClose()
     {
-        if (!barrageController.OnCheckHasHighControl(barrageData.barrageFuncData))
+        base.OnClose();
+        if (!barrageController.OnCheckHasHighControl()
+          && !OnCheckHasLevel()
+          && !BarrageFuncController.Instance.OnCheckHighLevelFunc(barrageData.barrageFuncData))
         {
+            PFunc.Log("ÎÚÈøÆæ½áÊøOnClose");
             PlayerModController.Instance.OnSetPlayerContro(true, true, true);
         }
-
-        base.OnClose();
+        PFunc.Log("ÎÚÈøÆæ½áÊø");
         CancelInvoke();
         SimplePool.Despawn(gameObject);
     }

@@ -23,7 +23,7 @@ public class BarrageFlogPlayer : BarrageFuncBase
 
         PlayerController.Instance.transform.position =
         new Vector3(smokePos.position.x, smokePos.position.y, smokePos.position.z);
-        if (!barrageController.OnCheckHasHighControl(barrageData.barrageFuncData))
+        if (!barrageController.OnCheckHasHighControlLevel(barrageData.barrageFuncData))
         {
             PlayerModController.Instance.OnSetPlayerContro(false, false, true);
         }
@@ -122,12 +122,14 @@ public class BarrageFlogPlayer : BarrageFuncBase
 
     public override void OnClose()
     {
-        if (!barrageController.OnCheckHasHighControl(barrageData.barrageFuncData))
+        base.OnClose();
+        if (!barrageController.OnCheckHasHighControl()
+            && !OnCheckHasLevel()
+            && !BarrageFuncController.Instance.OnCheckHighLevelFunc(barrageData.barrageFuncData))
         {
+
             PlayerModController.Instance.OnSetPlayerContro(true, true, true);
         }
-
-        base.OnClose();
         SimplePool.Despawn(gameObject);
     }
 }

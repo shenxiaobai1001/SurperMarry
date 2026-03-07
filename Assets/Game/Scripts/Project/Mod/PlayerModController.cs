@@ -56,6 +56,7 @@ public class PlayerModController : MonoBehaviour
     //设置玩家状态：是否被控制、是否显示主要角色
     public void OnSetPlayerContro(bool CanControl,bool show,bool closeModAni)
     {
+        PFunc.Log("是否被控制", CanControl, show, closeModAni);
         rigidbody2D.velocity = Vector3.zero;
         rigidbody2D.isKinematic = !CanControl;
         PlayerController.Instance.OnChanleControl(!CanControl);

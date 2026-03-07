@@ -40,18 +40,18 @@ public class GameModController : MonoBehaviour
         passDistance.Add("1-1", 206);
         passDistance.Add("1-2", 160);
         passDistance.Add("1-3", 202);
-        passDistance.Add("1-4", 139);
-        passDistance.Add("2-1", 149);
-        passDistance.Add("2-2", 294);
-        passDistance.Add("2-3", 144);
-        passDistance.Add("3-1", 185);
-        passDistance.Add("3-2", 208);
-        passDistance.Add("3-3", 165);
-        passDistance.Add("3-4", 149.5f);
-        passDistance.Add("4-1", 238.5f);
-        passDistance.Add("4-2", 163); 
-        passDistance.Add("4-3", 161.5f);
-        passDistance.Add("4-4", 186);
+        passDistance.Add("1-4", 203);
+        passDistance.Add("2-1", 185);
+        passDistance.Add("2-2", 325);
+        passDistance.Add("2-3", 211);
+        passDistance.Add("3-1", 211);
+        passDistance.Add("3-2", 266);
+        passDistance.Add("3-3", 211);
+        passDistance.Add("3-4", 226);
+        passDistance.Add("4-1", 371f);
+        passDistance.Add("4-2", 235.5f); 
+        passDistance.Add("4-3", 268);
+        passDistance.Add("4-4", 274.5f);
     }
     public float OnGetLevelEndPos()
     {

@@ -20,13 +20,15 @@ public class BarrageMenace : BarrageFuncBase
 
     public override void OnClose()
     {
+        base.OnClose();
         PFunc.Log("BarrageMenaceOnClose", barrageController.OnCheckHasHighControl(barrageData.barrageFuncData));
-        if (!barrageController.OnCheckHasHighControl(barrageData.barrageFuncData))
+        if (!barrageController.OnCheckHasHighControl()
+           && !OnCheckHasLevel()
+           && !BarrageFuncController.Instance.OnCheckHighLevelFunc(barrageData.barrageFuncData))
         {
+
             PlayerModController.Instance.OnSetPlayerContro(true, true, true);
         }
-
-        base.OnClose();
         CancelInvoke();
         SimplePool.Despawn(gameObject);
     }

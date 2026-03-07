@@ -55,7 +55,7 @@ public class BarrageChainPlayer : BarrageFuncBase
         }
         uiCenter.SetActive(true);
         Sound.PauseOrPlayVolumeMusic(true);
-        if (!barrageController.OnCheckHasHighControl(barrageData.barrageFuncData))
+        if (!barrageController.OnCheckHasHighControlLevel(barrageData.barrageFuncData))
         {
             PlayerModController.Instance.OnSetPlayerContro(false, false, true);
         }
@@ -104,7 +104,7 @@ public class BarrageChainPlayer : BarrageFuncBase
         objCenter.transform.DOShakePosition(0.5f, 0.2f)
                   .SetEase(Ease.OutQuad)
                   .OnComplete(() => {
-                      objCenter.transform.position = new Vector3(Camera.main.transform.position.x, 5, 0);
+                      objCenter.transform.localPosition = Vector3.zero;
                   });
     }
     public override void OnPause()
@@ -147,6 +147,7 @@ public class BarrageChainPlayer : BarrageFuncBase
 
     public override void OnClose()
     {
+        base.OnClose();
         Sound.PlayMusic("background");
         Sound.PauseOrPlayVolumeMusic(false);
         PFunc.Log("ÌúÁ´½áÊø£º", barrageController.OnCheckHasHighControl(barrageData.barrageFuncData));
@@ -154,7 +155,6 @@ public class BarrageChainPlayer : BarrageFuncBase
         {
             PlayerModController.Instance.OnSetPlayerContro(true, true, true);
         }
-        base.OnClose();
         SimplePool.Despawn(gameObject);
     }
 

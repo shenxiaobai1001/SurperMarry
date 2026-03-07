@@ -673,7 +673,6 @@ namespace PlayerScripts
             }
             if (other.gameObject.CompareTag("Hidden"))
             {
-           
                 isHidden = true;
             }
             if (other.gameObject.CompareTag("outHidden"))
@@ -1021,6 +1020,7 @@ namespace PlayerScripts
                 Camera.main.transform.position = new Vector3(20, 37, -10);
                 PlayerModController.Instance.OnChangeStateFalse();
                 ChangeCollider();
+                PFunc.Log("Pipe", GameStatusController.IsHidden);
             }
         }
         private IEnumerator OutHiddenPass()

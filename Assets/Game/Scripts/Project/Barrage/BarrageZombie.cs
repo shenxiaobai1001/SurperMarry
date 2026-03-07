@@ -79,7 +79,7 @@ public class BarrageZombie : BarrageFuncBase
         lastTriggerTime = Time.time; // 更新触发时间
         trans = PlayerController.Instance.transform;
         rigidbody2D = PlayerModController.Instance.rigidbody2D;
-        if (!barrageController.OnCheckHasHighControl(barrageData.barrageFuncData))
+        if (!barrageController.OnCheckHasHighControlLevel(barrageData.barrageFuncData))
         {
             PlayerModController.Instance.OnSetPlayerContro(true, false, true);
             PlayerModController.Instance.OnShowModAnimation(15);
@@ -88,11 +88,14 @@ public class BarrageZombie : BarrageFuncBase
 
     public override void OnClose()
     {
-        if (!barrageController.OnCheckHasHighControl(barrageData.barrageFuncData))
+        base.OnClose();
+        if (!barrageController.OnCheckHasHighControl()
+            && !OnCheckHasLevel()
+            && !BarrageFuncController.Instance.OnCheckHighLevelFunc(barrageData.barrageFuncData))
         {
+
             PlayerModController.Instance.OnSetPlayerContro(true, true, true);
         }
-        base.OnClose();
         SimplePool.Despawn(gameObject);
     }
 }

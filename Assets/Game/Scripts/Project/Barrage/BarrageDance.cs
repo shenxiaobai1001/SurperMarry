@@ -9,7 +9,7 @@ public class BarrageDance : BarrageFuncBase
     public override void OnStart(BarrageValue barrageFuncData, int index)
     {
         base.OnStart(barrageFuncData, index);
-        if (!barrageController.OnCheckHasHighControl(barrageData.barrageFuncData))
+        if (!barrageController.OnCheckHasHighControlLevel(barrageData.barrageFuncData))
         {
             PlayerModController.Instance.OnSetPlayerContro(false, false, true);
         }
@@ -21,13 +21,16 @@ public class BarrageDance : BarrageFuncBase
 
     public override void OnClose()
     {
+        base.OnClose();
         Config.EnemyStop = false;
-        if (!barrageController.OnCheckHasHighControl(barrageData.barrageFuncData))
+        if (!barrageController.OnCheckHasHighControl()
+             && !OnCheckHasLevel()
+             && !BarrageFuncController.Instance.OnCheckHighLevelFunc(barrageData.barrageFuncData))
         {
+
             PlayerModController.Instance.OnSetPlayerContro(true, true, true);
         }
         Sound.PlayMusic("background");
-        base.OnClose();
         SimplePool.Despawn(gameObject);
     }
 }

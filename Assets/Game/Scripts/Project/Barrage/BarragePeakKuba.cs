@@ -62,7 +62,6 @@ public class BarragePeakKuba : BarrageFuncBase
 
     public override void OnClose()
     {
-
         base.OnClose();
         SimplePool.Despawn(gameObject);
     }

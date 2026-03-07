@@ -42,7 +42,7 @@ namespace SystemScripts
                 ) return;
 
             checkPlayerPos = false;
-            if (GameStatusController.IsHidden && !GameStatusController.HiddenMove) return;
+            if (GameStatusController.IsHidden /*&& !GameStatusController.HiddenMove*/) return;
             if (BarrageFuncController.Instance.OnCheckHasHighControl()) return;
             float y = GameStatusController.IsHidden ? 32 : 5;
             bool isMoveForward = player.transform.position.x > transform.position.x;
@@ -51,8 +51,7 @@ namespace SystemScripts
             transform.position = Vector3.Lerp(
                transform.position,
               new Vector3(targetX, y, -10),
-               30 * Time.deltaTime
-           );
+               30 * Time.deltaTime );
         }
     }
 }

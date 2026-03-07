@@ -98,13 +98,15 @@ public class BarrageShoeShine : BarrageFuncBase
     public override void OnClose()//Ö´ÐÐÍê±Ï
     {
         barrageData.BarrageState = BarrageState.Finsh;
+        base.OnClose();
         Sound.PlayMusic("background");
         Sound.PauseOrPlayVolumeMusic(false);
-        if (!OnCheckHasLevel())
+        if (!barrageController.OnCheckHasHighControl()
+         && !OnCheckHasLevel()
+         && !BarrageFuncController.Instance.OnCheckHighLevelFunc(barrageData.barrageFuncData))
         {
             PlayerModController.Instance.OnSetPlayerContro(true, true, true);
         }
-        base.OnClose();
         SimplePool.Despawn(gameObject);
     }
 }

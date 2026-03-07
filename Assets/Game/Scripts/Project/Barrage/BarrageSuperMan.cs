@@ -94,7 +94,7 @@ public class BarrageSuperMan : BarrageFuncBase
     {
         trans = PlayerController.Instance.transform;
         suuperTrans = PlayerModController.Instance.superEffertTrans;
-        if (!barrageController.OnCheckHasHighControl(barrageData.barrageFuncData))
+        if (!barrageController.OnCheckHasHighControlLevel(barrageData.barrageFuncData))
         {
             PlayerModController.Instance.OnSetPlayerContro(false, false, true);
             PlayerModController.Instance.OnShowModAnimation(7);
@@ -118,12 +118,14 @@ public class BarrageSuperMan : BarrageFuncBase
 
     public override void OnClose()
     {
-        if (!barrageController.OnCheckHasHighControl(barrageData.barrageFuncData) && !OnCheckHasLevel()
-                    && !BarrageFuncController.Instance.OnCheckHighLevelFunc(barrageData.barrageFuncData))
+        base.OnClose();
+        if (!barrageController.OnCheckHasHighControl() 
+            && !OnCheckHasLevel()
+            && !BarrageFuncController.Instance.OnCheckHighLevelFunc(barrageData.barrageFuncData))
         {
+
             PlayerModController.Instance.OnSetPlayerContro(true, true, true);
         }
-        base.OnClose();
         SimplePool.Despawn(gameObject);
     }
 }

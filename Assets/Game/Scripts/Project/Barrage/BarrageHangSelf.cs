@@ -181,8 +181,10 @@ public class BarrageHangSelf : BarrageFuncBase
     void OnReadyDes()
     {
         barrageData.BarrageState = BarrageState.Finsh;
-        OnBreakeHang(); 
-        if (!OnCheckHasLevel())
+        OnBreakeHang();
+        if (!barrageController.OnCheckHasHighControl()
+                && !OnCheckHasLevel()
+                && !BarrageFuncController.Instance.OnCheckHighLevelFunc(barrageData.barrageFuncData))
         {
             PlayerModController.Instance.OnSetPlayerContro(true, true, true);
             Vector3 vector = lastPoint.transform.position;

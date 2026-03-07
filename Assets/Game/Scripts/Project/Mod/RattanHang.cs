@@ -219,6 +219,10 @@ public class RattanHang : MonoBehaviour
 
     private void UpdateSwing()
     {
+        if (BarrageFuncController.Instance.OnCheckHasHighControl())
+        {
+            OnClose();
+        }
         hangTime += Time.deltaTime;
         if(hangTime>=maxHangTime)
         {

@@ -197,6 +197,10 @@ public class RattanThrow : MonoBehaviour
     {
         while (soundTime < maxSoundTime)
         {
+            if (BarrageFuncController.Instance.OnCheckHasHighControl())
+            {
+                yield break;
+            }
             if (soundTime <= 1.23f) {
                 rotateSpeed = 2;
             }
@@ -215,37 +219,7 @@ public class RattanThrow : MonoBehaviour
         isPlayMusic = false;
         OnThrowPlayer();
     }
-    IEnumerator BeatShakeCoroutine()
-    {
-        if (Config.isLoading && PlayerController.Instance._isFinish) yield break;
 
-        // 预处理：转换所有时间戳
-        List<float> correctedTimes = beatTimes.Select(t =>
-        {
-            int sec = (int)t;
-            int frames = Mathf.RoundToInt((t - sec) * 100);
-            return sec + frames / 60f;
-        }).ToList();
-        int currentIndex = 0;
-
-        while (currentIndex < correctedTimes.Count)
-        {
-            if (Config.isLoading && PlayerController.Instance._isFinish) yield break;
-
-            yield return wait;
-            //
-           double currentTime = audioSource.time;
-
-            if (currentTime >= correctedTimes[currentIndex])
-            {
-                PFunc.Log($"卡点: 原始{beatTimes[currentIndex]:F2}, 转换后{correctedTimes[currentIndex]:F3}, 实际{currentTime:F3}");
-                OnRotatePlayer();
-                currentIndex++;
-            }
-        }
-        isPlayMusic = false;
-        OnThrowPlayer();
-    }
     void OnThrowPlayer()
     {
         Vector3 vector = player.transform.position;
@@ -253,9 +227,9 @@ public class RattanThrow : MonoBehaviour
         if (!BarrageFuncController.Instance.OnCheckHasHighControl())
         {
             PlayerModController.Instance.OnSetPlayerContro(true, true, true);
-            PlayerModMoveController.Instance.TriggerModMove(MoveType.Normal, new Vector3(-9f, 1f), 30, 0.5f, true, false);
+            PlayerModMoveController.Instance.TriggerModMove(MoveType.Normal, new Vector3(-3f, 0), 30, 1.25f, true, false);
         }
-        Invoke("OnClose",0.5f);
+        Invoke("OnClose",1.3f);
     }
 
     public void OnClose()

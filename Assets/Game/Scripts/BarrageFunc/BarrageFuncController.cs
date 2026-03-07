@@ -19,11 +19,13 @@ public class BarrageFuncController : MonoBehaviour
             return;
         }
     }
+    private object _lockReadyFunc = new object(); // 新增：为 readyFunc 添加锁
     private object _lockExecutFunc = new object(); // 专门用于 executFunc 的锁
+
     [HideInInspector]
     public List<BarrageValue> readyFunc = new List<BarrageValue>();//等待执行的功能 
     [HideInInspector]
-    public Dictionary<int, BarrageValue> executFunc  = new Dictionary<int, BarrageValue>();//正在执行的功能 
+    public Dictionary<int, BarrageValue> executFunc = new Dictionary<int, BarrageValue>();//正在执行的功能  
     Dictionary<int, BarrageFuncData> allBarrage;
 
     bool hasBarrage = false;
@@ -36,10 +38,14 @@ public class BarrageFuncController : MonoBehaviour
         allBarrage = GameData.Instance.barrage_info.GetAllInfo();
         EventManager.Instance.AddListener(Events.OnBarryExecutEnd, OnBarryExecutEnd);
     }
+    private void OnDestroy()
+    {
+        EventManager.Instance.RemoveListener(Events.OnBarryExecutEnd, OnBarryExecutEnd);
+    }
 
     void OnBarryExecutEnd(object msg)
     {
-        int index = (int) msg;
+        int index = (int)msg;
         lock (_lockExecutFunc)
         {
             if (executFunc != null && executFunc.Count > 0)
@@ -49,11 +55,6 @@ public class BarrageFuncController : MonoBehaviour
         }
     }
 
-    private void OnDestroy()
-    {
-        EventManager.Instance.RemoveListener(Events.OnBarryExecutEnd, OnBarryExecutEnd);
-    }
-
     /// <summary> 触发弹幕功能 </summary>
     public void OnAddReadyFunc(string value)
     {
@@ -61,12 +62,12 @@ public class BarrageFuncController : MonoBehaviour
         if (executFunc == null) executFunc = new Dictionary<int, BarrageValue>();
 
         var data = GameData.Instance.barrage_info.GetInfo(value);
-        PFunc.Log("触发弹幕功能",value, data);
+        PFunc.Log("触发弹幕功能", value, data);
 
         BarrageValue barrageValue = new BarrageValue
         {
             name = value,
-            barrageFuncData=data,
+            barrageFuncData = data,
             BarrageState = BarrageState.Tigger,
             barraegExecutType = BarraegExecutType.ReadyExecut,
         };
@@ -88,12 +89,15 @@ public class BarrageFuncController : MonoBehaviour
         if (!hasBarrage)
         {
             hasBarrage = true;
-            StartCoroutine(OnExecutFunc()); 
+            StartCoroutine(OnExecutFunc());
         }
 
-        void OnAddReadFunc( )
+        void OnAddReadFunc()
         {
-            readyFunc.Add(barrageValue);
+            lock (_lockReadyFunc)  // 修改：添加时加锁
+            {
+                readyFunc.Add(barrageValue);
+            }
             if (!checkReadyFunck)
             {
                 checkReadyFunck = true;
@@ -141,51 +145,71 @@ public class BarrageFuncController : MonoBehaviour
                             executFunc[kvp.Key].barraegExecutType = BarraegExecutType.Executing;
                         }
                     }
+                    yield return null;
                 }
             }
             yield return new WaitForSeconds(0.1f);
         }
         hasBarrage = false;
     }
-
     IEnumerator OnCheckReadyFunc()
     {
         List<BarrageValue> temporaryFunc = new List<BarrageValue>();
-        while (readyFunc .Count>0)
+        while (true)
         {
-            foreach (var kvp in readyFunc)
+            // 修改：在锁内获取 readyFunc 的副本
+            List<BarrageValue> copyReadyFunc;
+            lock (_lockReadyFunc)
+            {
+                if (readyFunc.Count == 0)
+                {
+                    checkReadyFunck = false;
+                    yield break;  // 如果没有任务，直接结束协程
+                }
+                copyReadyFunc = new List<BarrageValue>(readyFunc);
+            }
+
+            // 遍历副本而不是原列表
+            foreach (var kvp in copyReadyFunc)
             {
                 if (!OnCheckHighGroupFunc(kvp.barrageFuncData)//没有同组更高
                     && !OnCheckHighLevelFunc(kvp.barrageFuncData)//没有同级更高
                     && !OnCheckQueueLevel(kvp.barrageFuncData))//没有自我排队
                 {
-                    barrageIndex++;
-                    executFunc.Add(barrageIndex,kvp);
+                    lock (_lockExecutFunc)
+                    {
+                        barrageIndex++;
+                        executFunc.Add(barrageIndex, kvp);
+                    }
                     temporaryFunc.Add(kvp);
                     if (!hasBarrage)
                     {
                         hasBarrage = true;
                         StartCoroutine(OnExecutFunc());
                     }
-                    yield return null;
+                    yield return new WaitForSeconds(0.1f);
                 }
+                yield return null;
             }
 
-            if (temporaryFunc != null && temporaryFunc.Count > 0)
+            // 从 readyFunc 中移除已处理的任务
+            if (temporaryFunc.Count > 0)
             {
-                foreach (var kvp in temporaryFunc)
+                lock (_lockReadyFunc)
                 {
-                    if (readyFunc.Contains(kvp))
+                    foreach (var kvp in temporaryFunc)
                     {
-                        readyFunc.Remove(kvp);
+                        if (readyFunc.Contains(kvp))
+                        {
+                            readyFunc.Remove(kvp);
+                        }
                     }
                 }
+                temporaryFunc.Clear();
             }
 
-            temporaryFunc?.Clear();
             yield return new WaitForSeconds(0.1f);
         }
-        checkReadyFunck = false;
     }
 
     /// <summary> 检测有没有同级但执行等级更高 </summary>
@@ -291,7 +315,8 @@ public class BarrageFuncController : MonoBehaviour
         foreach (var kvp in copy)
         {
             isHigh =  kvp.Value.barrageFuncData.type >= 3 && (kvp.Value.BarrageState == BarrageState.Underway
-                || kvp.Value.BarrageState == BarrageState.Ready);
+                || kvp.Value.BarrageState == BarrageState.Ready || kvp.Value.BarrageState == BarrageState.Pause);
+            PFunc.Log("检查强控", kvp.Value.barrageFuncData.name,kvp.Value.BarrageState);
             if (isHigh) break;
         }
         return isHigh;
@@ -330,7 +355,6 @@ public class BarrageFuncController : MonoBehaviour
             isHigh = kvp.Value.name == name
                 && (kvp.Value.BarrageState == BarrageState.Underway
                 || kvp.Value.BarrageState == BarrageState.Pause);
-            PFunc.Log(kvp.Value.name,kvp.Value.BarrageState);
             if (isHigh) break;
         }
         return isHigh;
