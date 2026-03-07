@@ -1,3 +1,24 @@
 {
-    "SpecialConfigs": []
+    "SpecialConfigs": [
+        {
+            "BoxName": "",
+            "Type": "",
+            "Message": "",
+            "Tip": "",
+            "Count": 1,
+            "Delay": 0.0,
+            "videoName": "",
+            "Calls": []
+        },
+        {
+            "BoxName": "",
+            "Type": "",
+            "Message": "",
+            "Tip": "",
+            "Count": 1,
+            "Delay": 0.0,
+            "videoName": "",
+            "Calls": []
+        }
+    ]
 }

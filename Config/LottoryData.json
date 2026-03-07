@@ -1,0 +1,28 @@
+{
+    "LottoryConfigs": [
+        {
+            "Title": "测试",
+            "Type": "礼物",
+            "Message": "123",
+            "Tip": "123",
+            "Count": 1,
+            "Delay": 0.0,
+            "LotteryCount": "12个",
+            "avatarPath": "",
+            "LotteryItem": [
+                {
+                    "lotteryName": "变大",
+                    "type": 0,
+                    "callName": "变大",
+                    "count": 100
+                },
+                {
+                    "lotteryName": "变小",
+                    "type": 0,
+                    "callName": "变小",
+                    "count": 1
+                }
+            ]
+        }
+    ]
+}

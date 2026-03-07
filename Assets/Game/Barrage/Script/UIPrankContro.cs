@@ -1,4 +1,4 @@
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
@@ -9,6 +9,7 @@ public class UIPrankContro : MonoBehaviour
     public Button btn_setting;
     public Button btn_boxsetting;
     public Button btn_specialsetting;
+    public Button btn_lottery;
     public Button btn_close;
     public Button btn_clear;
     public Button btn_add;
@@ -20,6 +21,7 @@ public class UIPrankContro : MonoBehaviour
         btn_setting.onClick.AddListener(OnClickSetting);
         btn_boxsetting.onClick.AddListener(OnClickBoxSetting);
         btn_specialsetting.onClick.AddListener(OnClickSpecialSetting);
+        btn_lottery.onClick.AddListener(OnClickLotterySetting);
         btn_close.onClick.AddListener(ChangePrank);
         btn_clear.onClick.AddListener(OnClickClear);
         btn_add.onClick.AddListener(OnClickAdd);
@@ -44,6 +46,11 @@ public class UIPrankContro : MonoBehaviour
     void OnClickSpecialSetting()
     {
         BarrageController.Instance.ChangePrankType(2);
+    }
+
+    void OnClickLotterySetting()
+    {
+        BarrageController.Instance.ChangePrankType(3);
     }
 
     void OnClickClear()
