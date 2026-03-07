@@ -1,6 +1,7 @@
 using PlayerScripts;
 using System.Collections;
 using System.Collections.Generic;
+using SystemScripts;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -59,6 +60,7 @@ public class BarrageRopeSkip : BarrageFuncBase
     public override void OnContinue()
     {
         base.OnContinue();
+        transform.position = BarrageFuncCreater.Instance.OnCreatePos("ÌøÉþ");
         OnRest();
     }
     
@@ -95,7 +97,8 @@ public class BarrageRopeSkip : BarrageFuncBase
         player.gameObject.SetActive(true);
         animator.speed = 2;
         OnCloseCollider();
-        center.SetActive(true);
+        center.SetActive(true); 
+        player.transform.localPosition = Vector3.zero;
         //spriteRenderer.enabled = true;
         if (!OnCheckHasLevel())
         {
@@ -126,8 +129,9 @@ public class BarrageRopeSkip : BarrageFuncBase
         Sound.PlayMusic("background");
         Sound.PauseOrPlayVolumeMusic(false);
         if (!barrageController.OnCheckHasHighControl()
-          && !OnCheckHasLevel()
-          && !BarrageFuncController.Instance.OnCheckHighLevelFunc(barrageData.barrageFuncData))
+         && !OnCheckHasLevel()
+         && !BarrageFuncController.Instance.OnCheckHighLevelFunc(barrageData.barrageFuncData)
+         && !GameStatusController.isDead)
         {
             PlayerModController.Instance.OnSetPlayerContro(true, true, true);
         }

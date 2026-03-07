@@ -136,6 +136,7 @@ public class BarrageFuncCreater : MonoBehaviour
     {
         if (BarrageFuncController.Instance.OnCheckBarrageFuncByName("≤¡∆§–¨"))
         {
+            Sound.PlaySound("smb_1-up");
             Config.shineCount += 20;
             EventManager.Instance.SendMessage(Events.OnBarryExecutEnd, index);
         }
@@ -185,7 +186,7 @@ public class BarrageFuncCreater : MonoBehaviour
         return obj;
     }
 
-    Vector3 OnCreatePos(string callName)
+    public Vector3 OnCreatePos(string callName)
     {
         Vector3 createPos = Vector3.zero;
         if (string.IsNullOrEmpty(callName)) return createPos;
@@ -193,12 +194,11 @@ public class BarrageFuncCreater : MonoBehaviour
         switch (callName)
         {
             case "…œµı":
-                Sound.PlaySound("Mod/hangself");
-                float value = GameStatusController.IsHidden ? 32 : 0;
-                createPos = new Vector3(vectorPlayer.x - 2, value);
+                float value = GameStatusController.IsHidden ? 37 : Camera.main.transform.position.y;
+                createPos = new Vector3(Camera.main.transform.position.x, value);
                 break;
             case "“ªø‚":
-                createPos = new Vector3(0, vectorPlayer.y + 15, 0);
+                createPos = new Vector3(Camera.main.transform.position.x, vectorPlayer.y + 15, 0);
                 break;
             case "Ã˙¡¥":
                 createPos = new Vector3(Camera.main.transform.position.x, Camera.main.transform.position.y, 0);
@@ -233,6 +233,7 @@ public class BarrageFuncCreater : MonoBehaviour
                 obj.GetComponent<BarrageMenace>().OnStart(barrageFuncData, index);
                 break;
             case "…œµı":
+                Sound.PlaySound("Mod/hangself");
                 obj.GetComponent<BarrageHangSelf>().OnStart(barrageFuncData, index);
                 break;
             case "“ªø‚":

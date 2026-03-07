@@ -753,6 +753,7 @@ namespace PlayerScripts
         bool isSpecialDie = false;
         void OnDieFunc()
         {
+            Config.isLoading = true;
             GameStatusController.IsDaoPlayer = false;
             GameStatusController.IsQiangPlayer = false;
             GameStatusController.IsBigPlayer = false;
@@ -913,9 +914,7 @@ namespace PlayerScripts
             }
             else {
                 EventManager.Instance.SendMessage(Events.OnRestBreakBrick);
-              
                 yield return new WaitForSeconds(1);
-                GameStatusController.IsDead = false;
                 ResetPlayerState(startPos);
                 isInvulnerable=true;
                 _playerAnim.SetTrigger("toDead");
@@ -1214,6 +1213,7 @@ namespace PlayerScripts
             }
             Sound.PlayMusic("background");
             ModData.deadCount++;
+            GameStatusController.IsDead = false;
         }
 
         // 可选：添加一个重载方法，使用默认位置

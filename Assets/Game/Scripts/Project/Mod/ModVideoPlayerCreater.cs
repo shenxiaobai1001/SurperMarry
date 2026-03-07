@@ -289,6 +289,7 @@ public class ModVideoPlayerCreater : MonoBehaviour
     {
         GameObject vplayerObj = SimplePool.Spawn(ModVideoPlayer, transform.position, Quaternion.identity);
         ModVideoPlayer vplayer = vplayerObj.GetComponent<ModVideoPlayer>();
+        vplayerObj.SetActive(true);
         vplayer.OnPlayVideo(offset, scale, rotateA, path, type, layer, snake, sortingOrder, callback);
         vplayerObj.transform.SetParent(videoParent);
         IsPlaying = true;

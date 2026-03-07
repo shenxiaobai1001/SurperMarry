@@ -56,6 +56,7 @@ public class BarrageShoeShine : BarrageFuncBase
     }
     public override void OnContinue() {
         base.OnContinue();
+        transform.position = BarrageFuncCreater.Instance.OnCreatePos("²ÁÆ¤Ð¬");
         spriteRenderer.enabled = true;
         center.SetActive(true); 
         OnRest();
@@ -69,6 +70,7 @@ public class BarrageShoeShine : BarrageFuncBase
         {
             PlayerModController.Instance.OnSetPlayerContro(false, false, true);
         }
+
         spriteRenderer.enabled = true;
         center.SetActive(true);
         PlayerController.Instance.transform.position = new Vector3(animator.transform.position.x, animator.transform.position.y, animator.transform.position.z);
@@ -102,8 +104,9 @@ public class BarrageShoeShine : BarrageFuncBase
         Sound.PlayMusic("background");
         Sound.PauseOrPlayVolumeMusic(false);
         if (!barrageController.OnCheckHasHighControl()
-         && !OnCheckHasLevel()
-         && !BarrageFuncController.Instance.OnCheckHighLevelFunc(barrageData.barrageFuncData))
+           && !OnCheckHasLevel()
+           && !BarrageFuncController.Instance.OnCheckHighLevelFunc(barrageData.barrageFuncData)
+           && !GameStatusController.isDead)
         {
             PlayerModController.Instance.OnSetPlayerContro(true, true, true);
         }

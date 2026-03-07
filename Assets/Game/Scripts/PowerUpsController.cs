@@ -66,7 +66,7 @@ public class PowerUpsController : MonoBehaviour
     private void OnTriggerEnter2D(Collider2D other)
     {
         //if ((other.CompareTag("Player") || other.CompareTag("UltimatePlayer"))&& CompareTag("Coin"))
-        if (CompareTag("Coin") && ((other.CompareTag("Player") || other.CompareTag("UltimatePlayer") || other.CompareTag("brickHit"))))
+        if (CompareTag("Coin") && (other.CompareTag("Player") || (other.CompareTag("BigPlayer")|| other.CompareTag("UltimatePlayer") || other.CompareTag("brickHit"))))
         {
             Sound.PlaySound("smb_coin");
             GameStatusController.CollectedCoin += 1;

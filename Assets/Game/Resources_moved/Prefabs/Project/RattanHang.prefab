@@ -567,7 +567,7 @@ GameObject:
   - component: {fileID: 5272036202652324492}
   m_Layer: 14
   m_Name: RattanHang
-  m_TagString: Untagged
+  m_TagString: Ground
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

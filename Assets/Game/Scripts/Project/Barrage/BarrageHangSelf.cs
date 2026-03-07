@@ -2,6 +2,7 @@ using DG.Tweening;
 using PlayerScripts;
 using System.Collections;
 using System.Collections.Generic;
+using SystemScripts;
 using UnityEngine;
 
 public class BarrageHangSelf : BarrageFuncBase
@@ -164,6 +165,7 @@ public class BarrageHangSelf : BarrageFuncBase
     public override void OnContinue()
     {
         base.OnContinue();
+        transform.position = BarrageFuncCreater.Instance.OnCreatePos("ио╣У");
         if (animator) animator.gameObject.SetActive(true);
     }
 
@@ -183,8 +185,9 @@ public class BarrageHangSelf : BarrageFuncBase
         barrageData.BarrageState = BarrageState.Finsh;
         OnBreakeHang();
         if (!barrageController.OnCheckHasHighControl()
-                && !OnCheckHasLevel()
-                && !BarrageFuncController.Instance.OnCheckHighLevelFunc(barrageData.barrageFuncData))
+         && !OnCheckHasLevel()
+         && !BarrageFuncController.Instance.OnCheckHighLevelFunc(barrageData.barrageFuncData)
+         && !GameStatusController.isDead)
         {
             PlayerModController.Instance.OnSetPlayerContro(true, true, true);
             Vector3 vector = lastPoint.transform.position;

@@ -28,8 +28,14 @@ public class BarrageChainPlayer : BarrageFuncBase
     public override void OnStart(BarrageValue barrageFuncData, int index)
     {
         base.OnStart(barrageFuncData, index);
+        OnRest();
+
+    }
+   void OnRest()
+    {
+        if (animator) animator.gameObject.SetActive(true);
         PlayerController.Instance.transform.position =
-            new Vector3(animator.transform.position.x, animator.transform.position.y, animator.transform.position.z);
+          new Vector3(animator.transform.position.x, animator.transform.position.y, animator.transform.position.z);
         if (GameStatusController.IsFirePlayer && GameStatusController.IsBigPlayer)
         {
             parent.GetChild(0).gameObject.SetActive(false);
@@ -60,7 +66,6 @@ public class BarrageChainPlayer : BarrageFuncBase
             PlayerModController.Instance.OnSetPlayerContro(false, false, true);
         }
         barrageData.BarrageState = BarrageState.Underway;
-
     }
 
     void Update()
@@ -116,7 +121,8 @@ public class BarrageChainPlayer : BarrageFuncBase
     public override void OnContinue()
     {
         base.OnContinue();
-        if (animator) animator.gameObject.SetActive(true);
+        transform.position = BarrageFuncCreater.Instance.OnCreatePos("…œµı");
+        OnRest();
     }
 
     public void OnRande()
@@ -151,8 +157,10 @@ public class BarrageChainPlayer : BarrageFuncBase
         Sound.PlayMusic("background");
         Sound.PauseOrPlayVolumeMusic(false);
         PFunc.Log("Ã˙¡¥Ω· ¯£∫", barrageController.OnCheckHasHighControl(barrageData.barrageFuncData));
-        if (!barrageController.OnCheckHasHighControl(barrageData.barrageFuncData))
-        {
+        if (!barrageController.OnCheckHasHighControl()
+        && !OnCheckHasLevel()
+        && !BarrageFuncController.Instance.OnCheckHighLevelFunc(barrageData.barrageFuncData)
+        && !GameStatusController.isDead) { 
             PlayerModController.Instance.OnSetPlayerContro(true, true, true);
         }
         SimplePool.Despawn(gameObject);

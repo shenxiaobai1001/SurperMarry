@@ -1,20 +1,67 @@
 {
     "SpecialConfigs": [
         {
-            "BoxName": "多特效",
+            "BoxName": "啥都有",
             "Type": "礼物",
-            "Message": "111",
+            "Message": "比心",
             "Tip": "",
             "Count": 1,
             "Delay": 1.0,
-            "videoName": "火力全开",
+            "videoName": "空",
             "Calls": [
                 "乌龟一只",
-                "灵魂拷问硬控",
-                "一库",
                 "扔香蕉",
-                "万箭齐发"
+                "乌龟十只",
+                "乌龟一百只",
+                "蘑菇一只",
+                "蘑菇十只",
+                "蘑菇一百只",
+                "飞龟一只",
+                "飞龟十只",
+                "飞龟一百只",
+                "飞鱼十只",
+                "甲壳虫一百只"
             ]
+        },
+        {
+            "BoxName": "",
+            "Type": "",
+            "Message": "",
+            "Tip": "",
+            "Count": 1,
+            "Delay": 0.0,
+            "videoName": "",
+            "Calls": []
+        },
+        {
+            "BoxName": "",
+            "Type": "",
+            "Message": "",
+            "Tip": "",
+            "Count": 1,
+            "Delay": 0.0,
+            "videoName": "",
+            "Calls": []
+        },
+        {
+            "BoxName": "",
+            "Type": "",
+            "Message": "",
+            "Tip": "",
+            "Count": 1,
+            "Delay": 0.0,
+            "videoName": "",
+            "Calls": []
+        },
+        {
+            "BoxName": "",
+            "Type": "",
+            "Message": "",
+            "Tip": "",
+            "Count": 1,
+            "Delay": 0.0,
+            "videoName": "",
+            "Calls": []
         }
     ]
 }

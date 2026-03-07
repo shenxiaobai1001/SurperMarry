@@ -1,6 +1,7 @@
 using PlayerScripts;
 using System.Collections;
 using System.Collections.Generic;
+using SystemScripts;
 using UnityEngine;
 
 public class BarrageZombie : BarrageFuncBase
@@ -71,6 +72,7 @@ public class BarrageZombie : BarrageFuncBase
     public override void OnContinue()
     {
         base.OnContinue();
+        transform.position = BarrageFuncCreater.Instance.OnCreatePos("Ω© ¨+10√Î");
         OnRest();
     }
 
@@ -90,8 +92,9 @@ public class BarrageZombie : BarrageFuncBase
     {
         base.OnClose();
         if (!barrageController.OnCheckHasHighControl()
-            && !OnCheckHasLevel()
-            && !BarrageFuncController.Instance.OnCheckHighLevelFunc(barrageData.barrageFuncData))
+         && !OnCheckHasLevel()
+         && !BarrageFuncController.Instance.OnCheckHighLevelFunc(barrageData.barrageFuncData)
+         && !GameStatusController.isDead)
         {
 
             PlayerModController.Instance.OnSetPlayerContro(true, true, true);

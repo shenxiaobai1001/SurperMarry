@@ -1,6 +1,7 @@
 using PlayerScripts;
 using System.Collections;
 using System.Collections.Generic;
+using SystemScripts;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -20,18 +21,7 @@ public class BarrageFlogPlayer : BarrageFuncBase
     public override void OnStart(BarrageValue barrageFuncData, int index)
     {
         base.OnStart(barrageFuncData, index);
-
-        PlayerController.Instance.transform.position =
-        new Vector3(smokePos.position.x, smokePos.position.y, smokePos.position.z);
-        if (!barrageController.OnCheckHasHighControlLevel(barrageData.barrageFuncData))
-        {
-            PlayerModController.Instance.OnSetPlayerContro(false, false, true);
-        }
-        for (int i = 0; i < gameObjects.Count; i++)
-        {
-            gameObjects[i].gameObject.SetActive(false);
-        }
-        barrageData.BarrageState = BarrageState.Underway;
+        OnRest();
     }
 
     private void Update()
@@ -89,11 +79,27 @@ public class BarrageFlogPlayer : BarrageFuncBase
     public override void OnContinue()
     {
         base.OnContinue();
+        transform.position = BarrageFuncCreater.Instance.OnCreatePos("´ò°å×ÓÃ¤ºÐ");
+        OnRest();
+    }
+
+    void OnRest()
+    {
+        PlayerController.Instance.transform.position =
+        new Vector3(smokePos.position.x, smokePos.position.y, smokePos.position.z);
+        if (!barrageController.OnCheckHasHighControlLevel(barrageData.barrageFuncData))
+        {
+            PlayerModController.Instance.OnSetPlayerContro(false, false, true);
+        }
+        for (int i = 0; i < gameObjects.Count; i++)
+        {
+            gameObjects[i].gameObject.SetActive(false);
+        }
         OnChangeAniSpeed();
         spriteRenderer.enabled = true;
         UIObbj.SetActive(true);
+        barrageData.BarrageState = BarrageState.Underway;
     }
-
     void OnChangeAniSpeed()
     {
         if (Config.FlogCount > 10)
@@ -124,9 +130,9 @@ public class BarrageFlogPlayer : BarrageFuncBase
     {
         base.OnClose();
         if (!barrageController.OnCheckHasHighControl()
-            && !OnCheckHasLevel()
-            && !BarrageFuncController.Instance.OnCheckHighLevelFunc(barrageData.barrageFuncData))
-        {
+         && !OnCheckHasLevel()
+         && !BarrageFuncController.Instance.OnCheckHighLevelFunc(barrageData.barrageFuncData)
+         && !GameStatusController.isDead) { 
 
             PlayerModController.Instance.OnSetPlayerContro(true, true, true);
         }

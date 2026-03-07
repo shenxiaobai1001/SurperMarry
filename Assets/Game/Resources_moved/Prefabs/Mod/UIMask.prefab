@@ -130,7 +130,7 @@ MonoBehaviour:
   barrageController: {fileID: 0}
   barrageIndex: 0
   isInit: 0
-  Mask: {fileID: 0}
+  Mask: {fileID: 5416449252735922430}
 --- !u!223 &3973826636714449640
 Canvas:
   m_ObjectHideFlags: 0

@@ -73,6 +73,16 @@ public class ModVideoPlayer : MonoBehaviour
         EventManager.Instance.SendMessage(Events.OnModVideoPlayStart);
     }
 
+    private void OnDisable()
+    {
+        if (callback != null) callback.Invoke();
+        callback = null;
+    }
+    private void OnDestroy()
+    {
+        if (callback != null) callback.Invoke();
+        callback = null;
+    }
     //Ìøµ½½áÊø
     public void OnEnd()
     {

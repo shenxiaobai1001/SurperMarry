@@ -51,6 +51,7 @@ public class BarragePeakKuba : BarrageFuncBase
     public override void OnContinue()
     {
         base.OnContinue();
+        transform.position = BarrageFuncCreater.Instance.OnCreatePos("¶¥ÎÚ¹ê");
         OnRest();
     }
 
