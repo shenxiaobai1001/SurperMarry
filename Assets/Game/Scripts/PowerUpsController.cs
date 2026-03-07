@@ -65,16 +65,17 @@ public class PowerUpsController : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D other)
     {
-        if (CompareTag("Coin") && (other.CompareTag("Player") || other.CompareTag("BigPlayer") ||
-                                   other.CompareTag("UltimatePlayer") || other.CompareTag("UltimateBigPlayer")))
+        //if ((other.CompareTag("Player") || other.CompareTag("UltimatePlayer"))&& CompareTag("Coin"))
+        if (CompareTag("Coin") && ((other.CompareTag("Player") || other.CompareTag("UltimatePlayer") || other.CompareTag("brickHit"))))
         {
+            Sound.PlaySound("smb_coin");
             GameStatusController.CollectedCoin += 1;
             GameStatusController.Score += 200;
             GameStatusController.IsEnemyDieOrCoinEat = true;
             Destroy(gameObject);
         }
 
-            InteractionWithPlayer(other.gameObject);
+        InteractionWithPlayer(other.gameObject);
 
     }
     private IEnumerator SetBoolEatable()
@@ -85,14 +86,14 @@ public class PowerUpsController : MonoBehaviour
 
     void InteractionWithPlayer(GameObject other)
     {
-        if ((other.CompareTag("Player") || other.CompareTag("UltimatePlayer")) && !CompareTag("Coin"))
+        if ((other.CompareTag("Player") || other.CompareTag("UltimatePlayer") || other.CompareTag("brickHit")) && !CompareTag("Coin"))
         {
             Sound.PlaySound("smb_powerup_appears");
             _powerAudio.PlayOneShot(appearSound);
             isTouchByPlayer = true;
             StartCoroutine(SetBoolEatable());
         }
-        else if ((other.CompareTag("BigPlayer") || other.CompareTag("UltimateBigPlayer")) && !CompareTag("Coin"))
+        else if ((other.CompareTag("BigPlayer") || other.CompareTag("UltimateBigPlayer") || other.CompareTag("brickHit")) && !CompareTag("Coin"))
         {
             Sound.PlaySound("smb_powerup_appears");
             isTouchByPlayer = true;

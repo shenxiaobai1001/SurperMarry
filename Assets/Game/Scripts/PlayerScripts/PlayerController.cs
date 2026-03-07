@@ -168,7 +168,6 @@ namespace PlayerScripts
                 if (GameStatusController.IsHidden&& transform.position.y<25)
                 {
                     GameStatusController.IsHidden = false;
-                    GameStatusController.HiddenMove = false;
                 }
             }
         
@@ -1003,7 +1002,7 @@ namespace PlayerScripts
 
         private IEnumerator StopGoingDownPipe()
         {
-            yield return new WaitForSeconds(1.5f);
+            yield return new WaitForSeconds(0.75f);
             _isGoingDownPipeAble = false;
 
             if (_isAboveSpecialPipe)
@@ -1014,7 +1013,7 @@ namespace PlayerScripts
             else if(isHidden)
             {
                 GameStatusController.IsHidden = true;
-                GameStatusController. HiddenMove = Config.passIndex > 1;
+               // GameStatusController. HiddenMove = Config.passIndex > 1;
                  isHidden = false;
                 transform.position = GameManager.Instance.hiddenEnterPos.position;
                 Camera.main.transform.position = new Vector3(20, 37, -10);
@@ -1029,7 +1028,7 @@ namespace PlayerScripts
             _playerAudio.PlayOneShot(pipeSound);
             PlayerModController.Instance.OnChangeStateTrue();
 
-            float allTime = 1f;
+            float allTime = 0.5f;
             float time = 0;
 
             // 第一部分：水平移动
@@ -1042,7 +1041,6 @@ namespace PlayerScripts
 
             transform.position = GameManager.Instance.hiddenOutPos.position;
             GameStatusController.IsHidden = false;
-            GameStatusController.HiddenMove = false;
 
             // 第二部分：向上移动（修改部分）
             float addValue = GameStatusController.IsBigPlayer ? 2.5f : 2;

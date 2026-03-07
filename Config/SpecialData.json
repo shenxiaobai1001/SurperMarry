@@ -1,24 +1,20 @@
 {
     "SpecialConfigs": [
         {
-            "BoxName": "",
-            "Type": "",
-            "Message": "",
+            "BoxName": "多特效",
+            "Type": "礼物",
+            "Message": "111",
             "Tip": "",
             "Count": 1,
-            "Delay": 0.0,
-            "videoName": "",
-            "Calls": []
-        },
-        {
-            "BoxName": "",
-            "Type": "",
-            "Message": "",
-            "Tip": "",
-            "Count": 1,
-            "Delay": 0.0,
-            "videoName": "",
-            "Calls": []
+            "Delay": 1.0,
+            "videoName": "火力全开",
+            "Calls": [
+                "乌龟一只",
+                "灵魂拷问硬控",
+                "一库",
+                "扔香蕉",
+                "万箭齐发"
+            ]
         }
     ]
 }

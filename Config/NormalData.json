@@ -1,20 +1,204 @@
 {
     "NormalConfigs": [
         {
-            "CallName": "抓乌龟",
-            "Type": "礼物",
-            "Message": "XXX",
+            "CallName": "乌龟一只",
+            "Type": "进入",
+            "Message": "",
             "Tip": "",
             "Count": 1,
-            "Delay": 0.0
+            "Delay": 0.20000000298023225
         },
         {
-            "CallName": "铁链",
+            "CallName": "乌龟十只",
             "Type": "礼物",
             "Message": "",
             "Tip": "",
             "Count": 1,
-            "Delay": 0.0
+            "Delay": 0.20000000298023225
+        },
+        {
+            "CallName": "乌龟一百只",
+            "Type": "礼物",
+            "Message": "小心心",
+            "Tip": "",
+            "Count": 11,
+            "Delay": 0.20000000298023225
+        },
+        {
+            "CallName": "蘑菇一只",
+            "Type": "礼物",
+            "Message": "",
+            "Tip": "",
+            "Count": 1,
+            "Delay": 0.20000000298023225
+        },
+        {
+            "CallName": "蘑菇十只",
+            "Type": "礼物",
+            "Message": "",
+            "Tip": "",
+            "Count": 1,
+            "Delay": 0.20000000298023225
+        },
+        {
+            "CallName": "蘑菇一百只",
+            "Type": "礼物",
+            "Message": "",
+            "Tip": "",
+            "Count": 1,
+            "Delay": 0.20000000298023225
+        },
+        {
+            "CallName": "飞龟一只",
+            "Type": "礼物",
+            "Message": "",
+            "Tip": "",
+            "Count": 1,
+            "Delay": 0.20000000298023225
+        },
+        {
+            "CallName": "飞龟十只",
+            "Type": "礼物",
+            "Message": "",
+            "Tip": "",
+            "Count": 1,
+            "Delay": 0.20000000298023225
+        },
+        {
+            "CallName": "甲壳虫一只",
+            "Type": "礼物",
+            "Message": "",
+            "Tip": "",
+            "Count": 1,
+            "Delay": 0.20000000298023225
+        },
+        {
+            "CallName": "甲壳虫十只",
+            "Type": "礼物",
+            "Message": "",
+            "Tip": "",
+            "Count": 1,
+            "Delay": 0.20000000298023225
+        },
+        {
+            "CallName": "甲壳虫一百只",
+            "Type": "礼物",
+            "Message": "",
+            "Tip": "",
+            "Count": 1,
+            "Delay": 0.20000000298023225
+        },
+        {
+            "CallName": "游戏时间+10s",
+            "Type": "礼物",
+            "Message": "",
+            "Tip": "",
+            "Count": 1,
+            "Delay": 0.20000000298023225
+        },
+        {
+            "CallName": "游戏时间-10s",
+            "Type": "礼物",
+            "Message": "",
+            "Tip": "",
+            "Count": 1,
+            "Delay": 0.20000000298023225
+        },
+        {
+            "CallName": "生命+10%",
+            "Type": "礼物",
+            "Message": "",
+            "Tip": "",
+            "Count": 1,
+            "Delay": 0.20000000298023225
+        },
+        {
+            "CallName": "生命-10%",
+            "Type": "礼物",
+            "Message": "",
+            "Tip": "",
+            "Count": 1,
+            "Delay": 0.20000000298023225
+        },
+        {
+            "CallName": "生命+1",
+            "Type": "礼物",
+            "Message": "",
+            "Tip": "人气票",
+            "Count": 1,
+            "Delay": 0.20000000298023225
+        },
+        {
+            "CallName": "生命-1",
+            "Type": "礼物",
+            "Message": "",
+            "Tip": "",
+            "Count": 1,
+            "Delay": 0.20000000298023225
+        },
+        {
+            "CallName": "扔香蕉",
+            "Type": "礼物",
+            "Message": "",
+            "Tip": "",
+            "Count": 1,
+            "Delay": 0.10000000149011612
+        },
+        {
+            "CallName": "万箭齐发",
+            "Type": "礼物",
+            "Message": "",
+            "Tip": "",
+            "Count": 1,
+            "Delay": 2.0
+        },
+        {
+            "CallName": "抓鸭子",
+            "Type": "礼物",
+            "Message": "",
+            "Tip": "",
+            "Count": 1,
+            "Delay": 1.7999999523162842
+        },
+        {
+            "CallName": "抓乌龟",
+            "Type": "礼物",
+            "Message": "",
+            "Tip": "",
+            "Count": 1,
+            "Delay": 2.0
+        },
+        {
+            "CallName": "乌萨奇",
+            "Type": "礼物",
+            "Message": "",
+            "Tip": "",
+            "Count": 1,
+            "Delay": 1.7999999523162842
+        },
+        {
+            "CallName": "灵魂拷问",
+            "Type": "礼物",
+            "Message": "",
+            "Tip": "",
+            "Count": 1,
+            "Delay": 1.7999999523162842
+        },
+        {
+            "CallName": "乌萨奇硬控",
+            "Type": "礼物",
+            "Message": "",
+            "Tip": "",
+            "Count": 1,
+            "Delay": 1.7999999523162842
+        },
+        {
+            "CallName": "灵魂拷问硬控",
+            "Type": "礼物",
+            "Message": "",
+            "Tip": "",
+            "Count": 1,
+            "Delay": 1.7999999523162842
         },
         {
             "CallName": "上吊",
@@ -22,39 +206,359 @@
             "Message": "",
             "Tip": "",
             "Count": 1,
-            "Delay": 0.0
+            "Delay": 6.0
         },
         {
-            "CallName": "擦皮鞋",
+            "CallName": "一库",
             "Type": "礼物",
             "Message": "",
             "Tip": "",
             "Count": 1,
-            "Delay": 0.0
+            "Delay": 0.5
         },
         {
-            "CallName": "跳绳",
-            "Type": "礼物",
-            "Message": "",
-            "Tip": "",
-            "Count": 20,
-            "Delay": 0.0
-        },
-        {
-            "CallName": "跳绳盲盒",
+            "CallName": "滚石",
             "Type": "礼物",
             "Message": "",
             "Tip": "",
             "Count": 1,
-            "Delay": 0.0
+            "Delay": 3.0
         },
         {
-            "CallName": "乌龟一只",
-            "Type": "",
+            "CallName": "滚刺",
+            "Type": "礼物",
             "Message": "",
             "Tip": "",
             "Count": 1,
-            "Delay": 0.0
+            "Delay": 3.0
+        },
+        {
+            "CallName": "陨石",
+            "Type": "礼物",
+            "Message": "",
+            "Tip": "",
+            "Count": 1,
+            "Delay": 0.5
+        },
+        {
+            "CallName": "麒麟臂",
+            "Type": "礼物",
+            "Message": "",
+            "Tip": "",
+            "Count": 1,
+            "Delay": 1.7999999523162842
+        },
+        {
+            "CallName": "天残脚",
+            "Type": "礼物",
+            "Message": "",
+            "Tip": "",
+            "Count": 1,
+            "Delay": 1.7999999523162842
+        },
+        {
+            "CallName": "随机天火",
+            "Type": "礼物",
+            "Message": "",
+            "Tip": "",
+            "Count": 1,
+            "Delay": 0.20000000298023225
+        },
+        {
+            "CallName": "全屏天火",
+            "Type": "礼物",
+            "Message": "",
+            "Tip": "",
+            "Count": 1,
+            "Delay": 1.0
+        },
+        {
+            "CallName": "随机地火",
+            "Type": "礼物",
+            "Message": "",
+            "Tip": "",
+            "Count": 1,
+            "Delay": 0.20000000298023225
+        },
+        {
+            "CallName": "全屏地火",
+            "Type": "礼物",
+            "Message": "",
+            "Tip": "",
+            "Count": 1,
+            "Delay": 1.0
+        },
+        {
+            "CallName": "随机传送",
+            "Type": "礼物",
+            "Message": "",
+            "Tip": "",
+            "Count": 1,
+            "Delay": 0.5
+        },
+        {
+            "CallName": "铁链",
+            "Type": "礼物",
+            "Message": "",
+            "Tip": "",
+            "Count": 1,
+            "Delay": 0.5
+        },
+        {
+            "CallName": "雷电",
+            "Type": "礼物",
+            "Message": "",
+            "Tip": "",
+            "Count": 1,
+            "Delay": 0.5
+        },
+        {
+            "CallName": "砖块+10",
+            "Type": "礼物",
+            "Message": "",
+            "Tip": "",
+            "Count": 1,
+            "Delay": 1.0
+        },
+        {
+            "CallName": "石头+10",
+            "Type": "礼物",
+            "Message": "",
+            "Tip": "",
+            "Count": 1,
+            "Delay": 1.0
+        },
+        {
+            "CallName": "美女盲盒",
+            "Type": "礼物",
+            "Message": "",
+            "Tip": "",
+            "Count": 1,
+            "Delay": 5.0
+        },
+        {
+            "CallName": "火焰马里奥",
+            "Type": "礼物",
+            "Message": "",
+            "Tip": "",
+            "Count": 1,
+            "Delay": 1.0
+        },
+        {
+            "CallName": "抓可达鸭",
+            "Type": "礼物",
+            "Message": "",
+            "Tip": "",
+            "Count": 1,
+            "Delay": 1.7999999523162842
+        },
+        {
+            "CallName": "飞鱼一只",
+            "Type": "礼物",
+            "Message": "",
+            "Tip": "",
+            "Count": 1,
+            "Delay": 0.5
+        },
+        {
+            "CallName": "飞鱼十只",
+            "Type": "礼物",
+            "Message": "",
+            "Tip": "",
+            "Count": 1,
+            "Delay": 0.5
+        },
+        {
+            "CallName": "飞鱼一百只",
+            "Type": "礼物",
+            "Message": "",
+            "Tip": "",
+            "Count": 1,
+            "Delay": 0.5
+        },
+        {
+            "CallName": "上一关",
+            "Type": "礼物",
+            "Message": "",
+            "Tip": "",
+            "Count": 1,
+            "Delay": 0.20000000298023225
+        },
+        {
+            "CallName": "下一关",
+            "Type": "礼物",
+            "Message": "",
+            "Tip": "",
+            "Count": 1,
+            "Delay": 0.20000000298023225
+        },
+        {
+            "CallName": "随机关卡",
+            "Type": "礼物",
+            "Message": "",
+            "Tip": "",
+            "Count": 1,
+            "Delay": 1.0
+        },
+        {
+            "CallName": "大蘑菇",
+            "Type": "礼物",
+            "Message": "",
+            "Tip": "",
+            "Count": 1,
+            "Delay": 1.0
+        },
+        {
+            "CallName": "超人+10秒",
+            "Type": "礼物",
+            "Message": "",
+            "Tip": "",
+            "Count": 1,
+            "Delay": 1.0
+        },
+        {
+            "CallName": "超人-10秒",
+            "Type": "礼物",
+            "Message": "",
+            "Tip": "",
+            "Count": 1,
+            "Delay": 1.0
+        },
+        {
+            "CallName": "刀马",
+            "Type": "礼物",
+            "Message": "",
+            "Tip": "",
+            "Count": 1,
+            "Delay": 1.0
+        },
+        {
+            "CallName": "广播体操",
+            "Type": "礼物",
+            "Message": "",
+            "Tip": "",
+            "Count": 1,
+            "Delay": 40.0
+        },
+        {
+            "CallName": "凿头",
+            "Type": "礼物",
+            "Message": "",
+            "Tip": "",
+            "Count": 1,
+            "Delay": 1.0
+        },
+        {
+            "CallName": "僵尸+10秒",
+            "Type": "礼物",
+            "Message": "",
+            "Tip": "",
+            "Count": 1,
+            "Delay": 1.0
+        },
+        {
+            "CallName": "僵尸-10秒",
+            "Type": "礼物",
+            "Message": "",
+            "Tip": "",
+            "Count": 1,
+            "Delay": 1.0
+        },
+        {
+            "CallName": "砍刀形态",
+            "Type": "礼物",
+            "Message": "",
+            "Tip": "",
+            "Count": 1,
+            "Delay": 1.0
+        },
+        {
+            "CallName": "拿枪形态",
+            "Type": "礼物",
+            "Message": "",
+            "Tip": "",
+            "Count": 1,
+            "Delay": 1.0
+        },
+        {
+            "CallName": "随机形态",
+            "Type": "礼物",
+            "Message": "",
+            "Tip": "",
+            "Count": 1,
+            "Delay": 1.0
+        },
+        {
+            "CallName": "大齿轮",
+            "Type": "礼物",
+            "Message": "",
+            "Tip": "",
+            "Count": 1,
+            "Delay": 1.0
+        },
+        {
+            "CallName": "变大",
+            "Type": "礼物",
+            "Message": "",
+            "Tip": "",
+            "Count": 1,
+            "Delay": 0.20000000298023225
+        },
+        {
+            "CallName": "变小",
+            "Type": "礼物",
+            "Message": "",
+            "Tip": "",
+            "Count": 99,
+            "Delay": 0.20000000298023225
+        },
+        {
+            "CallName": "无敌星",
+            "Type": "礼物",
+            "Message": "",
+            "Tip": "",
+            "Count": 1,
+            "Delay": 1.0
+        },
+        {
+            "CallName": "火圈",
+            "Type": "礼物",
+            "Message": "",
+            "Tip": "",
+            "Count": 1,
+            "Delay": 0.20000000298023225
+        },
+        {
+            "CallName": "伸缩藤条",
+            "Type": "礼物",
+            "Message": "",
+            "Tip": "",
+            "Count": 1,
+            "Delay": 0.20000000298023225
+        },
+        {
+            "CallName": "哭坟",
+            "Type": "礼物",
+            "Message": "",
+            "Tip": "",
+            "Count": 1,
+            "Delay": 16.0
+        },
+        {
+            "CallName": "撞大运",
+            "Type": "礼物",
+            "Message": "",
+            "Tip": "",
+            "Count": 1,
+            "Delay": 0.20000000298023225
+        },
+        {
+            "CallName": "动感DJ",
+            "Type": "礼物",
+            "Message": "",
+            "Tip": "",
+            "Count": 1,
+            "Delay": 50.0
         }
     ]
 }

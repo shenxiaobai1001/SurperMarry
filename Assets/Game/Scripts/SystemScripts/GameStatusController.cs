@@ -57,7 +57,13 @@ namespace SystemScripts
         public static bool IsShowMessage;
         public static string PlayerTag;
         public static bool IsHidden;
-        public static bool HiddenMove;
+        public static bool HiddenMove { get { return Config.passIndex==5
+                    //|| Config.passIndex == 2 || Config.passIndex == 3 || Config.passIndex == 4
+                    //|| Config.passIndex == 5 || Config.passIndex ==7 || Config.passIndex == 8
+                    // || Config.passIndex == 9 || Config.passIndex == 10 || Config.passIndex == 11
+                    //  || Config.passIndex == 12 || Config.passIndex == 13 || Config.passIndex == 14 
+                    //  || Config.passIndex == 15
+                    ; } }
         private float _second;
 
         private void Awake()

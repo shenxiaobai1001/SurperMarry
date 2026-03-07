@@ -274,6 +274,7 @@ public class RattanHang : MonoBehaviour
 
     void OnBeginCheck()
     {
+        ModData.tiggerTrapCount++;
         showObj.SetActive(false);
         hideObj.SetActive(true); 
         rattanObj.SetActive(true);
@@ -310,6 +311,14 @@ public class RattanHang : MonoBehaviour
     bool check = true;
     private void OnTriggerEnter2D(Collider2D collision)
     {
+        if (!ModData.mTrap)
+        {
+            if (ModData.tiggerTrapCount >= ModData.canTrapCount)
+            {
+                return;
+            }
+
+        }
         if (collision == null) return;
         if (collision.gameObject.tag.Contains("Player")&& check)
         {

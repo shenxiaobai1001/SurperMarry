@@ -42,9 +42,9 @@ namespace SystemScripts
                 ) return;
 
             checkPlayerPos = false;
-            if (GameStatusController.IsHidden /*&& !GameStatusController.HiddenMove*/) return;
+            if (GameStatusController.IsHidden && !GameStatusController.HiddenMove) return;
             if (BarrageFuncController.Instance.OnCheckHasHighControl()) return;
-            float y = GameStatusController.IsHidden ? 32 : 5;
+            float y = GameStatusController.IsHidden ? 37 : 5;
             bool isMoveForward = player.transform.position.x > transform.position.x;
             bool isMax = player.transform.position.x > PlayerController.Instance.bossPkPos.x;
             float targetX = GameStatusController.IsBossBattle && isMoveForward && isMax ? PlayerController.Instance.bossPkPos.x : player.transform.position.x;
