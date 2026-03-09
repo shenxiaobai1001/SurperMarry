@@ -42,31 +42,36 @@ public class SystemController : MonoBehaviour
             VolumeMusic = PlayerPrefs.GetFloat("VolumeMusic");
         if (PlayerPrefs.HasKey("VolumeSound"))
             VolumeSound = PlayerPrefs.GetFloat("VolumeSound");
+        Debug.Log("在OnGetData=" + PlayerPrefs.HasKey("Saturation"));
+        statuValue = 0.5f; // 设定您期望的默认值，例如0.5代表滑块居中，对应饱和度0（正常）
+
         if (PlayerPrefs.HasKey("Saturation"))
         {
+        
             if (postProcessVolume != null && postProcessVolume.profile != null)
             {
                 // 尝试从配置文件中获取ColorAdjustments组件
                 if (!postProcessVolume.profile.TryGet(out colorAdjustments))
                 {
+                    return;
                     Debug.Log("在Volume Profile中未找到Color Adjustments效果！");
                 }
             }
             statuValue = PlayerPrefs.GetFloat("Saturation");
-            if (colorAdjustments != null)
-            {
-                // 将0-1的Slider值映射到-100到100的范围
-                // 当value=0.5时，saturationValue=0
-                // 当value=1时，saturationValue=100
-                // 当value=0时，saturationValue=-100
-                float saturationValue = (statuValue - 0.5f) * 200f;
-
-                saturationValue = Mathf.Clamp(saturationValue, -100f, 100f);
-
-                colorAdjustments.saturation.Override(saturationValue);
-            }
         }
-           
+        Debug.Log("在OnGetData=" + statuValue);
+        if (colorAdjustments != null)
+        {
+            // 将0-1的Slider值映射到-100到100的范围
+            // 当value=0.5时，saturationValue=0
+            // 当value=1时，saturationValue=100
+            // 当value=0时，saturationValue=-100
+            float saturationValue = (statuValue - 0.5f) * 200f;
+
+            saturationValue = Mathf.Clamp(saturationValue, -100f, 100f);
+
+            colorAdjustments.saturation.Override(saturationValue);
+        }
 
         PFunc.Log("OnGetData", VolumeMusic, VolumeSound);
         Sound.OnSetVolume(VolumeMusic, VolumeSound);

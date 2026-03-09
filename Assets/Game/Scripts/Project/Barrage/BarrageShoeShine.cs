@@ -1,3 +1,4 @@
+using DG.Tweening;
 using PlayerScripts;
 using System.Collections;
 using System.Collections.Generic;
@@ -28,8 +29,13 @@ public class BarrageShoeShine : BarrageFuncBase
             case BarrageState.Underway:
                 if (Input.GetKeyDown(KeyCode.Space) || Input.GetKeyDown(KeyCode.J))
                 {
+                    Sound.PlaySound("Mod/ca");
                     if (animator != null) animator.SetTrigger(aniType);
                     Config.shineCount--;
+                    if (tx_number) tx_number.transform.DOScale(1.1f, 0.025f).SetLoops(2, LoopType.Yoyo).OnComplete(() =>
+                    {
+                        tx_number.transform.localScale = Vector3.one;
+                    });
                     if (Config.shineCount <= 0)
                     {
                         OnClose();
@@ -56,6 +62,7 @@ public class BarrageShoeShine : BarrageFuncBase
     }
     public override void OnContinue() {
         base.OnContinue();
+        transform.position = BarrageFuncCreater.Instance.OnCreatePos("²ÁÆ¤Ð¬");
         spriteRenderer.enabled = true;
         center.SetActive(true); 
         OnRest();
@@ -69,6 +76,7 @@ public class BarrageShoeShine : BarrageFuncBase
         {
             PlayerModController.Instance.OnSetPlayerContro(false, false, true);
         }
+
         spriteRenderer.enabled = true;
         center.SetActive(true);
         PlayerController.Instance.transform.position = new Vector3(animator.transform.position.x, animator.transform.position.y, animator.transform.position.z);
@@ -102,8 +110,9 @@ public class BarrageShoeShine : BarrageFuncBase
         Sound.PlayMusic("background");
         Sound.PauseOrPlayVolumeMusic(false);
         if (!barrageController.OnCheckHasHighControl()
-         && !OnCheckHasLevel()
-         && !BarrageFuncController.Instance.OnCheckHighLevelFunc(barrageData.barrageFuncData))
+           && !OnCheckHasLevel()
+           && !BarrageFuncController.Instance.OnCheckHighLevelFunc(barrageData.barrageFuncData)
+           && !GameStatusController.isDead)
         {
             PlayerModController.Instance.OnSetPlayerContro(true, true, true);
         }

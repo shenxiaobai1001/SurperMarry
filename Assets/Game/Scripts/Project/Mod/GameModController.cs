@@ -89,8 +89,16 @@ public class GameModController : MonoBehaviour
     }
     public void OnEnterNextPass(int value, int index)
     {
-        if (Config.passIndex <=0&& value==-1) return;
-        if (Config.passIndex >= Config.passName.Length && value == 1) return;
+        if (Config.passIndex <=0&& value==-1)
+        {
+            EventManager.Instance.SendMessage(Events.OnBarryExecutEnd, index);
+            return;
+        }
+        if (Config.passIndex >= Config.passName.Length && value == 1)
+        {
+            EventManager.Instance.SendMessage(Events.OnBarryExecutEnd, index);
+            return;
+        }
 
         if (mainMoveCoroutine == null)
         {
@@ -166,6 +174,7 @@ public class GameModController : MonoBehaviour
             OnLoadScene("1-1");
         }
         mainMoveCoroutine = null;
+        PFunc.Log("OnBarryExecutEnd", barrageIndex);
         if (barrageIndex != 0) {
             EventManager.Instance.SendMessage(Events.OnBarryExecutEnd, barrageIndex);
             barrageIndex = 0;

@@ -1,6 +1,7 @@
 using PlayerScripts;
 using System.Collections;
 using System.Collections.Generic;
+using SystemScripts;
 using UnityEngine;
 
 public class BarrageWuSaqi : BarrageFuncBase
@@ -39,8 +40,9 @@ public class BarrageWuSaqi : BarrageFuncBase
     {
         base.OnClose();
         if (!barrageController.OnCheckHasHighControl()
-          && !OnCheckHasLevel()
-          && !BarrageFuncController.Instance.OnCheckHighLevelFunc(barrageData.barrageFuncData))
+         && !OnCheckHasLevel()
+         && !BarrageFuncController.Instance.OnCheckHighLevelFunc(barrageData.barrageFuncData)
+         && !GameStatusController.isDead)
         {
             PFunc.Log("Œ⁄»¯∆ÊΩ· ¯OnClose");
             PlayerModController.Instance.OnSetPlayerContro(true, true, true);

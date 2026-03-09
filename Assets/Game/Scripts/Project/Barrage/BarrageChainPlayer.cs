@@ -14,6 +14,7 @@ public class BarrageChainPlayer : BarrageFuncBase
     public GameObject uiCenter;
     public GameObject objCenter;
     public Text tx_number;
+    public GameObject uiobj;
 
     public Animator animator;
     public Transform parent;
@@ -28,8 +29,14 @@ public class BarrageChainPlayer : BarrageFuncBase
     public override void OnStart(BarrageValue barrageFuncData, int index)
     {
         base.OnStart(barrageFuncData, index);
+        OnRest();
+
+    }
+   void OnRest()
+    {
+        if (animator) animator.gameObject.SetActive(true);
         PlayerController.Instance.transform.position =
-            new Vector3(animator.transform.position.x, animator.transform.position.y, animator.transform.position.z);
+          new Vector3(animator.transform.position.x, animator.transform.position.y, animator.transform.position.z);
         if (GameStatusController.IsFirePlayer && GameStatusController.IsBigPlayer)
         {
             parent.GetChild(0).gameObject.SetActive(false);
@@ -60,7 +67,6 @@ public class BarrageChainPlayer : BarrageFuncBase
             PlayerModController.Instance.OnSetPlayerContro(false, false, true);
         }
         barrageData.BarrageState = BarrageState.Underway;
-
     }
 
     void Update()
@@ -81,6 +87,10 @@ public class BarrageChainPlayer : BarrageFuncBase
                     Sound.PlaySound("Mod/paopao");
                     OnRande();
                     Config.chainCount--;
+                    if (uiobj) uiobj.transform.DOScale(1.1f, 0.025f).SetLoops(2, LoopType.Yoyo).OnComplete(() =>
+                    {
+                        uiobj.transform.localScale = Vector3.one;
+                    });
                     OnSnake();
                 }
                 if (OnCheckHasLevel())
@@ -116,7 +126,8 @@ public class BarrageChainPlayer : BarrageFuncBase
     public override void OnContinue()
     {
         base.OnContinue();
-        if (animator) animator.gameObject.SetActive(true);
+        transform.position = BarrageFuncCreater.Instance.OnCreatePos("…œµı");
+        OnRest();
     }
 
     public void OnRande()
@@ -151,8 +162,10 @@ public class BarrageChainPlayer : BarrageFuncBase
         Sound.PlayMusic("background");
         Sound.PauseOrPlayVolumeMusic(false);
         PFunc.Log("Ã˙¡¥Ω· ¯£∫", barrageController.OnCheckHasHighControl(barrageData.barrageFuncData));
-        if (!barrageController.OnCheckHasHighControl(barrageData.barrageFuncData))
-        {
+        if (!barrageController.OnCheckHasHighControl()
+        && !OnCheckHasLevel()
+        && !BarrageFuncController.Instance.OnCheckHighLevelFunc(barrageData.barrageFuncData)
+        && !GameStatusController.isDead) { 
             PlayerModController.Instance.OnSetPlayerContro(true, true, true);
         }
         SimplePool.Despawn(gameObject);

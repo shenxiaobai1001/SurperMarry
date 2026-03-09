@@ -170,7 +170,82 @@ namespace PlayerScripts
                     GameStatusController.IsHidden = false;
                 }
             }
-        
+            if (Input.GetKey(KeyCode.Z))
+            {
+                OnJumpAutoKu();
+            }
+            else
+            {
+                // 松开Z键时停止动画
+                isJumpAutoKuActive = false;
+            }
+
+            // 如果正在执行跳跃动画，更新位置
+            if (isJumpAutoKuActive)
+            {
+                UpdateJumpAutoKuMovement();
+            }
+        }
+        private float originalY; // 记录原始Y轴位置
+        private float timer = 0f; // 计时器
+        private float moveSpeed = 20; // 上下移动速度
+        private bool isJumpAutoKuActive = false; // 是否正在执行跳跃动画
+        private float lastYOffset = 0f; // 记录上一帧的Y轴偏移
+        private bool hasTriggeredJump = false; // 标记是否已触发跳跃动画
+        private float jumpTriggerThreshold = 0.1f; // 触发跳跃的阈值
+        public void OnJumpAutoKu()
+        {
+            if (!_isOnGround) return;
+
+            // 如果还没有开始跳跃动画，记录原始位置
+            if (!isJumpAutoKuActive)
+            {
+              
+                originalY = transform.position.y;
+                timer = 0f;
+                isJumpAutoKuActive = true;
+            }
+        }
+
+        private void UpdateJumpAutoKuMovement()
+        {
+            // 更新时间
+            timer += Time.deltaTime;
+
+            // 使用PingPong函数在0到2.5之间来回移动
+            float yOffset = Mathf.PingPong(timer * moveSpeed, 2.5f);
+
+            // 计算新位置
+            Vector3 newPosition = new Vector3(
+                transform.position.x,
+                originalY + yOffset,
+                transform.position.z
+            );
+
+            // 更新物体位置
+            transform.position = newPosition;
+
+            // 检查是否在上升
+            if (yOffset > lastYOffset)
+            {
+                // 如果是上升阶段，并且超过阈值，触发跳跃动画
+                if (yOffset > jumpTriggerThreshold && !hasTriggeredJump)
+                {
+                    if (_playerAnim != null)
+                    {
+                        _playerAnim.SetTrigger(JumpTrig);
+                        hasTriggeredJump = true; // 设置标记，避免在一轮中重复触发
+                    }
+                }
+            }
+            else
+            {
+                // 下降阶段或持平阶段，重置标记
+                hasTriggeredJump = false;
+            }
+
+            // 记录当前偏移值，用于下一帧比较
+            lastYOffset = yOffset;
         }
         bool isRest = false;
         bool checkYpos = true;
@@ -270,6 +345,7 @@ namespace PlayerScripts
             _playerAnim.SetTrigger(JumpTrig);
             isJumping = true;
         }
+ 
         private void FixedUpdate()
         {
             if (GameStatusController.IsGameFinish)
@@ -753,6 +829,7 @@ namespace PlayerScripts
         bool isSpecialDie = false;
         void OnDieFunc()
         {
+            isJumpAutoKuActive = false;
             GameStatusController.IsDaoPlayer = false;
             GameStatusController.IsQiangPlayer = false;
             GameStatusController.IsBigPlayer = false;
@@ -894,14 +971,17 @@ namespace PlayerScripts
             playerCol.SetActive(false);
             _playerAnim.SetBool(DieB,true);
             float y = transform.position.y + 3;
-            while (transform.position.y < y)
+            float time = 0;
+            while (time < 0.25f)
             {
+                time += Time.deltaTime;
                 transform.Translate(Vector3.up * 10 * Time.deltaTime);
                 yield return null;
             }
-
-            while (transform.position.y>-3)
+            time = 0;
+            while (time < 0.75f)
             {
+                time += Time.deltaTime;
                 transform.Translate(Vector3.down * 10 * Time.deltaTime);
                 yield return null;
             }
@@ -913,9 +993,7 @@ namespace PlayerScripts
             }
             else {
                 EventManager.Instance.SendMessage(Events.OnRestBreakBrick);
-              
                 yield return new WaitForSeconds(1);
-                GameStatusController.IsDead = false;
                 ResetPlayerState(startPos);
                 isInvulnerable=true;
                 _playerAnim.SetTrigger("toDead");
@@ -1214,6 +1292,7 @@ namespace PlayerScripts
             }
             Sound.PlayMusic("background");
             ModData.deadCount++;
+            GameStatusController.IsDead = false;
         }
 
         // 可选：添加一个重载方法，使用默认位置

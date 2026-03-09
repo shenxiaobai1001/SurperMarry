@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using SystemScripts;
 using UnityEngine;
 
 public class BarrageDaom : BarrageFuncBase
@@ -29,9 +30,9 @@ public class BarrageDaom : BarrageFuncBase
         base.OnClose();
         Config.EnemyStop = false;
         if (!barrageController.OnCheckHasHighControl()
-                && !OnCheckHasLevel()
-                && !BarrageFuncController.Instance.OnCheckHighLevelFunc(barrageData.barrageFuncData))
-        {
+         && !OnCheckHasLevel()
+         && !BarrageFuncController.Instance.OnCheckHighLevelFunc(barrageData.barrageFuncData)
+         && !GameStatusController.isDead) { 
 
             PlayerModController.Instance.OnSetPlayerContro(true, true, true);
         }

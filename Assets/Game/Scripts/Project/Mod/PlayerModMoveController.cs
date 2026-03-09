@@ -147,6 +147,7 @@ public class PlayerModMoveController : MonoBehaviour
     {      
         // ≤•∑≈Ãÿ–ß
         PlayEffect(effectId);
+        if (GameStatusController.isDead) return;
         if (!BarrageFuncController.Instance.OnCheckHasHighControl())
         {
             OnChangeState(swim);

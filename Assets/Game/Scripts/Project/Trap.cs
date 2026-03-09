@@ -80,6 +80,7 @@ public class Trap : MonoBehaviour
             {
                 return;
             }
+            
         }
         if (!isTriggered && !isMoving &&( other.CompareTag("Player")|| other.CompareTag("BigPlayer")))
         {

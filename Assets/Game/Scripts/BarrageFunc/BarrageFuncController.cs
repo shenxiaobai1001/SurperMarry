@@ -132,10 +132,12 @@ public class BarrageFuncController : MonoBehaviour
                     {
                         yield return new WaitUntil(() => !Config.isLoading);
                     }
+  
                     if (GameStatusController.IsDead)
                     {
                         yield return new WaitUntil(() => !GameStatusController.IsDead);
                     }
+
                     BarrageExecutting.OnExecutingBarrage(kvp.Value.name, kvp.Key, kvp.Value);
                     lock (_lockExecutFunc)
                     {
@@ -155,8 +157,17 @@ public class BarrageFuncController : MonoBehaviour
     IEnumerator OnCheckReadyFunc()
     {
         List<BarrageValue> temporaryFunc = new List<BarrageValue>();
-        while (true)
+        while (readyFunc.Count>0)
         {
+            if (Config.isLoading)
+            {
+                yield return new WaitUntil(() => !Config.isLoading);
+            }
+
+            if (GameStatusController.IsDead)
+            {
+                yield return new WaitUntil(() => !GameStatusController.IsDead);
+            }
             // 修改：在锁内获取 readyFunc 的副本
             List<BarrageValue> copyReadyFunc;
             lock (_lockReadyFunc)
@@ -210,6 +221,7 @@ public class BarrageFuncController : MonoBehaviour
 
             yield return new WaitForSeconds(0.1f);
         }
+        checkReadyFunck = false;
     }
 
     /// <summary> 检测有没有同级但执行等级更高 </summary>
@@ -316,7 +328,7 @@ public class BarrageFuncController : MonoBehaviour
         {
             isHigh =  kvp.Value.barrageFuncData.type >= 3 && (kvp.Value.BarrageState == BarrageState.Underway
                 || kvp.Value.BarrageState == BarrageState.Ready || kvp.Value.BarrageState == BarrageState.Pause);
-            PFunc.Log("检查强控", kvp.Value.barrageFuncData.name,kvp.Value.BarrageState);
+           // PFunc.Log("检查强控", kvp.Value.barrageFuncData.name,kvp.Value.BarrageState);
             if (isHigh) break;
         }
         return isHigh;
@@ -336,8 +348,9 @@ public class BarrageFuncController : MonoBehaviour
             isHigh = kvp.Value.name != data.name 
                 && kvp.Value.barrageFuncData.type >= 3 
                 && kvp.Value.barrageFuncData.controllevel > data.controllevel;
-            if (isHigh) break;
+                 if (isHigh) break;
         }
+
         return isHigh;
     }
     

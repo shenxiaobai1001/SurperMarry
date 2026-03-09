@@ -46,6 +46,7 @@ public enum Events
     OnBarryExecutEnd,
     HangSelfByKick,
     OnMangSengKick,
+    OnKubaCount,
 }                                                                  
 // 移动方向                                                 
 public enum MoveDirection                                

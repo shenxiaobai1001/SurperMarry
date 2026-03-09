@@ -1,6 +1,7 @@
 using PlayerScripts;
 using System.Collections;
 using System.Collections.Generic;
+using SystemScripts;
 using UnityEngine;
 
 public class BarrageMenace : BarrageFuncBase
@@ -24,9 +25,9 @@ public class BarrageMenace : BarrageFuncBase
         PFunc.Log("BarrageMenaceOnClose", barrageController.OnCheckHasHighControl(barrageData.barrageFuncData));
         if (!barrageController.OnCheckHasHighControl()
            && !OnCheckHasLevel()
-           && !BarrageFuncController.Instance.OnCheckHighLevelFunc(barrageData.barrageFuncData))
+           && !BarrageFuncController.Instance.OnCheckHighLevelFunc(barrageData.barrageFuncData)
+           &&!GameStatusController.isDead)
         {
-
             PlayerModController.Instance.OnSetPlayerContro(true, true, true);
         }
         CancelInvoke();

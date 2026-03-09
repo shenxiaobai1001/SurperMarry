@@ -1,6 +1,7 @@
 using PlayerScripts;
 using System.Collections;
 using System.Collections.Generic;
+using SystemScripts;
 using UnityEngine;
 
 public class BarrageSuperMan : BarrageFuncBase
@@ -33,7 +34,7 @@ public class BarrageSuperMan : BarrageFuncBase
             case BarrageState.Ready:
             case BarrageState.Underway:
                 if (Config.isLoading|| BarrageFuncController.Instance.OnCheckHighLevelFunc(barrageData.barrageFuncData)
-                    || OnCheckHasLevel())
+                    || OnCheckHasLevel() || GameStatusController.IsDead)
                 {
                     OnPause();
                     return;
@@ -71,7 +72,8 @@ public class BarrageSuperMan : BarrageFuncBase
                 break;
             case BarrageState.Pause:
                 if (!Config.isLoading && !OnCheckHasLevel()
-                    &&!BarrageFuncController.Instance.OnCheckHighLevelFunc(barrageData.barrageFuncData))
+                    &&!BarrageFuncController.Instance.OnCheckHighLevelFunc(barrageData.barrageFuncData)
+                    &&!GameStatusController.IsDead)
                 {
                     OnContinue();
                 }
@@ -82,12 +84,18 @@ public class BarrageSuperMan : BarrageFuncBase
     public override void OnPause()
     {
         base.OnPause();
-        PlayerModController.Instance.OnSetPlayerContro(true, true, true);
+        if (!Config.isLoading && !OnCheckHasLevel()
+                    && !BarrageFuncController.Instance.OnCheckHighLevelFunc(barrageData.barrageFuncData)
+                    && !GameStatusController.IsDead)
+        {
+            PlayerModController.Instance.OnSetPlayerContro(true, true, true);
+        }
     }
 
     public override void OnContinue()
     {
         base.OnContinue();
+        transform.position = BarrageFuncCreater.Instance.OnCreatePos("≥¨»À+10√Î");
         OnRest();
     }
     void OnRest()
@@ -98,10 +106,8 @@ public class BarrageSuperMan : BarrageFuncBase
         {
             PlayerModController.Instance.OnSetPlayerContro(false, false, true);
             PlayerModController.Instance.OnShowModAnimation(7);
-            barrageData.BarrageState = BarrageState.Underway;
         }
-        else
-            barrageData.BarrageState = BarrageState.Pause;
+        barrageData.BarrageState = BarrageState.Underway;
     }
 
     void OnCreateSuperEffect()
@@ -119,9 +125,10 @@ public class BarrageSuperMan : BarrageFuncBase
     public override void OnClose()
     {
         base.OnClose();
-        if (!barrageController.OnCheckHasHighControl() 
-            && !OnCheckHasLevel()
-            && !BarrageFuncController.Instance.OnCheckHighLevelFunc(barrageData.barrageFuncData))
+        if (!barrageController.OnCheckHasHighControl()
+           && !OnCheckHasLevel()
+           && !BarrageFuncController.Instance.OnCheckHighLevelFunc(barrageData.barrageFuncData)
+           && !GameStatusController.isDead)
         {
 
             PlayerModController.Instance.OnSetPlayerContro(true, true, true);

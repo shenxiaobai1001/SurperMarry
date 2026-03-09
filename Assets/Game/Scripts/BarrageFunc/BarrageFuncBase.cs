@@ -39,6 +39,10 @@ public class BarrageFuncBase : MonoBehaviour
         return ishaigh;
     }
 
+    private void OnDisable()
+    {
+        
+    }
     public virtual void OnClose()//Ö´ÐÐÍê±Ï
     {
         isInit = false;
