@@ -9,7 +9,7 @@ using static UnityEditor.Progress;
 
 public class Lottery : MonoBehaviour
 {
-    public GameObject lotteryObj;
+    public GameObject[] lotteryObjs;
     public Transform selectCalls;
     public Transform selectBoxs;
     public Transform selectSpecials;
@@ -173,12 +173,6 @@ public class Lottery : MonoBehaviour
 
                     inputField2.onValueChanged.AddListener((value) =>
                     {
-                        if(value == "0")
-                        {
-                            Destroy(obj);
-                            return;
-                        }
-
                         if (int.TryParse(value, out int intValue))
                         {
                             barrageConfig.barrageLotterySettings[transform.GetSiblingIndex()].LotteryItem[inputField1.transform.parent.GetSiblingIndex()].count = intValue;
@@ -189,6 +183,12 @@ public class Lottery : MonoBehaviour
                             barrageConfig.barrageLotterySettings[transform.GetSiblingIndex()].LotteryItem[inputField1.transform.parent.GetSiblingIndex()].count = 1;
                         }
                     });
+                }
+
+                Button btn_close = obj.transform.GetChild(2).GetComponent<Button>();
+                if (btn_close != null)
+                {
+                    btn_close.onClick.AddListener(() => RemoveCall(btn_close));
                 }
             }
 
@@ -376,23 +376,6 @@ public class Lottery : MonoBehaviour
                 {
                     inputField2.onValueChanged.AddListener((value) =>
                     {
-                        if (value == "0")
-                        {
-                            // 创建新的选项
-                            GameObject call = Instantiate(selectCallObj, selectCalls);
-                            Text text = call.transform.GetChild(0).gameObject.GetComponent<Text>();
-                            if (text != null) text.text = barrageConfig.barrageLotterySettings[transform.GetSiblingIndex()].LotteryItem[inputField1.transform.parent.GetSiblingIndex()].callName;
-
-                            Button button = obj.GetComponent<Button>();
-                            if (button != null)
-                            {
-                                button.onClick.AddListener(() => JoinCall(obj, SettingType.None));
-                            }
-                            barrageConfig.barrageLotterySettings[transform.GetSiblingIndex()].LotteryItem.RemoveAt(inputField1.transform.parent.GetSiblingIndex());
-                            Destroy(obj);
-                            return;
-                        }
-
                         if (int.TryParse(value, out int intValue))
                         {
                             barrageConfig.barrageLotterySettings[transform.GetSiblingIndex()].LotteryItem[inputField1.transform.parent.GetSiblingIndex()].count = intValue;
@@ -404,6 +387,12 @@ public class Lottery : MonoBehaviour
                         }
                     });
                 }
+
+                Button btn_close = obj.transform.GetChild(2).GetComponent<Button>();
+                if (btn_close != null)
+                {
+                    btn_close.onClick.AddListener(() => RemoveCall(btn_close));
+                }
             }
             Destroy(call);
         }
@@ -412,6 +401,62 @@ public class Lottery : MonoBehaviour
             Debug.Log("超出设置范围.");
         }
     }
+
+    /// <summary>
+    /// 移除
+    /// </summary>
+    public void RemoveCall(Button button)
+    {
+        int siblingIndex = transform.GetSiblingIndex();
+        int itemIndex = button.transform.parent.GetSiblingIndex();
+
+        var lotteryItem = barrageConfig.barrageLotterySettings[siblingIndex].LotteryItem[itemIndex];
+        SettingType settingType = lotteryItem.type;
+        string callName = lotteryItem.callName; // 保存功能名称
+
+        Destroy(button.transform.parent.gameObject);
+        barrageConfig.barrageLotterySettings[siblingIndex].LotteryItem.RemoveAt(itemIndex);
+
+        CreateSelectObjectForType(settingType, callName); // 传递功能名称
+    }
+
+    private void CreateSelectObjectForType(SettingType settingType, string callName)
+    {
+        // 获取对应的父对象
+        Transform parent = settingType switch
+        {
+            SettingType.None => selectCalls,
+            SettingType.Box => selectBoxs,
+            SettingType.Special => selectSpecials,
+            _ => null
+        };
+
+        if (parent == null)
+        {
+            Debug.LogError($"未找到SettingType {settingType}对应的父对象");
+            return;
+        }
+
+        CreateSelectCallObject(parent, callName); // 传递功能名称
+    }
+
+    private void CreateSelectCallObject(Transform parent, string callName)
+    {
+        GameObject newObj = Instantiate(selectCallObj, parent);
+
+        // 设置文本 - 使用传递进来的功能名称
+        if (newObj.transform.GetChild(0).TryGetComponent<Text>(out Text text))
+        {
+            text.text = callName; // 使用callName而不是name
+        }
+
+        // 设置按钮点击事件
+        if (newObj.TryGetComponent<Button>(out Button button))
+        {
+            button.onClick.AddListener(() => JoinCall(newObj, SettingType.None));
+        }
+    }
+
 
 
     /// <summary>
@@ -483,10 +528,13 @@ public class Lottery : MonoBehaviour
             return;
         }
 
-        string msg = barrageConfig.barrageLotterySettings[boxIndex].Message;
+        // 走抽奖专用队列（BarrageBase.HandleLottery -> EnqueueLottery -> ProcessLotteryQueue），
+        // 从而按“倍率Count”和“间隔Delay”执行连抽。
+        var setting = barrageConfig.barrageLotterySettings[boxIndex];
+        string msg = setting.Message;
         var data = new BarrageData
         {
-            Type = barrageConfig.barrageLotterySettings[boxIndex].Type,
+            Type = setting.Type,
             name = "测试用户",
             message = msg,
             userAvatar = "",
@@ -494,51 +542,71 @@ public class Lottery : MonoBehaviour
             count = 1
         };
         string json = JsonUtility.ToJson(data);
-
-        switch (data.Type)
-        {
-            case "礼物":
-                barrageBase.HandleGift(json);
-                break;
-            case "弹幕":
-                barrageBase.HandleBarrage(json);
-                break;
-            case "关注":
-                barrageBase.HandleAttention(json);
-                break;
-            case "进入":
-                barrageBase.HandleJoin(json);
-                break;
-            case "点赞":
-                barrageBase.HandleLike(json);
-                break;
-        }
+        barrageBase.HandleLottery(json);
     }
 
     // 由 BarrageBase 触发抽奖时，调用该方法真正弹出 UI 并执行逻辑
-    public void StartLotteryUI()
+    // 返回本次创建的转盘 UI 根物体（用于外部串行等待），创建失败返回 null
+    public GameObject StartLotteryUI()
     {
-        if(barrageConfig.barrageLotterySettings[transform.GetSiblingIndex()].LotteryItem.Count == 0)
+        // 缓存索引/配置引用，避免回调里再访问 transform（Lottery 可能被 Destroy）
+        int idx = transform.GetSiblingIndex();
+        if (barrageConfig == null) barrageConfig = FindAnyObjectByType<BarrageController>();
+        if (barrageConfig == null || barrageConfig.barrageLotterySettings == null || idx < 0 || idx >= barrageConfig.barrageLotterySettings.Count)
         {
-            Debug.LogWarning("未配置执行方法");
-            return;
+            Debug.LogWarning("Lottery: BarrageController/抽奖索引无效，无法启动抽奖UI");
+            return null;
         }
 
-        GameObject obj = Instantiate(lotteryObj);
-        obj = obj.transform.GetChild(0).gameObject;
+        var lotterySetting = barrageConfig.barrageLotterySettings[idx];
+
+        if(lotterySetting.LotteryItem == null || lotterySetting.LotteryItem.Count == 0)
+        {
+            Debug.LogWarning($"未配置执行方法：{idx}");
+            return null;
+        }
+
+        string input = lotterySetting.LotteryCount;
+        string numberOnly = new string(input.Where(char.IsDigit).ToArray());
+        int itemCount = int.Parse(numberOnly);
+
+        GameObject obj = new GameObject();
+        switch (itemCount)
+        {
+            case 4:
+                obj = Instantiate(lotteryObjs[0]);
+                break;
+            case 8:
+                obj = Instantiate(lotteryObjs[1]);
+                break;
+            case 12:
+                obj = Instantiate(lotteryObjs[2]);
+                break;
+        }
+
+        if (obj == null)
+        {
+            Debug.LogWarning("Lottery: 未能创建抽奖UI预制体");
+            return null;
+        }
+
+        // 记录 root：LotteryController 会 Destroy(root)，外部可用它判断何时结束
+        GameObject uiRoot = obj;
+
+    obj = obj.transform.GetChild(0).gameObject;
 
         // 设置标题
         Text title = obj.transform.GetChild(0).GetComponent<Text>();
-        title.text = barrageConfig.barrageLotterySettings[transform.GetSiblingIndex()].Title;
+    title.text = lotterySetting.Title;
 
         GameObject Items = obj.transform.GetChild(2).gameObject;
         int index = 0;
         foreach (Transform Item in Items.transform)
         {
             LotteryItem lotteryItem = Item.GetComponent<LotteryItem>();
-            lotteryItem.Init(barrageConfig.barrageLotterySettings[transform.GetSiblingIndex()].LotteryItem[index].callName);
+            lotteryItem.Init(lotterySetting.LotteryItem[index].callName);
             index++;
-            if (index == barrageConfig.barrageLotterySettings[transform.GetSiblingIndex()].LotteryItem.Count) break;
+            if (index == lotterySetting.LotteryItem.Count) break;
         }
 
         LotteryController lotteryController = Items.GetComponent<LotteryController>();
@@ -546,12 +614,12 @@ public class Lottery : MonoBehaviour
         if (lotteryController != null)
         {
             lotteryController.weights.Clear();
-            for (int i = 0; i < barrageConfig.barrageLotterySettings[transform.GetSiblingIndex()].LotteryItem.Count; i++)
+            for (int i = 0; i < lotterySetting.LotteryItem.Count; i++)
             {
                 int w = 1;
                 try
                 {
-                    w = barrageConfig.barrageLotterySettings[transform.GetSiblingIndex()].LotteryItem[i].count;
+                    w = lotterySetting.LotteryItem[i].count;
                 }
                 catch { }
                 lotteryController.weights.Add(Mathf.Max(0, w));
@@ -570,14 +638,21 @@ public class Lottery : MonoBehaviour
         // 订阅抽奖结果：itemName 就是 callName
         lotteryController.OnResult = (selectedCallName) =>
         {
-            int idx = transform.GetSiblingIndex();
-            if (idx < 0 || idx >= barrageConfig.barrageLotterySettings.Count)
+            // 回调触发时 Lottery 组件可能已被 Destroy（比如配置面板被关闭/重建）
+            if (barrageConfig == null || barrageConfig.barrageLotterySettings == null || idx < 0 || idx >= barrageConfig.barrageLotterySettings.Count)
             {
                 Debug.LogWarning("Lottery: 配置索引越界，无法执行抽中功能");
                 return;
             }
 
-            var setting = barrageConfig.barrageLotterySettings[idx].LotteryItem.Find(x => x.callName == selectedCallName);
+            var runtimeSetting = barrageConfig.barrageLotterySettings[idx];
+            if (runtimeSetting == null || runtimeSetting.LotteryItem == null)
+            {
+                Debug.LogWarning("Lottery: 抽奖配置为空，无法执行抽中功能");
+                return;
+            }
+
+            var setting = runtimeSetting.LotteryItem.Find(x => x.callName == selectedCallName);
             if (setting == null)
             {
                 Debug.LogWarning($"Lottery: 未找到抽中项配置: {selectedCallName}");
@@ -639,7 +714,9 @@ public class Lottery : MonoBehaviour
                     }
             }
         };
-        lotteryController.StartCoroutine(lotteryController.LotteryStart(barrageConfig.barrageLotterySettings[transform.GetSiblingIndex()].avatarPath));
+        lotteryController.StartCoroutine(lotteryController.LotteryStart(lotterySetting.avatarPath));
+
+        return uiRoot;
     }
 
 

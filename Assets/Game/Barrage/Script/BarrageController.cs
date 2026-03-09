@@ -371,6 +371,7 @@ public class BarrageController : MonoBehaviour
 
             BarrageLotterySetting config = new BarrageLotterySetting();
             config.Count = 1;
+            config.LotteryCount = "8个";
 
             barrageLotterySettings.Add(config);
         }

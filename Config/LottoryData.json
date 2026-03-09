@@ -1,25 +1,37 @@
 {
     "LottoryConfigs": [
         {
-            "Title": "测试",
+            "Title": "抽奖",
             "Type": "礼物",
-            "Message": "123",
-            "Tip": "123",
-            "Count": 1,
+            "Message": "礼物",
+            "Tip": "",
+            "Count": 2,
             "Delay": 0.0,
             "LotteryCount": "12个",
             "avatarPath": "",
             "LotteryItem": [
                 {
-                    "lotteryName": "变大",
+                    "lotteryName": "乌龟一只",
                     "type": 0,
-                    "callName": "变大",
-                    "count": 100
+                    "callName": "乌龟一只",
+                    "count": 1
                 },
                 {
-                    "lotteryName": "变小",
+                    "lotteryName": "乌龟十只",
                     "type": 0,
-                    "callName": "变小",
+                    "callName": "乌龟十只",
+                    "count": 1
+                },
+                {
+                    "lotteryName": "乌龟1万只",
+                    "type": 1,
+                    "callName": "乌龟1万只",
+                    "count": 2
+                },
+                {
+                    "lotteryName": "飞龟一只",
+                    "type": 0,
+                    "callName": "飞龟一只",
                     "count": 1
                 }
             ]

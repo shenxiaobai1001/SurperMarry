@@ -56,6 +56,9 @@ public class BarrageBase : MonoBehaviour
     private readonly Dictionary<string, Queue<LotteryRequest>> _lotteryQueues = new Dictionary<string, Queue<LotteryRequest>>();
     private readonly HashSet<string> _lotteryRunning = new HashSet<string>();
 
+    // 当前正在显示的抽奖转盘UI（用于串行等待，避免重叠弹出）
+    private readonly Dictionary<string, GameObject> _lotteryActiveUiRoot = new Dictionary<string, GameObject>();
+
     private static string MakeKey(BarrageLotterySetting lottery)
     {
         return $"{lottery.Type}|{lottery.Message}|{lottery.Title}";
@@ -411,13 +414,51 @@ public class BarrageBase : MonoBehaviour
         for (int i = 0; i < cycles; i++)
         {
             // 抽奖 UI + 动画 + 在 Lottery 内执行结果
-            var lotteryComp = FindAnyObjectByType<Lottery>();
+            Lottery lotteryComp = null;
+            try
+            {
+                int idx = controller.barrageLotterySettings != null ? controller.barrageLotterySettings.IndexOf(lottery) : -1;
+                if (idx >= 0 && controller.content != null && idx < controller.content.transform.childCount)
+                {
+                    lotteryComp = controller.content.transform.GetChild(idx).GetComponent<Lottery>();
+                }
+            }
+            catch { }
+
+            if (lotteryComp == null)
+            {
+                lotteryComp = FindAnyObjectByType<Lottery>();
+            }
             if (lotteryComp == null)
             {
                 Debug.LogWarning("未找到 Lottery 组件，无法触发抽奖");
                 yield break;
             }
-            lotteryComp.StartLotteryUI();
+
+            // 串行：等待本轮转盘结束（UI root 被 Destroy）后再进入下一轮
+            string key = MakeKey(lottery);
+            GameObject uiRoot = null;
+            if (_lotteryActiveUiRoot.TryGetValue(key, out var existing) && existing != null)
+            {
+                // 如果因为某种原因还残留着上一次 UI，则等待其销毁
+                while (existing != null)
+                {
+                    yield return null;
+                }
+            }
+
+            // StartLotteryUI 修改为返回本次创建的 UI root（如果返回 null 则退化为只按 Delay 等待）
+            uiRoot = lotteryComp.StartLotteryUI();
+            _lotteryActiveUiRoot[key] = uiRoot;
+
+            if (uiRoot != null)
+            {
+                while (uiRoot != null)
+                {
+                    yield return null;
+                }
+            }
+
             if (lottery.Delay > 0f && i < cycles - 1)
             {
                 yield return new WaitForSeconds(lottery.Delay);

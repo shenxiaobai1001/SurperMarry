@@ -3,10 +3,10 @@
         {
             "CallName": "乌龟一只",
             "Type": "进入",
-            "Message": "",
+            "Message": "测试",
             "Tip": "",
-            "Count": 1,
-            "Delay": 0.20000000298023225
+            "Count": 2,
+            "Delay": 1.0
         },
         {
             "CallName": "乌龟十只",
@@ -124,7 +124,7 @@
             "CallName": "生命+1",
             "Type": "礼物",
             "Message": "",
-            "Tip": "人气票",
+            "Tip": "",
             "Count": 1,
             "Delay": 0.20000000298023225
         },

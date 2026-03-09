@@ -1977,7 +1977,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: "12\u4E2A"
+  m_Text: "4\u4E2A"
 --- !u!1 &2651793051414309079
 GameObject:
   m_ObjectHideFlags: 0
@@ -2651,8 +2651,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: be34284870a245c4f9b4ecc9cb722d2b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  lotteryObj: {fileID: 2687779190723352121, guid: 091bca0a3e1c8ce4c8942ab44d5e8b69,
-    type: 3}
+  lotteryObjs:
+  - {fileID: 2687779190723352121, guid: efc8bbf6547a7e543bcb4ff88024ed6c, type: 3}
+  - {fileID: 2687779190723352121, guid: 9d838d90b3ab7fd4880bc68fb1ac49f9, type: 3}
+  - {fileID: 2687779190723352121, guid: 091bca0a3e1c8ce4c8942ab44d5e8b69, type: 3}
   selectCalls: {fileID: 841476155384535216}
   selectBoxs: {fileID: 718272975063695394}
   selectSpecials: {fileID: 2600913113498855954}
@@ -4476,6 +4478,10 @@ MonoBehaviour:
   m_Value: 0
   m_Options:
     m_Options:
+    - m_Text: "4\u4E2A"
+      m_Image: {fileID: 0}
+    - m_Text: "8\u4E2A"
+      m_Image: {fileID: 0}
     - m_Text: "12\u4E2A"
       m_Image: {fileID: 0}
   m_OnValueChanged:
@@ -6104,7 +6110,7 @@ MonoBehaviour:
   m_ChildAlignment: 0
   m_StartCorner: 0
   m_StartAxis: 0
-  m_CellSize: {x: 210, y: 30}
+  m_CellSize: {x: 235, y: 30}
   m_Spacing: {x: 0, y: 0}
   m_Constraint: 0
   m_ConstraintCount: 2

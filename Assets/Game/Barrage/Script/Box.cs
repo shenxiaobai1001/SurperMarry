@@ -3,9 +3,11 @@ using System.Collections.Generic;
 using System.IO;
 using System.Threading.Tasks;
 using System.Xml.Linq;
+using TheFactory.Snappy;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.Video;
+using static Lottery;
 
 public class Box : MonoBehaviour
 {
@@ -118,6 +120,9 @@ public class Box : MonoBehaviour
                         }
                     });
                 }
+
+                Button btn_close = obj.transform.GetChild(2).GetComponent<Button>();
+                if (btn_close != null) btn_close.onClick.AddListener(() => RemoveCall(btn_close));
             }
 
             // 加载未选择的功能
@@ -181,9 +186,42 @@ public class Box : MonoBehaviour
                     }
                 });
             }
+
+            Button btn_close = obj.transform.GetChild(2).GetComponent<Button>();
+            if (btn_close != null) btn_close.onClick.AddListener(() => RemoveCall(btn_close));
         }
         Destroy(call);
     }
+
+    /// <summary>
+    /// 移除
+    /// </summary>
+    public void RemoveCall(Button button)
+    {
+        int siblingIndex = transform.GetSiblingIndex();
+        string name = button.transform.parent.GetChild(0).GetChild(0).GetComponent<Text>().text;
+
+        Debug.Log(name);
+
+        Destroy(button.transform.parent.gameObject);
+        barrageConfig.barrageBoxSetting[siblingIndex].Calls.RemoveAll(item => item == name);
+
+
+        GameObject newObj = Instantiate(selectCallObj, selectCalls);
+
+
+        if (newObj.transform.GetChild(0).TryGetComponent<Text>(out Text text))
+        {
+            text.text = name; 
+        }
+
+
+        if (newObj.TryGetComponent<Button>(out Button button1))
+        {
+            button1.onClick.AddListener(() => JoinCall(newObj));
+        }
+    }
+
 
     /// <summary>
     /// 修改功能数量
