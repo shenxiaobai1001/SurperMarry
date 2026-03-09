@@ -79,9 +79,10 @@ MonoBehaviour:
   kubaPos: {fileID: 8836357576455228479}
   kubaCreateos: {fileID: 1291479223419267553}
   KUBA: {fileID: 6691854002660372949, guid: cab1bfbd4e680432da49a542c18d3043, type: 3}
+  uiNumber: {fileID: 7042927694017281773}
   target: {fileID: 0}
-  offset: {x: 0, y: 3, z: 0}
-  minY: 3
+  offset: {x: 0, y: 2.5, z: 0}
+  minY: 2.5
 --- !u!1 &776195555234226512
 GameObject:
   m_ObjectHideFlags: 0
@@ -211,7 +212,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 1, y: 1}
+  m_Size: {x: 1, y: 0.9}
   m_EdgeRadius: 0
 --- !u!1 &1327352681662763070
 GameObject:
@@ -286,7 +287,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: -28}
+  m_AnchoredPosition: {x: 0, y: 1}
   m_SizeDelta: {x: 700, y: 300}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &7732118798750795827
@@ -319,7 +320,7 @@ MonoBehaviour:
       m_Calls: []
   m_FontData:
     m_Font: {fileID: 12800000, guid: ba3f203d0a2a97843831ccd24650cbbe, type: 3}
-    m_FontSize: 60
+    m_FontSize: 30
     m_FontStyle: 0
     m_BestFit: 0
     m_MinSize: 1
@@ -434,7 +435,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 147}
+  m_AnchoredPosition: {x: 0, y: 109}
   m_SizeDelta: {x: 600, y: 300}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &3275160104129393441
@@ -467,10 +468,10 @@ MonoBehaviour:
       m_Calls: []
   m_FontData:
     m_Font: {fileID: 12800000, guid: ba3f203d0a2a97843831ccd24650cbbe, type: 3}
-    m_FontSize: 70
+    m_FontSize: 30
     m_FontStyle: 0
     m_BestFit: 0
-    m_MinSize: 4
+    m_MinSize: 3
     m_MaxSize: 142
     m_Alignment: 4
     m_AlignByGeometry: 0
@@ -923,7 +924,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 1, y: 1}
+  m_Size: {x: 1, y: 0.9}
   m_EdgeRadius: 0
 --- !u!1 &8800529691024597255
 GameObject:
@@ -993,7 +994,7 @@ MonoBehaviour:
       m_Calls: []
   m_FontData:
     m_Font: {fileID: 12800000, guid: ba3f203d0a2a97843831ccd24650cbbe, type: 3}
-    m_FontSize: 75
+    m_FontSize: 30
     m_FontStyle: 0
     m_BestFit: 0
     m_MinSize: 1

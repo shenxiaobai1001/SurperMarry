@@ -3,6 +3,7 @@ using EnemyScripts;
 using PlayerScripts;
 using System.Collections;
 using System.Collections.Generic;
+using SystemScripts;
 using UnityEngine;
 
 public class PeakKuba : MonoBehaviour
@@ -10,10 +11,16 @@ public class PeakKuba : MonoBehaviour
     public Transform kubaPos;
     public Transform kubaCreateos;
     public GameObject KUBA;
+    public Transform uiNumber;
 
     private void Start()
     {
-        currentY = transform.position.y;
+     
+    }
+    private void OnEnable()
+    {
+        transform.position = new Vector3(0, 15);
+        oldPos = transform.position;
     }
     private void OnCollisionEnter2D(Collision2D collision)
     {
@@ -23,6 +30,10 @@ public class PeakKuba : MonoBehaviour
         {
             Config.kubaCount--;
             Config.hasKubaCount++;
+            if (uiNumber) uiNumber.transform.DOScale(1.1f, 0.025f).SetLoops(2, LoopType.Yoyo).OnComplete(() =>
+            {
+                uiNumber.transform.localScale = Vector3.one;
+            });
             Sound.PlaySound("smb_1-up");
             kubaPos.DOShakePosition(0.2f, 0.2f).onComplete+=()=>{ kubaPos.localPosition = Vector3.zero; } ;
             GameObject kuba = MonsterCreater.Instance.InstantiateSingleMonster(KUBA, kubaCreateos.position);
@@ -39,46 +50,50 @@ public class PeakKuba : MonoBehaviour
 
     [Header("Y轴跟随限制")]
     public float minY = -10f; // Y轴下降的最低限度
-    private float currentY; // 当前物体的Y轴位置
-    private bool hasReachedMinY = false; // 是否已经达到最低Y值
 
-
+    Vector3 oldPos;
+    bool isRest = false;
     private void LateUpdate()
     {
         if (target == null)
         {
             if (PlayerController.Instance != null)
-
+            {
                 target = PlayerController.Instance.transform;
+
+                transform.position = new Vector3(0,15);
+                oldPos= transform.position;
+                isRest=true;
+            }
+        }
+        if (GameStatusController.isDead)
+        {
+            transform.position = new Vector3(0, 15);
+            oldPos = transform.position;
+            return;
         }
         if (target == null) return;
 
-        // 计算目标位置（应用偏移量）
         Vector3 targetPosition = target.position + offset;
 
-        // X轴始终跟随
         float newX = targetPosition.x;
 
-        // Y轴逻辑
-        if (targetPosition.y < currentY) // 如果目标低于当前Y值
+        if (target.position.y > minY)
         {
-            // 跟随下降，但不低于最低限度
-            currentY = Mathf.Max(targetPosition.y, minY);
-            hasReachedMinY = (currentY <= minY); // 检查是否达到最低Y值
-        }
-        else if (targetPosition.y > currentY && !hasReachedMinY) // 如果目标高于当前Y值且未达到最低Y值
-        {
-            // 放开上升跟随
-            currentY = targetPosition.y;
-        }
-        // 如果已经达到最低Y值，则不再跟随上升
-
-        // 更新位置
-        transform.position = new Vector3(newX, currentY, transform.position.z);
-        if (target.position.y > minY + 1) {
-            hasReachedMinY = false;
             transform.position = targetPosition;
-            
         }
+        else
+        {
+            transform.position = new Vector3(newX, minY, transform.position.z);
+        }
+
+   
+        if (transform.position.y > oldPos.y)
+        {
+            Vector3 vec = new Vector3(newX, oldPos.y, targetPosition.z);
+            transform.position = vec;
+        }
+        else
+            oldPos = transform.position;
     }
 }

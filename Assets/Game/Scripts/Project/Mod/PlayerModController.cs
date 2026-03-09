@@ -137,12 +137,6 @@ public class PlayerModController : MonoBehaviour
             PlayerModMoveController.Instance.TriggerModMove(MoveType.Normal, new Vector3(-1, 0.5f), 10, 0.25f, true, false, 1, true);
     }
 
-    public void OnAddFourePlayer(Vector3 vector)
-    {
-        rigidbody2D.velocity = new Vector2(0, 0); // 重置水平速度
-        rigidbody2D.AddForce(vector, ForceMode2D.Force); // 重置水平速度
-    }
-
     private void OnCollisionEnter2D(Collision2D collision)
     {
         if (collision == null) return;
@@ -177,7 +171,6 @@ public class PlayerModController : MonoBehaviour
     }
 
 
-    public void OnBigDao() => OnShowModAnimation(0);
     public void OnTiggerDao()
     {
         if (GameStatusController.IsFirePlayer && GameStatusController.IsBigPlayer)
@@ -191,20 +184,6 @@ public class PlayerModController : MonoBehaviour
         else
         {
             OnTriggerModAnimator("dao");
-        }
-    }
-    public void OnTiggerManace()
-    {
-        if (GameStatusController.IsFirePlayer && GameStatusController.IsBigPlayer)
-        {
-            OnShowModAnimation(3);
-        }
-        else if (!GameStatusController.IsFirePlayer && GameStatusController.IsBigPlayer)
-        {
-            OnShowModAnimation(2);
-        }
-        else {
-            OnTriggerModAnimator("menace");
         }
     }
 
@@ -275,11 +254,7 @@ public class PlayerModController : MonoBehaviour
         }
     }
 
-    public void OnFiler()
-    {
-        if (modAnimator) modAnimator.Play("Filer");
-        // if (spriteBlinkController) spriteBlinkController.StartBlink();
-    }
+    
     float superSpeed = 10;
     private void Update()
     {
@@ -321,6 +296,8 @@ public class PlayerModController : MonoBehaviour
             rigidbody2D.isKinematic = false;
         }
         #endregion
+
+
     }
     public Animator OnGuangDance()
     {

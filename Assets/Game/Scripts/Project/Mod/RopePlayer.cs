@@ -5,8 +5,10 @@ using UnityEngine;
 
 public class RopePlayer : MonoBehaviour
 {
-    private Animator _playerAnim;
+    public Animator _playerAnim;
    public Rigidbody2D _playerRb;
+    public GameObject collider1;
+    public GameObject collider2;
 
     public float speed = 410f;
     public float slideDownSpeed = 410f;
@@ -23,6 +25,14 @@ public class RopePlayer : MonoBehaviour
         EventManager.Instance.AddListener(Events.OnLazzerHit, OnLazzerHit);
         _playerAnim = GetComponent<Animator>();
         _playerRb = GetComponent<Rigidbody2D>();
+    }
+    private void OnDestroy()
+    {
+        EventManager.Instance.RemoveListener(Events.OnLazzerHit, OnLazzerHit);
+    }
+    private void OnEnable()
+    {
+        OnInitCollider();
     }
     private void Update()
     {
@@ -53,6 +63,44 @@ public class RopePlayer : MonoBehaviour
             _playerAnim.SetBool(RunB, true);
         }
     }
+
+    void OnInitCollider()
+    {
+
+        if (GameStatusController.IsDaoPlayer)
+        {
+            _playerAnim.SetTrigger("TDao");
+            collider1.SetActive(false);
+            collider2.SetActive(true);
+        }
+        else if (GameStatusController.IsQiangPlayer)
+        {
+            _playerAnim.SetTrigger("TQiang");
+            collider1.SetActive(false);
+            collider2.SetActive(true);
+        }
+        else if (GameStatusController.IsFirePlayer && GameStatusController.IsBigPlayer)
+        {
+            _playerAnim.Play("PlayerFireBigIdle");
+            collider1.SetActive(false);
+            collider2.SetActive(true);
+        }
+        else if (!GameStatusController.IsFirePlayer && GameStatusController.IsBigPlayer)
+        {
+            _playerAnim.Play("Idle_Big");
+            collider1.SetActive(false);
+            collider2.SetActive(true);
+        }
+        else
+        {
+            _playerAnim.Play("Idle", 0);
+            collider1.SetActive(true);
+            collider2.SetActive(false);
+        }
+
+
+    }
+
     void OnLazzerHit(object msg)
     {
         if (GameStatusController.IsFirePlayer && GameStatusController.IsBigPlayer)

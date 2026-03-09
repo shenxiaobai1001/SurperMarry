@@ -32,6 +32,8 @@ public class BarrageHangSelf : BarrageFuncBase
     {
         EventManager.Instance.AddListener(Events.HangSelfByKick, OnKick);
     }
+    float time = 0;
+    float allTime = 4.5f;
 
     public override void OnStart(BarrageValue barrageFuncData, int index)
     {
@@ -84,7 +86,6 @@ public class BarrageHangSelf : BarrageFuncBase
 
     private void Update()
     {
-        if (!isInit) return;
         switch (barrageData.BarrageState)
         {
             case BarrageState.Tigger:

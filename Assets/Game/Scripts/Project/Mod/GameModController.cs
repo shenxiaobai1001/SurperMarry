@@ -174,6 +174,7 @@ public class GameModController : MonoBehaviour
             OnLoadScene("1-1");
         }
         mainMoveCoroutine = null;
+        PFunc.Log("OnBarryExecutEnd", barrageIndex);
         if (barrageIndex != 0) {
             EventManager.Instance.SendMessage(Events.OnBarryExecutEnd, barrageIndex);
             barrageIndex = 0;

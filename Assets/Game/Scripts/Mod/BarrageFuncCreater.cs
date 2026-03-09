@@ -134,10 +134,11 @@ public class BarrageFuncCreater : MonoBehaviour
 
     public void OnCreateShoe(BarrageValue barrageFuncData, int index)
     {
+        Sound.PlaySound("Mod/capixie");
         if (BarrageFuncController.Instance.OnCheckBarrageFuncByName("≤¡∆§–¨"))
         {
             Sound.PlaySound("smb_1-up");
-            Config.shineCount += 20;
+            Config.shineCount += 5;
             EventManager.Instance.SendMessage(Events.OnBarryExecutEnd, index);
         }
         else
@@ -194,7 +195,7 @@ public class BarrageFuncCreater : MonoBehaviour
         switch (callName)
         {
             case "…œµı":
-                float value = GameStatusController.IsHidden ? 37 : Camera.main.transform.position.y;
+                float value = GameStatusController.IsHidden ? 37 : 0;
                 createPos = new Vector3(Camera.main.transform.position.x, value);
                 break;
             case "“ªø‚":

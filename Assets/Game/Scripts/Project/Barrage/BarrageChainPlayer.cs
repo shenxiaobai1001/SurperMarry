@@ -14,6 +14,7 @@ public class BarrageChainPlayer : BarrageFuncBase
     public GameObject uiCenter;
     public GameObject objCenter;
     public Text tx_number;
+    public GameObject uiobj;
 
     public Animator animator;
     public Transform parent;
@@ -86,6 +87,10 @@ public class BarrageChainPlayer : BarrageFuncBase
                     Sound.PlaySound("Mod/paopao");
                     OnRande();
                     Config.chainCount--;
+                    if (uiobj) uiobj.transform.DOScale(1.1f, 0.025f).SetLoops(2, LoopType.Yoyo).OnComplete(() =>
+                    {
+                        uiobj.transform.localScale = Vector3.one;
+                    });
                     OnSnake();
                 }
                 if (OnCheckHasLevel())

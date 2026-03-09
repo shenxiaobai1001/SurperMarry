@@ -1,15 +1,15 @@
 {
     "NormalConfigs": [
         {
-            "CallName": "乌龟一只",
+            "CallName": "顶乌龟",
             "Type": "礼物",
             "Message": "向阳而生",
             "Tip": "",
-            "Count": 1,
-            "Delay": 0.20000000298023225
+            "Count": 50,
+            "Delay": 0.0
         },
         {
-            "CallName": "乌龟十只",
+            "CallName": "随机关卡",
             "Type": "礼物",
             "Message": "",
             "Tip": "",
@@ -206,7 +206,7 @@
             "Message": "为你闪耀",
             "Tip": "",
             "Count": 1,
-            "Delay": 5.0
+            "Delay": 0.0
         },
         {
             "CallName": "一库",
@@ -217,12 +217,12 @@
             "Delay": 0.5
         },
         {
-            "CallName": "滚石",
+            "CallName": "随机关卡",
             "Type": "礼物",
             "Message": "",
             "Tip": "",
             "Count": 1,
-            "Delay": 3.0
+            "Delay": 1.0
         },
         {
             "CallName": "滚刺",
@@ -513,11 +513,11 @@
             "Delay": 0.0
         },
         {
-            "CallName": "跳绳盲盒",
+            "CallName": "跳绳",
             "Type": "礼物",
             "Message": "加油鸭",
             "Tip": "",
-            "Count": 1,
+            "Count": 10,
             "Delay": 0.0
         },
         {

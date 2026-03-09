@@ -1,3 +1,4 @@
+using DG.Tweening;
 using PlayerScripts;
 using System.Collections;
 using System.Collections.Generic;
@@ -113,6 +114,10 @@ public class BarrageRopeSkip : BarrageFuncBase
         {
             Config.succRopeCount++;
             Config.ropeCount--;
+            if (tx_succ) tx_succ.transform.DOScale(1.1f, 0.025f).SetLoops(2, LoopType.Yoyo).OnComplete(() =>
+            {
+                tx_succ.transform.localScale = Vector3.one;
+            });
         }
         if (Config.ropeCount <= 0)
         {

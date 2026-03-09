@@ -74,7 +74,7 @@ public class UISystem : MonoBehaviour
         sl_music.value = musicValue;
         sl_sound.value = soundValue;
 
-        sl_statu.value = SystemController.Instance.statuValue;
+       // sl_statu.value = SystemController.Instance.statuValue;
     }
     void OnChangeMusic(float value)
     {
